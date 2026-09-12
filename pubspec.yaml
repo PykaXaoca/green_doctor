@@ -1,0 +1,76 @@
+name: pocket_botanist
+description: "Карманный ботаник — офлайн-помощник по уходу за растениями."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # --- Состояние ---
+  flutter_riverpod: ^3.4.2
+  riverpod_annotation: ^4.0.6
+
+  # --- Навигация ---
+  go_router: ^17.5.0
+
+  # --- База данных ---
+  drift: ^2.31.0
+  sqlite3_flutter_libs: ^0.6.0
+  path_provider: ^2.1.6
+  path: ^1.9.0
+
+  # --- Key-Value хранилище ---
+  hive_ce: ^2.19.3
+  hive_ce_flutter: ^2.3.4
+
+  # --- Уведомления ---
+  flutter_local_notifications: ^21.0.0
+  timezone: ^0.11.1
+
+  # --- Изображения ---
+  image_picker: ^1.2.0
+  camera: ^0.11.0
+  image: ^4.5.0
+
+  # --- Сеть ---
+  dio: ^5.11.0
+  dio_cache_interceptor: ^4.0.6
+
+  # --- Геолокация и погода ---
+  geolocator: ^14.0.3
+
+  # --- AI (TFLite) ---
+  tflite_flutter: ^0.12.0
+
+  # --- Утилиты ---
+  intl: ^0.20.3
+  permission_handler: ^12.0.1
+  uuid: ^4.6.0
+  table_calendar: ^3.2.0
+
+  # --- Логирование ---
+  sentry_flutter: ^9.25.0
+
+  # --- Покупки (подключим позже) ---
+  purchases_flutter: ^10.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  build_runner: ^2.15.0
+  riverpod_generator: ^4.0.8
+  riverpod_lint: ^3.1.8
+  drift_dev: ^2.34.5
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/data/
+    - assets/models/

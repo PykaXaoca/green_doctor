@@ -1,0 +1,26 @@
+# Список растений для сбора — по одному названию на строку.
+# Можно указывать научное название (лучше) или обиходное.
+# Строки, начинающиеся с #, игнорируются.
+#
+# Просто допишите новые названия и запустите скрипт снова —
+# уже скачанное он не тронет, а новое докачает.
+#
+# Примеры:
+Quercus robur
+Quercus rubra
+Acer platanoides
+Acer campestre
+Betula pendula
+Tilia cordata
+Pinus sylvestris
+Picea abies
+monstera_deliciosa
+ficus_lyrata
+sansevieria_trifasciata
+zamioculcas_zamiifolia
+spathiphyllum_wallisii
+aloe_vera
+chlorophytum_comosum
+dracaena_marginata
+phalaenopsis_orchid
+nephrolepis_exaltata
