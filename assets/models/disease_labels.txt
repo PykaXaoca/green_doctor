@@ -1,0 +1,14 @@
+powdery_mildew
+spider_mite
+aphids
+gray_mold
+root_rot
+leaf_spot
+rust
+whitefly
+thrips
+scale_insects
+fungus_gnats
+anthracnose
+bacterial_spot
+healthy

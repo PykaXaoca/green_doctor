@@ -58,3 +58,6 @@ dart_defines.json
 # --- Датасет ML и модели (не коммитим) ---
 structure_report/
 *.tflite
+
+# IDE / DevTools
+devtools_options.yaml

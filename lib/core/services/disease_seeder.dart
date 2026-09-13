@@ -1,11 +1,16 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../database/database.dart';
 
 /// Сервис импорта справочника болезней из ассета.
+///
+/// Если ассет отсутствует или повреждён — сидер не бросает исключение,
+/// а помечает импорт как выполненный и продолжает работу. Это защищает
+/// запуск приложения от падения при отсутствии файла.
 class DiseaseSeeder {
   DiseaseSeeder(this._db);
 
@@ -21,8 +26,27 @@ class DiseaseSeeder {
   }
 
   Future<int> seed() async {
-    final rawJson = await rootBundle.loadString(_assetPath);
-    return _parseAndInsert(rawJson);
+    String rawJson;
+    try {
+      rawJson = await rootBundle.loadString(_assetPath);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[DiseaseSeeder] Ассет $_assetPath не найден: $e');
+      }
+      // Помечаем как выполненный, чтобы не пытаться при каждом запуске.
+      await _db.appMetaDao.setValue(_metaKey, 'true');
+      return 0;
+    }
+
+    try {
+      return await _parseAndInsert(rawJson);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[DiseaseSeeder] Ошибка разбора JSON: $e');
+      }
+      await _db.appMetaDao.setValue(_metaKey, 'true');
+      return 0;
+    }
   }
 
   Future<int> seedFromJsonString(String rawJson) async {
@@ -47,6 +71,12 @@ class DiseaseSeeder {
 
     await _db.diseaseDao.insertAll(companions);
     await _db.appMetaDao.setValue(_metaKey, 'true');
+
+    if (kDebugMode) {
+      debugPrint(
+        '[DiseaseSeeder] Импортировано болезней: ${companions.length}',
+      );
+    }
 
     return companions.length;
   }

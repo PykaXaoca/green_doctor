@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -25,6 +26,7 @@ class DiseaseIdentifierService {
   static const String _modelAsset =
       'assets/models/disease_diagnosis_model.tflite';
   static const String _labelsAsset = 'assets/models/disease_labels.txt';
+  static const String _diseasesJsonAsset = 'assets/data/plant_diseases.json';
   static const int _inputSize = 224;
 
   Interpreter? _interpreter;
@@ -37,29 +39,58 @@ class DiseaseIdentifierService {
   Future<void> initialize() async {
     if (_initialized) return;
 
-    try {
-      final labelsData = await rootBundle.loadString(_labelsAsset);
-      _labels = labelsData
-          .split('\n')
-          .map((s) => s.trim())
-          .where((s) => s.isNotEmpty)
-          .toList();
-    } catch (e) {
-      if (kDebugMode) {
-        // ignore: avoid_print
-        print('[DiseaseIdentifier] Не удалось загрузить labels: $e');
-      }
-      _labels = [];
-    }
+    _labels = await _loadLabels();
 
     try {
       _interpreter = await Interpreter.fromAsset(_modelAsset);
       _mockMode = false;
     } catch (e) {
       _mockMode = true;
+      if (kDebugMode) {
+        debugPrint('[DiseaseIdentifier] Модель не найдена, mock-режим: $e');
+      }
     }
 
     _initialized = true;
+  }
+
+  /// Загружает метки: сначала из `disease_labels.txt`, если нет —
+  /// из `plant_diseases.json` (в порядке `model_label_id`).
+  Future<List<String>> _loadLabels() async {
+    try {
+      final labelsData = await rootBundle.loadString(_labelsAsset);
+      final labels = labelsData
+          .split('\n')
+          .map((s) => s.trim())
+          .where((s) => s.isNotEmpty)
+          .toList();
+      if (labels.isNotEmpty) return labels;
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+          '[DiseaseIdentifier] $_labelsAsset не найден, '
+          'fallback на $_diseasesJsonAsset: $e',
+        );
+      }
+    }
+
+    try {
+      final rawJson = await rootBundle.loadString(_diseasesJsonAsset);
+      final list = jsonDecode(rawJson) as List<dynamic>;
+      final entries = list.map((item) {
+        final map = item as Map<String, dynamic>;
+        return (
+          id: map['id'] as String,
+          order: (map['model_label_id'] as int?) ?? 1 << 30,
+        );
+      }).toList()..sort((a, b) => a.order.compareTo(b.order));
+      return entries.map((e) => e.id).toList();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[DiseaseIdentifier] Не удалось загрузить метки: $e');
+      }
+      return const [];
+    }
   }
 
   Future<List<DiagnosisResult>> diagnose(
@@ -91,6 +122,9 @@ class DiseaseIdentifierService {
 
       return _processOutput(output, topK: topK, minConfidence: minConfidence);
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[DiseaseIdentifier] Ошибка inference: $e');
+      }
       return [];
     }
   }
@@ -99,6 +133,8 @@ class DiseaseIdentifierService {
     _interpreter?.close();
     _interpreter = null;
     _initialized = false;
+    _mockMode = true;
+    _labels = [];
   }
 
   List<List<List<List<double>>>> _prepareInput(img.Image image) {

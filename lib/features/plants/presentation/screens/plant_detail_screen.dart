@@ -88,6 +88,8 @@ class _PlantDetailView extends ConsumerWidget {
           _buildCareInfo(ref),
           const SizedBox(height: 16),
           _buildQuickActions(context, ref),
+          const SizedBox(height: 12),
+          _buildDiagnosisButton(context),
           const SizedBox(height: 16),
           if (_hasSeedData()) ...[
             _buildSeedBlock(),
@@ -423,6 +425,46 @@ class _PlantDetailView extends ConsumerWidget {
       },
       icon: Icon(icon, color: color),
       label: Text(label, style: const TextStyle(fontSize: 12)),
+    );
+  }
+
+  Widget _buildDiagnosisButton(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      color: scheme.errorContainer.withValues(alpha: 0.4),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Icon(Icons.healing, color: Colors.redAccent),
+                SizedBox(width: 8),
+                Text(
+                  'Здоровье растения',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Заметили пятна, налёт или вредителей? Сфотографируйте '
+              'растение и получите вероятный диагноз с планом лечения.',
+              style: TextStyle(fontSize: 13, color: Colors.black54),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: () => context.push('/diagnosis/plant/${plant.id}'),
+                icon: const Icon(Icons.healing),
+                label: const Text('Диагностировать болезнь'),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
