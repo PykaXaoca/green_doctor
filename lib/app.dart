@@ -23,14 +23,24 @@ class _PocketBotanistAppState extends ConsumerState<PocketBotanistApp> {
     );
   }
 
+  /// Инициализация обработки уведомлений.
+  ///
+  /// Не должна ронять приложение, если плагин недоступен: в тестах,
+  /// на неподдерживаемых платформах или при отозванном разрешении
+  /// просто пропускаем инициализацию.
   Future<void> _initNotificationHandling() async {
-    final notifications = ref.read(notificationServiceProvider);
+    try {
+      final notifications = ref.read(notificationServiceProvider);
 
-    notifications.onNotificationTap = _handlePayload;
+      notifications.onNotificationTap = _handlePayload;
 
-    final launchPayload = await notifications.getLaunchPayload();
-    if (launchPayload != null && launchPayload.isNotEmpty) {
-      _handlePayload(launchPayload);
+      final launchPayload = await notifications.getLaunchPayload();
+      if (launchPayload != null && launchPayload.isNotEmpty) {
+        _handlePayload(launchPayload);
+      }
+    } catch (e, st) {
+      debugPrint('Не удалось инициализировать уведомления: $e');
+      debugPrintStack(stackTrace: st);
     }
   }
 
