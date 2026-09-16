@@ -10,6 +10,10 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // Core library desugaring — требуется плагином flutter_local_notifications
+        // для использования java.time и других API на старых версиях Android.
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -27,6 +31,10 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Включает multidex на всякий случай — desugaring добавляет методы,
+        // которые могут превысить лимит 64K на старых API.
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -46,4 +54,19 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+// --- Явные зависимости ---
+//
+// androidx.concurrent:concurrent-futures добавлен, чтобы исправить ошибку
+// сборки плагина camera_android_camerax:
+//
+//   error: Cannot attach type annotations @org.jspecify.annotations.NonNull
+//   to SurfaceRequest.mSurfaceRecreationCompleter:
+//   class file for androidx.concurrent.futures.CallbackToFutureAdapter not found
+//
+// coreLibraryDesugaring — обязательная зависимость для flutter_local_notifications.
+dependencies {
+    implementation("androidx.concurrent:concurrent-futures:1.2.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

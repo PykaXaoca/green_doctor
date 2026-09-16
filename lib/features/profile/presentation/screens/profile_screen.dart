@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/service_providers.dart';
 import '../providers/profile_providers.dart';
@@ -13,7 +14,16 @@ class ProfileScreen extends ConsumerWidget {
     final dataAsync = ref.watch(profileDataProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Профиль')),
+      appBar: AppBar(
+        title: const Text('Профиль'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: 'Настройки',
+            onPressed: () => context.push('/profile/settings'),
+          ),
+        ],
+      ),
       body: dataAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text('Ошибка: $err')),
@@ -29,8 +39,6 @@ class ProfileScreen extends ConsumerWidget {
               const _AchievementsSection(),
               const SizedBox(height: 16),
               _HistorySection(data: data),
-              const SizedBox(height: 16),
-              const _SettingsSection(),
               const SizedBox(height: 24),
             ],
           ),
@@ -327,44 +335,5 @@ class _HistorySection extends StatelessWidget {
       default:
         return (Icons.star, reason);
     }
-  }
-}
-
-class _SettingsSection extends StatelessWidget {
-  const _SettingsSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.notifications_outlined),
-            title: const Text('Уведомления'),
-            trailing: Switch(value: true, onChanged: (_) {}),
-          ),
-          const Divider(height: 1),
-          ListTile(
-            leading: const Icon(Icons.location_on_outlined),
-            title: const Text('Геолокация'),
-            trailing: Switch(value: false, onChanged: (_) {}),
-          ),
-          const Divider(height: 1),
-          ListTile(
-            leading: const Icon(Icons.star_outline),
-            title: const Text('Premium'),
-            subtitle: const Text('Открыть все возможности'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Premium будет доступен в следующих версиях'),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

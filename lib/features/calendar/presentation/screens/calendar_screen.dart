@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../core/theme/app_theme.dart';
+import '../../../diagnosis/presentation/providers/diagnosis_providers.dart';
 import '../../../plants/presentation/providers/plant_providers.dart';
 import '../providers/calendar_providers.dart';
+import '../widgets/day_sectors.dart';
 
 /// Экран календаря с запланированными и выполненными событиями.
 class CalendarScreen extends ConsumerStatefulWidget {
@@ -43,16 +46,84 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       body: eventsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text('Ошибка: $err')),
-        data: (eventsByDay) {
-          return Column(
-            children: [
-              _buildCalendar(eventsByDay),
-              const Divider(height: 1),
-              Expanded(child: _buildEventList(eventsByDay)),
-            ],
-          );
-        },
+        data: (eventsByDay) => _buildBody(eventsByDay),
       ),
+    );
+  }
+
+  /// Календарь и список в одном прокручиваемом полотне.
+  ///
+  /// Это устраняет overflow на низких экранах (поворот, маленькие
+  /// устройства), потому что ни один блок не требует фиксированной
+  /// высоты от Column.
+  Widget _buildBody(Map<DateTime, List<CalendarEvent>> eventsByDay) {
+    final key = _dateOnly(_selectedDay);
+    final events = eventsByDay[key] ?? const <CalendarEvent>[];
+    final active = events.where((e) => !e.isCompleted).toList(growable: false);
+    final done = events.where((e) => e.isCompleted).toList(growable: false);
+
+    return CustomScrollView(
+      slivers: [
+        // Календарь.
+        SliverToBoxAdapter(child: _buildCalendar(eventsByDay)),
+        const SliverToBoxAdapter(child: Divider(height: 1)),
+
+        // Заголовок выбранного дня.
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: Text(
+              DateFormat('d MMMM yyyy, EEEE', 'ru').format(_selectedDay),
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+        ),
+
+        // Пустой день.
+        if (events.isEmpty)
+          const SliverFillRemaining(
+            hasScrollBody: false,
+            child: _EmptyDayView(),
+          )
+        else ...[
+          if (active.isNotEmpty) ...[
+            SliverToBoxAdapter(
+              child: _SectionHeader(title: 'Активные', count: active.length),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, i) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _EventTile(event: active[i]),
+                ),
+                childCount: active.length,
+              ),
+            ),
+          ],
+          if (done.isNotEmpty) ...[
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: _SectionHeader(
+                  title: 'Выполнено',
+                  count: done.length,
+                  muted: true,
+                ),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, i) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _EventTile(event: done[i]),
+                ),
+                childCount: done.length,
+              ),
+            ),
+          ],
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        ],
+      ],
     );
   }
 
@@ -85,6 +156,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             );
       },
       eventLoader: (day) => eventsByDay[_dateOnly(day)] ?? const [],
+      calendarBuilders: CalendarBuilders<CalendarEvent>(
+        markerBuilder: (context, day, events) {
+          if (events.isEmpty) return null;
+          return _buildSectorMarker(events);
+        },
+      ),
       calendarStyle: CalendarStyle(
         todayDecoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.4),
@@ -94,11 +171,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           color: Theme.of(context).colorScheme.primary,
           shape: BoxShape.circle,
         ),
-        markerDecoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiary,
-          shape: BoxShape.circle,
-        ),
-        markersMaxCount: 3,
+        markersMaxCount: 0,
+        cellMargin: const EdgeInsets.all(4),
       ),
       headerStyle: const HeaderStyle(
         formatButtonVisible: false,
@@ -107,50 +181,79 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     );
   }
 
-  Widget _buildEventList(Map<DateTime, List<CalendarEvent>> eventsByDay) {
-    final key = _dateOnly(_selectedDay);
-    final events = eventsByDay[key] ?? const <CalendarEvent>[];
-
-    if (events.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.event_available,
-                size: 64,
-                color: Theme.of(context).colorScheme.outline,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'На этот день событий нет',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                DateFormat('d MMMM yyyy', 'ru').format(_selectedDay),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
-          ),
-        ),
-      );
+  Widget _buildSectorMarker(List<CalendarEvent> events) {
+    final active = events.where((e) => !e.isCompleted);
+    final counts = <String, int>{};
+    for (final e in active) {
+      counts[e.type] = (counts[e.type] ?? 0) + 1;
     }
+    if (counts.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 2),
+      child: DaySectorsMarker(counts: counts),
+    );
+  }
+}
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Text(
-            DateFormat('d MMMM yyyy, EEEE', 'ru').format(_selectedDay),
-            style: Theme.of(context).textTheme.titleMedium,
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({
+    required this.title,
+    required this.count,
+    this.muted = false,
+  });
+
+  final String title;
+  final int count;
+  final bool muted;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = muted ? theme.colorScheme.outline : theme.colorScheme.primary;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        ...events.map((e) => _EventTile(event: e)),
-      ],
+          const SizedBox(width: 6),
+          Text(
+            '· $count',
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyDayView extends StatelessWidget {
+  const _EmptyDayView();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.event_available,
+            size: 64,
+            color: theme.colorScheme.outline,
+          ),
+          const SizedBox(height: 16),
+          Text('На этот день событий нет', style: theme.textTheme.titleMedium),
+        ],
+      ),
     );
   }
 }
@@ -170,38 +273,69 @@ class _EventTileState extends ConsumerState<_EventTile> {
   @override
   Widget build(BuildContext context) {
     final e = widget.event;
-    final (icon, color, label) = _eventMeta(e.type);
+    final meta = _eventMeta(e);
     final theme = Theme.of(context);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: color.withValues(alpha: 0.15),
-          child: Icon(icon, color: color),
+          backgroundColor: meta.color.withValues(alpha: 0.15),
+          child: Icon(meta.icon, color: meta.color),
         ),
         title: Text(
-          label,
+          meta.label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             decoration: e.isCompleted ? TextDecoration.lineThrough : null,
             color: e.isCompleted ? theme.colorScheme.outline : null,
           ),
         ),
-        subtitle: Text(e.plantName),
-        trailing: e.isCompleted
-            ? Icon(Icons.check_circle, color: Colors.green.shade600)
-            : _busy
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              )
-            : FilledButton.tonal(
-                onPressed: _complete,
-                child: const Text('Выполнить'),
-              ),
-        onTap: () => context.push('/plants/${e.plantId}'),
+        subtitle: Text(
+          _buildSubtitle(e),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: _buildTrailing(context, e),
+        onTap: () => _openDetails(context, e),
       ),
+    );
+  }
+
+  String _buildSubtitle(CalendarEvent e) {
+    if (e.type == 'fertilizing' &&
+        e.fertilizerType != null &&
+        e.fertilizerType!.isNotEmpty) {
+      return '${e.plantName} · ${e.fertilizerType}';
+    }
+    return e.plantName;
+  }
+
+  Widget _buildTrailing(BuildContext context, CalendarEvent e) {
+    if (_busy) {
+      return const SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      );
+    }
+
+    if (e.isCompleted) {
+      return IconButton(
+        icon: const Icon(Icons.undo),
+        tooltip: 'Отменить выполнение',
+        onPressed: _undo,
+      );
+    }
+
+    if (e.isTreatment) {
+      return const Icon(Icons.chevron_right);
+    }
+
+    return FilledButton.tonal(
+      onPressed: _complete,
+      child: const Text('Выполнить'),
     );
   }
 
@@ -210,12 +344,12 @@ class _EventTileState extends ConsumerState<_EventTile> {
     try {
       final controller = ref.read(careActionControllerProvider);
       await controller.perform(
-        plantId: widget.event.plantId,
+        plantId: widget.event.plantId!,
         type: widget.event.type,
       );
       ref.invalidate(calendarEventsProvider);
       if (mounted) {
-        final label = _eventMeta(widget.event.type).$3.toLowerCase();
+        final label = _eventMeta(widget.event).label.toLowerCase();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${widget.event.plantName}: $label отмечено')),
         );
@@ -231,20 +365,101 @@ class _EventTileState extends ConsumerState<_EventTile> {
     }
   }
 
-  (IconData, Color, String) _eventMeta(String type) {
-    switch (type) {
-      case 'watering':
-        return (Icons.water_drop, Colors.blue, 'Полив');
-      case 'fertilizing':
-        return (Icons.eco, Colors.green, 'Удобрение');
-      case 'misting':
-        return (Icons.spa, Colors.teal, 'Опрыскивание');
-      case 'repotting':
-        return (Icons.redeem, Colors.brown, 'Пересадка');
-      default:
-        return (Icons.event, Colors.grey, type);
+  Future<void> _undo() async {
+    setState(() => _busy = true);
+    try {
+      final e = widget.event;
+      if (e.isTreatment) {
+        final diagnosisId = e.diagnosisId;
+        final stepId = e.stepId;
+        if (diagnosisId == null || stepId == null) return;
+        await ref
+            .read(diagnosisControllerProvider)
+            .uncompleteStep(stepId, diagnosisId);
+      } else {
+        final eventId = e.careEventId;
+        if (eventId == null) return;
+        await ref.read(careActionControllerProvider).undo(eventId);
+
+        if (e.plantId != null) {
+          ref.invalidate(plantByIdProvider(e.plantId!));
+          ref.invalidate(plantCareEventsProvider(e.plantId!));
+        }
+        ref.invalidate(plantsDueForWateringProvider);
+        ref.invalidate(userPlantsProvider);
+      }
+      ref.invalidate(calendarEventsProvider);
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Выполнение отменено')));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Ошибка: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
     }
   }
+
+  void _openDetails(BuildContext context, CalendarEvent e) {
+    if (e.isTreatment && e.diagnosisId != null) {
+      context.push('/diagnosis/treatment/${e.diagnosisId}');
+      return;
+    }
+    if (e.plantId != null) {
+      context.push('/plants/${e.plantId}');
+    }
+  }
+
+  _EventMeta _eventMeta(CalendarEvent e) {
+    switch (e.type) {
+      case 'watering':
+        return const _EventMeta(
+          Icons.water_drop,
+          CalendarEventColors.watering,
+          'Полив',
+        );
+      case 'fertilizing':
+        return const _EventMeta(
+          Icons.eco,
+          CalendarEventColors.fertilizing,
+          'Удобрение',
+        );
+      case 'misting':
+        return const _EventMeta(
+          Icons.spa,
+          CalendarEventColors.misting,
+          'Опрыскивание',
+        );
+      case 'repotting':
+        return const _EventMeta(
+          Icons.redeem,
+          CalendarEventColors.repotting,
+          'Пересадка',
+        );
+      case 'treatment':
+        return _EventMeta(
+          Icons.healing,
+          AppTheme.treatmentRed,
+          e.title != null && e.title!.isNotEmpty ? e.title! : 'Лечение',
+        );
+      default:
+        return _EventMeta(Icons.event, Colors.grey, e.type);
+    }
+  }
+}
+
+class _EventMeta {
+  const _EventMeta(this.icon, this.color, this.label);
+
+  final IconData icon;
+  final Color color;
+  final String label;
 }
 
 DateTime _dateOnly(DateTime dt) => DateTime(dt.year, dt.month, dt.day);

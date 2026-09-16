@@ -11,10 +11,9 @@ import '../../../../core/database/database.dart';
 import '../../../../core/providers/repository_providers.dart';
 import '../providers/plant_providers.dart';
 import '../widgets/species_picker.dart';
+import '../widgets/species_recommendations_card.dart';
 
 /// Экран добавления/редактирования растения.
-///
-/// Если [plantId] == null — создание. Иначе — редактирование.
 class PlantFormScreen extends ConsumerStatefulWidget {
   const PlantFormScreen({super.key, this.plantId});
 
@@ -29,10 +28,7 @@ class PlantFormScreen extends ConsumerStatefulWidget {
 class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // --- Обязательные поля ---
   final _nameController = TextEditingController();
-
-  // --- Опциональные поля растения ---
   final _locationController = TextEditingController();
   final _soilController = TextEditingController();
   final _potSizeController = TextEditingController();
@@ -40,11 +36,9 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
   final _wateringDaysController = TextEditingController();
   final _fertilizingDaysController = TextEditingController();
 
-  // --- Поля семян ---
   final _seedVarietyController = TextEditingController();
   final _plantingLocationController = TextEditingController();
 
-  // --- Состояние ---
   PlantSpecy? _selectedSpecies;
   String? _imagePath;
   String? _seedPacketImagePath;
@@ -68,7 +62,6 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
     super.dispose();
   }
 
-  /// Заполнение полей при редактировании.
   Future<void> _loadExisting(Plant plant) async {
     if (_initialized) return;
     _initialized = true;
@@ -108,14 +101,32 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
       if (_nameController.text.isEmpty) {
         _nameController.text = picked.commonName;
       }
-      if (_wateringDaysController.text.isEmpty &&
-          picked.defaultWateringDays != null) {
-        _wateringDaysController.text = picked.defaultWateringDays!.toString();
+    });
+    // Поля формы не заполняем автоматически — только показываем
+    // карточку рекомендаций. Пользователь сам жмёт «Применить».
+  }
+
+  /// Заполняет основные поля формы из рекомендаций вида.
+  void _applyRecommendations() {
+    final s = _selectedSpecies;
+    if (s == null) return;
+
+    setState(() {
+      if (s.defaultWateringDays != null) {
+        _wateringDaysController.text = s.defaultWateringDays!.toString();
       }
-      if (_soilController.text.isEmpty && picked.soilType != null) {
-        _soilController.text = picked.soilType!;
+      if (s.fertilizingFrequencyDays != null) {
+        _fertilizingDaysController.text = s.fertilizingFrequencyDays!
+            .toString();
+      }
+      if (s.soilType != null && s.soilType!.isNotEmpty) {
+        _soilController.text = s.soilType!;
       }
     });
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Рекомендации применены')));
   }
 
   Future<void> _pickImage({required bool isSeedPacket}) async {
@@ -160,7 +171,6 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
     }
 
     if (picked == null) return;
-
     if (!mounted) return;
 
     setState(() {
@@ -194,7 +204,6 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
     try {
       final imageStorage = ref.read(imageStorageServiceProvider);
 
-      // Сохранить фото растения, если выбрано новое.
       String? savedImagePath = _imagePath;
       if (_imagePath != null &&
           File(_imagePath!).existsSync() &&
@@ -205,7 +214,6 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
         );
       }
 
-      // Сохранить фото пакетика семян, если выбрано новое.
       String? savedSeedImagePath = _seedPacketImagePath;
       if (_seedPacketImagePath != null &&
           File(_seedPacketImagePath!).existsSync() &&
@@ -220,8 +228,6 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
       final controller = ref.read(plantControllerProvider);
 
       if (widget.isEditing) {
-        // При редактировании используем PlantsCompanion без id —
-        // обновляем только переданные поля.
         final companion = PlantsCompanion(
           speciesId: Value(_selectedSpecies?.id),
           customName: Value(_nameController.text.trim()),
@@ -345,6 +351,13 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
             const SizedBox(height: 16),
             _buildSpeciesSection(),
             const SizedBox(height: 16),
+            if (_selectedSpecies != null) ...[
+              SpeciesRecommendationsCard(
+                species: _selectedSpecies!,
+                onApply: _applyRecommendations,
+              ),
+              const SizedBox(height: 16),
+            ],
             _buildMainFields(),
             const SizedBox(height: 24),
             _buildSeedSection(),

@@ -61,3 +61,16 @@ structure_report/
 
 # IDE / DevTools
 devtools_options.yaml
+
+# Build artifacts
+build/
+android/build/
+android/app/build/
+
+# Bug reports / dumps from device
+bugreport-*.zip
+*.zip
+
+# IDE
+.idea/
+*.iml

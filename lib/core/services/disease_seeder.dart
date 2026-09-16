@@ -8,9 +8,15 @@ import '../database/database.dart';
 
 /// Сервис импорта справочника болезней из ассета.
 ///
+/// Логика:
+///  1. Читаем JSON, считаем число болезней.
+///  2. Смотрим, сколько сейчас в БД.
+///  3. Если в JSON больше, чем в БД (или импорт ещё не выполнялся) —
+///     переимпортируем через `insertAllOnConflictUpdate`. Старые
+///     записи обновляются, новые добавляются, ничего не удаляется.
+///
 /// Если ассет отсутствует или повреждён — сидер не бросает исключение,
-/// а помечает импорт как выполненный и продолжает работу. Это защищает
-/// запуск приложения от падения при отсутствии файла.
+/// а помечает импорт как выполненный и продолжает работу.
 class DiseaseSeeder {
   DiseaseSeeder(this._db);
 
@@ -20,9 +26,40 @@ class DiseaseSeeder {
   static const String _metaKey = 'diseases_imported';
 
   Future<int> seedIfNeeded() async {
-    final done = await _db.appMetaDao.getValue(_metaKey);
-    if (done == 'true') return 0;
-    return seed();
+    String rawJson;
+    try {
+      rawJson = await rootBundle.loadString(_assetPath);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[DiseaseSeeder] Ассет $_assetPath не найден: $e');
+      }
+      await _db.appMetaDao.setValue(_metaKey, 'true');
+      return 0;
+    }
+
+    try {
+      final list = jsonDecode(rawJson) as List<dynamic>;
+      final expectedCount = list.length;
+
+      final all = await _db.diseaseDao.getAll();
+      final actualCount = all.length;
+
+      final done = await _db.appMetaDao.getValue(_metaKey);
+      final alreadyImported = done == 'true';
+
+      // Всё актуально — ничего не делаем.
+      if (alreadyImported && actualCount >= expectedCount) {
+        return 0;
+      }
+
+      return await _parseAndInsert(rawJson);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[DiseaseSeeder] Ошибка разбора JSON: $e');
+      }
+      await _db.appMetaDao.setValue(_metaKey, 'true');
+      return 0;
+    }
   }
 
   Future<int> seed() async {
@@ -33,7 +70,6 @@ class DiseaseSeeder {
       if (kDebugMode) {
         debugPrint('[DiseaseSeeder] Ассет $_assetPath не найден: $e');
       }
-      // Помечаем как выполненный, чтобы не пытаться при каждом запуске.
       await _db.appMetaDao.setValue(_metaKey, 'true');
       return 0;
     }

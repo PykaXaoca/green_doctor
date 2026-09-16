@@ -1,7 +1,7 @@
 ﻿import 'package:drift/drift.dart';
 
 // ============================================================
-// 1. РџРѕР»СЊР·РѕРІР°С‚РµР»Рё РїСЂРёР»РѕР¶РµРЅРёСЏ (Р»РѕРєР°Р»СЊРЅС‹Р№ РїСЂРѕС„РёР»СЊ)
+// 1. Пользователи приложения (локальный профиль)
 // ============================================================
 class AppUsers extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -17,22 +17,28 @@ class AppUsers extends Table {
 }
 
 // ============================================================
-// 2. РЎРїСЂР°РІРѕС‡РЅРёРє РІРёРґРѕРІ СЂР°СЃС‚РµРЅРёР№
+// 2. Справочник видов растений
 // ============================================================
 class PlantSpecies extends Table {
   TextColumn get id => text()();
   TextColumn get commonName => text()();
   TextColumn get scientificName => text()();
   TextColumn get family => text().nullable()();
+  TextColumn get category => text().nullable()();
   TextColumn get description => text().nullable()();
   TextColumn get careGuideJson => text().nullable()();
   IntColumn get defaultWateringDays => integer().nullable()();
+  IntColumn get fertilizingFrequencyDays => integer().nullable()();
+  TextColumn get fertilizerType => text().nullable()();
   TextColumn get lightRequirements => text().nullable()();
   IntColumn get minTemperature => integer().nullable()();
   IntColumn get maxTemperature => integer().nullable()();
   IntColumn get humidityMin => integer().nullable()();
   IntColumn get humidityMax => integer().nullable()();
   TextColumn get soilType => text().nullable()();
+  TextColumn get soilMoisture => text().nullable()();
+  IntColumn get repottingFrequencyMonths => integer().nullable()();
+  TextColumn get pruningInfo => text().nullable()();
   TextColumn get toxicity => text().nullable()();
   TextColumn get modelLabelId => text().nullable()();
   TextColumn get imageAssetPath => text().nullable()();
@@ -43,7 +49,7 @@ class PlantSpecies extends Table {
 }
 
 // ============================================================
-// 3. Р Р°СЃС‚РµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+// 3. Растения пользователя
 // ============================================================
 class Plants extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -59,40 +65,44 @@ class Plants extends Table {
   TextColumn get potSize => text().nullable()();
   TextColumn get notes => text().nullable()();
 
-  // --- РџРѕР»СЏ РґР»СЏ СЃРµРјСЏРЅ Рё СЂР°СЃСЃР°РґС‹ (nullable) ---
+  // --- Семена и рассада ---
   TextColumn get seedPacketImagePath => text().nullable()();
   TextColumn get seedVarietyName => text().nullable()();
   TextColumn get plantingLocation => text().nullable()();
   DateTimeColumn get seedlingPlantingDate => dateTime().nullable()();
 
-  // --- РЎРѕСЃС‚РѕСЏРЅРёРµ СѓС…РѕРґР° ---
+  // --- Состояние ухода ---
   DateTimeColumn get lastWateredAt => dateTime().nullable()();
   DateTimeColumn get lastFertilizedAt => dateTime().nullable()();
+
+  /// Дата последней пересадки. Если null — берётся [createdAt]
+  /// в расчёте следующей пересадки.
+  DateTimeColumn get lastRepottedAt => dateTime().nullable()();
+
   DateTimeColumn get nextWaterDue => dateTime().nullable()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   BoolColumn get isArchived => boolean().withDefault(const Constant(false))();
 }
 
 // ============================================================
-// 4. РЎРѕР±С‹С‚РёСЏ СѓС…РѕРґР° (Р¶СѓСЂРЅР°Р»)
+// 4. События ухода
 // ============================================================
 class CareEvents extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get plantId => integer().references(Plants, #id)();
-  TextColumn get type => text()(); // watering, fertilizing, misting, repotting
+  TextColumn get type => text()();
   DateTimeColumn get performedAt =>
       dateTime().withDefault(currentDateAndTime)();
   TextColumn get notes => text().nullable()();
 }
 
 // ============================================================
-// 5. РќР°РїРѕРјРёРЅР°РЅРёСЏ
+// 5. Напоминания
 // ============================================================
 class Reminders extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get plantId => integer().references(Plants, #id)();
-  TextColumn get type =>
-      text()(); // watering, fertilizing, diagnosis, treatment
+  TextColumn get type => text()();
   DateTimeColumn get dueAt => dateTime()();
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
   BoolColumn get isRepeating => boolean().withDefault(const Constant(false))();
@@ -101,7 +111,7 @@ class Reminders extends Table {
 }
 
 // ============================================================
-// 6. РљРµС€ РїРѕРіРѕРґС‹
+// 6. Кеш погоды
 // ============================================================
 class WeatherCache extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -113,7 +123,7 @@ class WeatherCache extends Table {
 }
 
 // ============================================================
-// 7. РЎРїСЂР°РІРѕС‡РЅРёРє Р±РѕР»РµР·РЅРµР№
+// 7. Справочник болезней
 // ============================================================
 class PlantDiseases extends Table {
   TextColumn get id => text()();
@@ -129,7 +139,7 @@ class PlantDiseases extends Table {
 }
 
 // ============================================================
-// 8. Р”РёР°РіРЅРѕР·С‹
+// 8. Диагнозы
 // ============================================================
 class Diagnoses extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -138,14 +148,13 @@ class Diagnoses extends Table {
       text().nullable().references(PlantDiseases, #id)();
   TextColumn get imagePath => text().nullable()();
   RealColumn get confidence => real().nullable()();
-  TextColumn get status =>
-      text().withDefault(const Constant('active'))(); // active, resolved
+  TextColumn get status => text().withDefault(const Constant('active'))();
   DateTimeColumn get startedAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get resolvedAt => dateTime().nullable()();
 }
 
 // ============================================================
-// 9. РЁР°РіРё Р»РµС‡РµРЅРёСЏ
+// 9. Шаги лечения
 // ============================================================
 class TreatmentSteps extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -159,7 +168,7 @@ class TreatmentSteps extends Table {
 }
 
 // ============================================================
-// 10. Р”РѕСЃС‚РёР¶РµРЅРёСЏ (СЃРїСЂР°РІРѕС‡РЅРёРє)
+// 10. Достижения (справочник)
 // ============================================================
 class Achievements extends Table {
   TextColumn get code => text()();
@@ -174,7 +183,7 @@ class Achievements extends Table {
 }
 
 // ============================================================
-// 11. Р”РѕСЃС‚РёР¶РµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (РїРѕР»СѓС‡РµРЅРЅС‹Рµ)
+// 11. Достижения пользователя
 // ============================================================
 class UserAchievements extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -184,7 +193,7 @@ class UserAchievements extends Table {
 }
 
 // ============================================================
-// 12. РСЃС‚РѕСЂРёСЏ РЅР°С‡РёСЃР»РµРЅРёСЏ XP
+// 12. История XP
 // ============================================================
 class UserXpEvents extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -195,7 +204,7 @@ class UserXpEvents extends Table {
 }
 
 // ============================================================
-// 13. РњРµС‚Р°РґР°РЅРЅС‹Рµ РїСЂРёР»РѕР¶РµРЅРёСЏ (key-value РґР»СЏ РІРЅСѓС‚СЂРµРЅРЅРµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ)
+// 13. Метаданные приложения
 // ============================================================
 class AppMeta extends Table {
   TextColumn get key => text()();
@@ -204,4 +213,3 @@ class AppMeta extends Table {
   @override
   Set<Column> get primaryKey => {key};
 }
-

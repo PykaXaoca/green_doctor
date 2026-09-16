@@ -7,7 +7,11 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/database/database.dart';
 import '../../../../core/providers/repository_providers.dart';
+import '../../../../core/utils/snack_bars.dart';
 import '../providers/plant_providers.dart';
+import '../widgets/health_section.dart';
+import '../widgets/repotting_banner.dart';
+import '../widgets/species_recommendations_card.dart';
 
 /// Экран деталей растения.
 class PlantDetailScreen extends ConsumerWidget {
@@ -58,14 +62,24 @@ class _PlantDetailView extends ConsumerWidget {
           PopupMenuButton<String>(
             onSelected: (value) => _onMenuAction(context, ref, value),
             itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'archive',
-                child: ListTile(
-                  leading: Icon(Icons.archive_outlined),
-                  title: Text('Архивировать'),
-                  contentPadding: EdgeInsets.zero,
+              if (plant.isArchived)
+                const PopupMenuItem(
+                  value: 'unarchive',
+                  child: ListTile(
+                    leading: Icon(Icons.unarchive_outlined),
+                    title: Text('Восстановить'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                )
+              else
+                const PopupMenuItem(
+                  value: 'archive',
+                  child: ListTile(
+                    leading: Icon(Icons.archive_outlined),
+                    title: Text('Архивировать'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
                 ),
-              ),
               const PopupMenuItem(
                 value: 'delete',
                 child: ListTile(
@@ -85,11 +99,14 @@ class _PlantDetailView extends ConsumerWidget {
           const SizedBox(height: 16),
           _buildTitle(),
           const SizedBox(height: 16),
+          RepottingBanner(plantId: plant.id),
           _buildCareInfo(ref),
           const SizedBox(height: 16),
+          _buildRecommendations(ref),
+          const SizedBox(height: 16),
+          HealthSection(plantId: plant.id),
+          const SizedBox(height: 16),
           _buildQuickActions(context, ref),
-          const SizedBox(height: 12),
-          _buildDiagnosisButton(context),
           const SizedBox(height: 16),
           if (_hasSeedData()) ...[
             _buildSeedBlock(),
@@ -103,13 +120,14 @@ class _PlantDetailView extends ConsumerWidget {
   }
 
   // ---------- Меню ----------
-
   Future<void> _onMenuAction(
     BuildContext context,
     WidgetRef ref,
     String action,
   ) async {
     final controller = ref.read(plantControllerProvider);
+    final router = GoRouter.of(context);
+
     switch (action) {
       case 'archive':
         final confirmed = await _confirm(
@@ -118,8 +136,26 @@ class _PlantDetailView extends ConsumerWidget {
           'Оно исчезнет из основного списка, но останется в базе.',
         );
         if (confirmed == true) {
-          await controller.archive(plant.id);
-          if (context.mounted) context.pop();
+          try {
+            await controller.archive(plant.id);
+            router.pop();
+          } catch (e) {
+            if (context.mounted) {
+              showErrorSnackBar(context, 'Не удалось архивировать: $e');
+            }
+          }
+        }
+        break;
+      case 'unarchive':
+        try {
+          await controller.unarchive(plant.id);
+          if (context.mounted) {
+            showAppSnackBar(context, 'Растение восстановлено');
+          }
+        } catch (e) {
+          if (context.mounted) {
+            showErrorSnackBar(context, 'Не удалось восстановить: $e');
+          }
         }
         break;
       case 'delete':
@@ -130,8 +166,14 @@ class _PlantDetailView extends ConsumerWidget {
               'будут удалены.',
         );
         if (confirmed == true) {
-          await controller.delete(plant.id);
-          if (context.mounted) context.pop();
+          try {
+            await controller.delete(plant.id);
+            router.pop();
+          } catch (e) {
+            if (context.mounted) {
+              showErrorSnackBar(context, 'Не удалось удалить: $e');
+            }
+          }
         }
         break;
     }
@@ -140,16 +182,16 @@ class _PlantDetailView extends ConsumerWidget {
   Future<bool?> _confirm(BuildContext context, String title, String body) {
     return showDialog<bool>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Text(title),
         content: Text(body),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text('Отмена'),
           ),
           FilledButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: const Text('Да'),
           ),
         ],
@@ -185,9 +227,46 @@ class _PlantDetailView extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          plant.customName,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                plant.customName,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            if (plant.isArchived)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade50,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.orange.shade200),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.archive_outlined,
+                      size: 14,
+                      color: Colors.orange.shade800,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'в архиве',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.orange.shade800,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
         ),
         if (plant.location != null && plant.location!.isNotEmpty) ...[
           const SizedBox(height: 4),
@@ -232,6 +311,12 @@ class _PlantDetailView extends ConsumerWidget {
                   rows.add(
                     _infoRow(Icons.science, 'Научное', species.scientificName),
                   );
+                  if (species.category != null &&
+                      species.category!.isNotEmpty) {
+                    rows.add(
+                      _infoRow(Icons.category, 'Категория', species.category!),
+                    );
+                  }
                 }
 
                 if (plant.wateringFrequencyDays != null) {
@@ -244,11 +329,13 @@ class _PlantDetailView extends ConsumerWidget {
                   );
                 }
                 if (plant.fertilizingFrequencyDays != null) {
+                  final type = species?.fertilizerType;
                   rows.add(
                     _infoRow(
                       Icons.eco,
                       'Удобрение',
-                      'каждые ${plant.fertilizingFrequencyDays} дн.',
+                      'каждые ${plant.fertilizingFrequencyDays} дн.'
+                          '${type != null ? ' · $type' : ''}',
                     ),
                   );
                 }
@@ -285,8 +372,37 @@ class _PlantDetailView extends ConsumerWidget {
                   rows.add(
                     _infoRow(
                       Icons.water,
-                      'Влажность',
+                      'Влажность воздуха',
                       '${species!.humidityMin}–${species.humidityMax}%',
+                    ),
+                  );
+                }
+                if (species?.soilMoisture != null &&
+                    species!.soilMoisture!.isNotEmpty) {
+                  rows.add(
+                    _infoRow(
+                      Icons.opacity,
+                      'Влажность почвы',
+                      species.soilMoisture!,
+                    ),
+                  );
+                }
+                if (species?.repottingFrequencyMonths != null) {
+                  rows.add(
+                    _infoRow(
+                      Icons.redeem,
+                      'Пересадка',
+                      'каждые ${species!.repottingFrequencyMonths} мес.',
+                    ),
+                  );
+                }
+                if (species?.pruningInfo != null &&
+                    species!.pruningInfo!.isNotEmpty) {
+                  rows.add(
+                    _infoRow(
+                      Icons.content_cut,
+                      'Обрезка',
+                      species.pruningInfo!,
                     ),
                   );
                 }
@@ -317,6 +433,20 @@ class _PlantDetailView extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildRecommendations(WidgetRef ref) {
+    if (plant.speciesId == null) return const SizedBox.shrink();
+
+    final speciesAsync = ref.watch(_speciesByIdProvider(plant.speciesId!));
+
+    return speciesAsync.maybeWhen(
+      data: (species) {
+        if (species == null) return const SizedBox.shrink();
+        return SpeciesRecommendationsCard(species: species, readOnly: true);
+      },
+      orElse: () => const SizedBox.shrink(),
     );
   }
 
@@ -391,6 +521,22 @@ class _PlantDetailView extends ConsumerWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: _actionButton(
+                    context,
+                    ref,
+                    controller,
+                    icon: Icons.redeem,
+                    label: 'Пересадить',
+                    type: 'repotting',
+                    color: Colors.brown,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -411,60 +557,16 @@ class _PlantDetailView extends ConsumerWidget {
         try {
           await controller.perform(plantId: plant.id, type: type);
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('$label: готово')));
+            showAppSnackBar(context, '$label: готово');
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Ошибка: $e')));
+            showErrorSnackBar(context, 'Ошибка: $e');
           }
         }
       },
       icon: Icon(icon, color: color),
       label: Text(label, style: const TextStyle(fontSize: 12)),
-    );
-  }
-
-  Widget _buildDiagnosisButton(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Card(
-      color: scheme.errorContainer.withValues(alpha: 0.4),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              children: [
-                Icon(Icons.healing, color: Colors.redAccent),
-                SizedBox(width: 8),
-                Text(
-                  'Здоровье растения',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Заметили пятна, налёт или вредителей? Сфотографируйте '
-              'растение и получите вероятный диагноз с планом лечения.',
-              style: TextStyle(fontSize: 13, color: Colors.black54),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: () => context.push('/diagnosis/plant/${plant.id}'),
-                icon: const Icon(Icons.healing),
-                label: const Text('Диагностировать болезнь'),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -66,6 +66,11 @@ class CompleteCareEvent {
         plantId,
         PlantsCompanion(lastFertilizedAt: Value(now)),
       );
+    } else if (type == 'repotting') {
+      await _db.plantDao.updatePlant(
+        plantId,
+        PlantsCompanion(lastRepottedAt: Value(now)),
+      );
     }
 
     // 3. Деактивируем напоминания.
@@ -77,11 +82,9 @@ class CompleteCareEvent {
       }
     }
 
-    // 4. Перепланируем уведомления.
-    final updated = await _db.plantDao.getById(plantId);
-    if (updated != null) {
-      await _notifications.rescheduleForPlant(updated);
-    }
+    // 4. Пересобираем расписание уведомлений о поливе —
+    //    количество растений на сегодня могло уменьшиться.
+    await _resyncWateringNotifications();
 
     // 5. Начисляем XP.
     final xp = _xpForAction(type);
@@ -97,6 +100,12 @@ class CompleteCareEvent {
       xpGained: xp,
       unlockedAchievements: unlocked,
     );
+  }
+
+  /// Пересчитывает групповые уведомления о поливе.
+  Future<void> _resyncWateringNotifications() async {
+    final plants = await _db.plantDao.getAllActive();
+    await _notifications.syncAll(plants);
   }
 
   int _xpForAction(String type) {

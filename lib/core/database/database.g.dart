@@ -564,6 +564,17 @@ class $PlantSpeciesTable extends PlantSpecies
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _descriptionMeta = const VerificationMeta(
     'description',
   );
@@ -594,6 +605,28 @@ class $PlantSpeciesTable extends PlantSpecies
     aliasedName,
     true,
     type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _fertilizingFrequencyDaysMeta =
+      const VerificationMeta('fertilizingFrequencyDays');
+  @override
+  late final GeneratedColumn<int> fertilizingFrequencyDays =
+      GeneratedColumn<int>(
+        'fertilizing_frequency_days',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _fertilizerTypeMeta = const VerificationMeta(
+    'fertilizerType',
+  );
+  @override
+  late final GeneratedColumn<String> fertilizerType = GeneratedColumn<String>(
+    'fertilizer_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
   static const VerificationMeta _lightRequirementsMeta = const VerificationMeta(
@@ -663,6 +696,39 @@ class $PlantSpeciesTable extends PlantSpecies
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _soilMoistureMeta = const VerificationMeta(
+    'soilMoisture',
+  );
+  @override
+  late final GeneratedColumn<String> soilMoisture = GeneratedColumn<String>(
+    'soil_moisture',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _repottingFrequencyMonthsMeta =
+      const VerificationMeta('repottingFrequencyMonths');
+  @override
+  late final GeneratedColumn<int> repottingFrequencyMonths =
+      GeneratedColumn<int>(
+        'repotting_frequency_months',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _pruningInfoMeta = const VerificationMeta(
+    'pruningInfo',
+  );
+  @override
+  late final GeneratedColumn<String> pruningInfo = GeneratedColumn<String>(
+    'pruning_info',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _toxicityMeta = const VerificationMeta(
     'toxicity',
   );
@@ -717,15 +783,21 @@ class $PlantSpeciesTable extends PlantSpecies
     commonName,
     scientificName,
     family,
+    category,
     description,
     careGuideJson,
     defaultWateringDays,
+    fertilizingFrequencyDays,
+    fertilizerType,
     lightRequirements,
     minTemperature,
     maxTemperature,
     humidityMin,
     humidityMax,
     soilType,
+    soilMoisture,
+    repottingFrequencyMonths,
+    pruningInfo,
     toxicity,
     modelLabelId,
     imageAssetPath,
@@ -773,6 +845,12 @@ class $PlantSpeciesTable extends PlantSpecies
         family.isAcceptableOrUnknown(data['family']!, _familyMeta),
       );
     }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
     if (data.containsKey('description')) {
       context.handle(
         _descriptionMeta,
@@ -797,6 +875,24 @@ class $PlantSpeciesTable extends PlantSpecies
         defaultWateringDays.isAcceptableOrUnknown(
           data['default_watering_days']!,
           _defaultWateringDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('fertilizing_frequency_days')) {
+      context.handle(
+        _fertilizingFrequencyDaysMeta,
+        fertilizingFrequencyDays.isAcceptableOrUnknown(
+          data['fertilizing_frequency_days']!,
+          _fertilizingFrequencyDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('fertilizer_type')) {
+      context.handle(
+        _fertilizerTypeMeta,
+        fertilizerType.isAcceptableOrUnknown(
+          data['fertilizer_type']!,
+          _fertilizerTypeMeta,
         ),
       );
     }
@@ -849,6 +945,33 @@ class $PlantSpeciesTable extends PlantSpecies
       context.handle(
         _soilTypeMeta,
         soilType.isAcceptableOrUnknown(data['soil_type']!, _soilTypeMeta),
+      );
+    }
+    if (data.containsKey('soil_moisture')) {
+      context.handle(
+        _soilMoistureMeta,
+        soilMoisture.isAcceptableOrUnknown(
+          data['soil_moisture']!,
+          _soilMoistureMeta,
+        ),
+      );
+    }
+    if (data.containsKey('repotting_frequency_months')) {
+      context.handle(
+        _repottingFrequencyMonthsMeta,
+        repottingFrequencyMonths.isAcceptableOrUnknown(
+          data['repotting_frequency_months']!,
+          _repottingFrequencyMonthsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('pruning_info')) {
+      context.handle(
+        _pruningInfoMeta,
+        pruningInfo.isAcceptableOrUnknown(
+          data['pruning_info']!,
+          _pruningInfoMeta,
+        ),
       );
     }
     if (data.containsKey('toxicity')) {
@@ -906,6 +1029,10 @@ class $PlantSpeciesTable extends PlantSpecies
         DriftSqlType.string,
         data['${effectivePrefix}family'],
       ),
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      ),
       description: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}description'],
@@ -917,6 +1044,14 @@ class $PlantSpeciesTable extends PlantSpecies
       defaultWateringDays: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}default_watering_days'],
+      ),
+      fertilizingFrequencyDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}fertilizing_frequency_days'],
+      ),
+      fertilizerType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}fertilizer_type'],
       ),
       lightRequirements: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -941,6 +1076,18 @@ class $PlantSpeciesTable extends PlantSpecies
       soilType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}soil_type'],
+      ),
+      soilMoisture: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}soil_moisture'],
+      ),
+      repottingFrequencyMonths: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}repotting_frequency_months'],
+      ),
+      pruningInfo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pruning_info'],
       ),
       toxicity: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -972,15 +1119,21 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
   final String commonName;
   final String scientificName;
   final String? family;
+  final String? category;
   final String? description;
   final String? careGuideJson;
   final int? defaultWateringDays;
+  final int? fertilizingFrequencyDays;
+  final String? fertilizerType;
   final String? lightRequirements;
   final int? minTemperature;
   final int? maxTemperature;
   final int? humidityMin;
   final int? humidityMax;
   final String? soilType;
+  final String? soilMoisture;
+  final int? repottingFrequencyMonths;
+  final String? pruningInfo;
   final String? toxicity;
   final String? modelLabelId;
   final String? imageAssetPath;
@@ -990,15 +1143,21 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     required this.commonName,
     required this.scientificName,
     this.family,
+    this.category,
     this.description,
     this.careGuideJson,
     this.defaultWateringDays,
+    this.fertilizingFrequencyDays,
+    this.fertilizerType,
     this.lightRequirements,
     this.minTemperature,
     this.maxTemperature,
     this.humidityMin,
     this.humidityMax,
     this.soilType,
+    this.soilMoisture,
+    this.repottingFrequencyMonths,
+    this.pruningInfo,
     this.toxicity,
     this.modelLabelId,
     this.imageAssetPath,
@@ -1013,6 +1172,9 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     if (!nullToAbsent || family != null) {
       map['family'] = Variable<String>(family);
     }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
@@ -1021,6 +1183,14 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     }
     if (!nullToAbsent || defaultWateringDays != null) {
       map['default_watering_days'] = Variable<int>(defaultWateringDays);
+    }
+    if (!nullToAbsent || fertilizingFrequencyDays != null) {
+      map['fertilizing_frequency_days'] = Variable<int>(
+        fertilizingFrequencyDays,
+      );
+    }
+    if (!nullToAbsent || fertilizerType != null) {
+      map['fertilizer_type'] = Variable<String>(fertilizerType);
     }
     if (!nullToAbsent || lightRequirements != null) {
       map['light_requirements'] = Variable<String>(lightRequirements);
@@ -1039,6 +1209,17 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     }
     if (!nullToAbsent || soilType != null) {
       map['soil_type'] = Variable<String>(soilType);
+    }
+    if (!nullToAbsent || soilMoisture != null) {
+      map['soil_moisture'] = Variable<String>(soilMoisture);
+    }
+    if (!nullToAbsent || repottingFrequencyMonths != null) {
+      map['repotting_frequency_months'] = Variable<int>(
+        repottingFrequencyMonths,
+      );
+    }
+    if (!nullToAbsent || pruningInfo != null) {
+      map['pruning_info'] = Variable<String>(pruningInfo);
     }
     if (!nullToAbsent || toxicity != null) {
       map['toxicity'] = Variable<String>(toxicity);
@@ -1061,6 +1242,9 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       family: family == null && nullToAbsent
           ? const Value.absent()
           : Value(family),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
@@ -1070,6 +1254,12 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       defaultWateringDays: defaultWateringDays == null && nullToAbsent
           ? const Value.absent()
           : Value(defaultWateringDays),
+      fertilizingFrequencyDays: fertilizingFrequencyDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fertilizingFrequencyDays),
+      fertilizerType: fertilizerType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fertilizerType),
       lightRequirements: lightRequirements == null && nullToAbsent
           ? const Value.absent()
           : Value(lightRequirements),
@@ -1088,6 +1278,15 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       soilType: soilType == null && nullToAbsent
           ? const Value.absent()
           : Value(soilType),
+      soilMoisture: soilMoisture == null && nullToAbsent
+          ? const Value.absent()
+          : Value(soilMoisture),
+      repottingFrequencyMonths: repottingFrequencyMonths == null && nullToAbsent
+          ? const Value.absent()
+          : Value(repottingFrequencyMonths),
+      pruningInfo: pruningInfo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pruningInfo),
       toxicity: toxicity == null && nullToAbsent
           ? const Value.absent()
           : Value(toxicity),
@@ -1111,11 +1310,16 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       commonName: serializer.fromJson<String>(json['commonName']),
       scientificName: serializer.fromJson<String>(json['scientificName']),
       family: serializer.fromJson<String?>(json['family']),
+      category: serializer.fromJson<String?>(json['category']),
       description: serializer.fromJson<String?>(json['description']),
       careGuideJson: serializer.fromJson<String?>(json['careGuideJson']),
       defaultWateringDays: serializer.fromJson<int?>(
         json['defaultWateringDays'],
       ),
+      fertilizingFrequencyDays: serializer.fromJson<int?>(
+        json['fertilizingFrequencyDays'],
+      ),
+      fertilizerType: serializer.fromJson<String?>(json['fertilizerType']),
       lightRequirements: serializer.fromJson<String?>(
         json['lightRequirements'],
       ),
@@ -1124,6 +1328,11 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       humidityMin: serializer.fromJson<int?>(json['humidityMin']),
       humidityMax: serializer.fromJson<int?>(json['humidityMax']),
       soilType: serializer.fromJson<String?>(json['soilType']),
+      soilMoisture: serializer.fromJson<String?>(json['soilMoisture']),
+      repottingFrequencyMonths: serializer.fromJson<int?>(
+        json['repottingFrequencyMonths'],
+      ),
+      pruningInfo: serializer.fromJson<String?>(json['pruningInfo']),
       toxicity: serializer.fromJson<String?>(json['toxicity']),
       modelLabelId: serializer.fromJson<String?>(json['modelLabelId']),
       imageAssetPath: serializer.fromJson<String?>(json['imageAssetPath']),
@@ -1138,15 +1347,25 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       'commonName': serializer.toJson<String>(commonName),
       'scientificName': serializer.toJson<String>(scientificName),
       'family': serializer.toJson<String?>(family),
+      'category': serializer.toJson<String?>(category),
       'description': serializer.toJson<String?>(description),
       'careGuideJson': serializer.toJson<String?>(careGuideJson),
       'defaultWateringDays': serializer.toJson<int?>(defaultWateringDays),
+      'fertilizingFrequencyDays': serializer.toJson<int?>(
+        fertilizingFrequencyDays,
+      ),
+      'fertilizerType': serializer.toJson<String?>(fertilizerType),
       'lightRequirements': serializer.toJson<String?>(lightRequirements),
       'minTemperature': serializer.toJson<int?>(minTemperature),
       'maxTemperature': serializer.toJson<int?>(maxTemperature),
       'humidityMin': serializer.toJson<int?>(humidityMin),
       'humidityMax': serializer.toJson<int?>(humidityMax),
       'soilType': serializer.toJson<String?>(soilType),
+      'soilMoisture': serializer.toJson<String?>(soilMoisture),
+      'repottingFrequencyMonths': serializer.toJson<int?>(
+        repottingFrequencyMonths,
+      ),
+      'pruningInfo': serializer.toJson<String?>(pruningInfo),
       'toxicity': serializer.toJson<String?>(toxicity),
       'modelLabelId': serializer.toJson<String?>(modelLabelId),
       'imageAssetPath': serializer.toJson<String?>(imageAssetPath),
@@ -1159,15 +1378,21 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     String? commonName,
     String? scientificName,
     Value<String?> family = const Value.absent(),
+    Value<String?> category = const Value.absent(),
     Value<String?> description = const Value.absent(),
     Value<String?> careGuideJson = const Value.absent(),
     Value<int?> defaultWateringDays = const Value.absent(),
+    Value<int?> fertilizingFrequencyDays = const Value.absent(),
+    Value<String?> fertilizerType = const Value.absent(),
     Value<String?> lightRequirements = const Value.absent(),
     Value<int?> minTemperature = const Value.absent(),
     Value<int?> maxTemperature = const Value.absent(),
     Value<int?> humidityMin = const Value.absent(),
     Value<int?> humidityMax = const Value.absent(),
     Value<String?> soilType = const Value.absent(),
+    Value<String?> soilMoisture = const Value.absent(),
+    Value<int?> repottingFrequencyMonths = const Value.absent(),
+    Value<String?> pruningInfo = const Value.absent(),
     Value<String?> toxicity = const Value.absent(),
     Value<String?> modelLabelId = const Value.absent(),
     Value<String?> imageAssetPath = const Value.absent(),
@@ -1177,6 +1402,7 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     commonName: commonName ?? this.commonName,
     scientificName: scientificName ?? this.scientificName,
     family: family.present ? family.value : this.family,
+    category: category.present ? category.value : this.category,
     description: description.present ? description.value : this.description,
     careGuideJson: careGuideJson.present
         ? careGuideJson.value
@@ -1184,6 +1410,12 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     defaultWateringDays: defaultWateringDays.present
         ? defaultWateringDays.value
         : this.defaultWateringDays,
+    fertilizingFrequencyDays: fertilizingFrequencyDays.present
+        ? fertilizingFrequencyDays.value
+        : this.fertilizingFrequencyDays,
+    fertilizerType: fertilizerType.present
+        ? fertilizerType.value
+        : this.fertilizerType,
     lightRequirements: lightRequirements.present
         ? lightRequirements.value
         : this.lightRequirements,
@@ -1196,6 +1428,11 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     humidityMin: humidityMin.present ? humidityMin.value : this.humidityMin,
     humidityMax: humidityMax.present ? humidityMax.value : this.humidityMax,
     soilType: soilType.present ? soilType.value : this.soilType,
+    soilMoisture: soilMoisture.present ? soilMoisture.value : this.soilMoisture,
+    repottingFrequencyMonths: repottingFrequencyMonths.present
+        ? repottingFrequencyMonths.value
+        : this.repottingFrequencyMonths,
+    pruningInfo: pruningInfo.present ? pruningInfo.value : this.pruningInfo,
     toxicity: toxicity.present ? toxicity.value : this.toxicity,
     modelLabelId: modelLabelId.present ? modelLabelId.value : this.modelLabelId,
     imageAssetPath: imageAssetPath.present
@@ -1213,6 +1450,7 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           ? data.scientificName.value
           : this.scientificName,
       family: data.family.present ? data.family.value : this.family,
+      category: data.category.present ? data.category.value : this.category,
       description: data.description.present
           ? data.description.value
           : this.description,
@@ -1222,6 +1460,12 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       defaultWateringDays: data.defaultWateringDays.present
           ? data.defaultWateringDays.value
           : this.defaultWateringDays,
+      fertilizingFrequencyDays: data.fertilizingFrequencyDays.present
+          ? data.fertilizingFrequencyDays.value
+          : this.fertilizingFrequencyDays,
+      fertilizerType: data.fertilizerType.present
+          ? data.fertilizerType.value
+          : this.fertilizerType,
       lightRequirements: data.lightRequirements.present
           ? data.lightRequirements.value
           : this.lightRequirements,
@@ -1238,6 +1482,15 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           ? data.humidityMax.value
           : this.humidityMax,
       soilType: data.soilType.present ? data.soilType.value : this.soilType,
+      soilMoisture: data.soilMoisture.present
+          ? data.soilMoisture.value
+          : this.soilMoisture,
+      repottingFrequencyMonths: data.repottingFrequencyMonths.present
+          ? data.repottingFrequencyMonths.value
+          : this.repottingFrequencyMonths,
+      pruningInfo: data.pruningInfo.present
+          ? data.pruningInfo.value
+          : this.pruningInfo,
       toxicity: data.toxicity.present ? data.toxicity.value : this.toxicity,
       modelLabelId: data.modelLabelId.present
           ? data.modelLabelId.value
@@ -1256,15 +1509,21 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           ..write('commonName: $commonName, ')
           ..write('scientificName: $scientificName, ')
           ..write('family: $family, ')
+          ..write('category: $category, ')
           ..write('description: $description, ')
           ..write('careGuideJson: $careGuideJson, ')
           ..write('defaultWateringDays: $defaultWateringDays, ')
+          ..write('fertilizingFrequencyDays: $fertilizingFrequencyDays, ')
+          ..write('fertilizerType: $fertilizerType, ')
           ..write('lightRequirements: $lightRequirements, ')
           ..write('minTemperature: $minTemperature, ')
           ..write('maxTemperature: $maxTemperature, ')
           ..write('humidityMin: $humidityMin, ')
           ..write('humidityMax: $humidityMax, ')
           ..write('soilType: $soilType, ')
+          ..write('soilMoisture: $soilMoisture, ')
+          ..write('repottingFrequencyMonths: $repottingFrequencyMonths, ')
+          ..write('pruningInfo: $pruningInfo, ')
           ..write('toxicity: $toxicity, ')
           ..write('modelLabelId: $modelLabelId, ')
           ..write('imageAssetPath: $imageAssetPath, ')
@@ -1274,25 +1533,31 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     id,
     commonName,
     scientificName,
     family,
+    category,
     description,
     careGuideJson,
     defaultWateringDays,
+    fertilizingFrequencyDays,
+    fertilizerType,
     lightRequirements,
     minTemperature,
     maxTemperature,
     humidityMin,
     humidityMax,
     soilType,
+    soilMoisture,
+    repottingFrequencyMonths,
+    pruningInfo,
     toxicity,
     modelLabelId,
     imageAssetPath,
     isPremium,
-  );
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1301,15 +1566,21 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           other.commonName == this.commonName &&
           other.scientificName == this.scientificName &&
           other.family == this.family &&
+          other.category == this.category &&
           other.description == this.description &&
           other.careGuideJson == this.careGuideJson &&
           other.defaultWateringDays == this.defaultWateringDays &&
+          other.fertilizingFrequencyDays == this.fertilizingFrequencyDays &&
+          other.fertilizerType == this.fertilizerType &&
           other.lightRequirements == this.lightRequirements &&
           other.minTemperature == this.minTemperature &&
           other.maxTemperature == this.maxTemperature &&
           other.humidityMin == this.humidityMin &&
           other.humidityMax == this.humidityMax &&
           other.soilType == this.soilType &&
+          other.soilMoisture == this.soilMoisture &&
+          other.repottingFrequencyMonths == this.repottingFrequencyMonths &&
+          other.pruningInfo == this.pruningInfo &&
           other.toxicity == this.toxicity &&
           other.modelLabelId == this.modelLabelId &&
           other.imageAssetPath == this.imageAssetPath &&
@@ -1321,15 +1592,21 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
   final Value<String> commonName;
   final Value<String> scientificName;
   final Value<String?> family;
+  final Value<String?> category;
   final Value<String?> description;
   final Value<String?> careGuideJson;
   final Value<int?> defaultWateringDays;
+  final Value<int?> fertilizingFrequencyDays;
+  final Value<String?> fertilizerType;
   final Value<String?> lightRequirements;
   final Value<int?> minTemperature;
   final Value<int?> maxTemperature;
   final Value<int?> humidityMin;
   final Value<int?> humidityMax;
   final Value<String?> soilType;
+  final Value<String?> soilMoisture;
+  final Value<int?> repottingFrequencyMonths;
+  final Value<String?> pruningInfo;
   final Value<String?> toxicity;
   final Value<String?> modelLabelId;
   final Value<String?> imageAssetPath;
@@ -1340,15 +1617,21 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     this.commonName = const Value.absent(),
     this.scientificName = const Value.absent(),
     this.family = const Value.absent(),
+    this.category = const Value.absent(),
     this.description = const Value.absent(),
     this.careGuideJson = const Value.absent(),
     this.defaultWateringDays = const Value.absent(),
+    this.fertilizingFrequencyDays = const Value.absent(),
+    this.fertilizerType = const Value.absent(),
     this.lightRequirements = const Value.absent(),
     this.minTemperature = const Value.absent(),
     this.maxTemperature = const Value.absent(),
     this.humidityMin = const Value.absent(),
     this.humidityMax = const Value.absent(),
     this.soilType = const Value.absent(),
+    this.soilMoisture = const Value.absent(),
+    this.repottingFrequencyMonths = const Value.absent(),
+    this.pruningInfo = const Value.absent(),
     this.toxicity = const Value.absent(),
     this.modelLabelId = const Value.absent(),
     this.imageAssetPath = const Value.absent(),
@@ -1360,15 +1643,21 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     required String commonName,
     required String scientificName,
     this.family = const Value.absent(),
+    this.category = const Value.absent(),
     this.description = const Value.absent(),
     this.careGuideJson = const Value.absent(),
     this.defaultWateringDays = const Value.absent(),
+    this.fertilizingFrequencyDays = const Value.absent(),
+    this.fertilizerType = const Value.absent(),
     this.lightRequirements = const Value.absent(),
     this.minTemperature = const Value.absent(),
     this.maxTemperature = const Value.absent(),
     this.humidityMin = const Value.absent(),
     this.humidityMax = const Value.absent(),
     this.soilType = const Value.absent(),
+    this.soilMoisture = const Value.absent(),
+    this.repottingFrequencyMonths = const Value.absent(),
+    this.pruningInfo = const Value.absent(),
     this.toxicity = const Value.absent(),
     this.modelLabelId = const Value.absent(),
     this.imageAssetPath = const Value.absent(),
@@ -1382,15 +1671,21 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     Expression<String>? commonName,
     Expression<String>? scientificName,
     Expression<String>? family,
+    Expression<String>? category,
     Expression<String>? description,
     Expression<String>? careGuideJson,
     Expression<int>? defaultWateringDays,
+    Expression<int>? fertilizingFrequencyDays,
+    Expression<String>? fertilizerType,
     Expression<String>? lightRequirements,
     Expression<int>? minTemperature,
     Expression<int>? maxTemperature,
     Expression<int>? humidityMin,
     Expression<int>? humidityMax,
     Expression<String>? soilType,
+    Expression<String>? soilMoisture,
+    Expression<int>? repottingFrequencyMonths,
+    Expression<String>? pruningInfo,
     Expression<String>? toxicity,
     Expression<String>? modelLabelId,
     Expression<String>? imageAssetPath,
@@ -1402,16 +1697,24 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
       if (commonName != null) 'common_name': commonName,
       if (scientificName != null) 'scientific_name': scientificName,
       if (family != null) 'family': family,
+      if (category != null) 'category': category,
       if (description != null) 'description': description,
       if (careGuideJson != null) 'care_guide_json': careGuideJson,
       if (defaultWateringDays != null)
         'default_watering_days': defaultWateringDays,
+      if (fertilizingFrequencyDays != null)
+        'fertilizing_frequency_days': fertilizingFrequencyDays,
+      if (fertilizerType != null) 'fertilizer_type': fertilizerType,
       if (lightRequirements != null) 'light_requirements': lightRequirements,
       if (minTemperature != null) 'min_temperature': minTemperature,
       if (maxTemperature != null) 'max_temperature': maxTemperature,
       if (humidityMin != null) 'humidity_min': humidityMin,
       if (humidityMax != null) 'humidity_max': humidityMax,
       if (soilType != null) 'soil_type': soilType,
+      if (soilMoisture != null) 'soil_moisture': soilMoisture,
+      if (repottingFrequencyMonths != null)
+        'repotting_frequency_months': repottingFrequencyMonths,
+      if (pruningInfo != null) 'pruning_info': pruningInfo,
       if (toxicity != null) 'toxicity': toxicity,
       if (modelLabelId != null) 'model_label_id': modelLabelId,
       if (imageAssetPath != null) 'image_asset_path': imageAssetPath,
@@ -1425,15 +1728,21 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     Value<String>? commonName,
     Value<String>? scientificName,
     Value<String?>? family,
+    Value<String?>? category,
     Value<String?>? description,
     Value<String?>? careGuideJson,
     Value<int?>? defaultWateringDays,
+    Value<int?>? fertilizingFrequencyDays,
+    Value<String?>? fertilizerType,
     Value<String?>? lightRequirements,
     Value<int?>? minTemperature,
     Value<int?>? maxTemperature,
     Value<int?>? humidityMin,
     Value<int?>? humidityMax,
     Value<String?>? soilType,
+    Value<String?>? soilMoisture,
+    Value<int?>? repottingFrequencyMonths,
+    Value<String?>? pruningInfo,
     Value<String?>? toxicity,
     Value<String?>? modelLabelId,
     Value<String?>? imageAssetPath,
@@ -1445,15 +1754,23 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
       commonName: commonName ?? this.commonName,
       scientificName: scientificName ?? this.scientificName,
       family: family ?? this.family,
+      category: category ?? this.category,
       description: description ?? this.description,
       careGuideJson: careGuideJson ?? this.careGuideJson,
       defaultWateringDays: defaultWateringDays ?? this.defaultWateringDays,
+      fertilizingFrequencyDays:
+          fertilizingFrequencyDays ?? this.fertilizingFrequencyDays,
+      fertilizerType: fertilizerType ?? this.fertilizerType,
       lightRequirements: lightRequirements ?? this.lightRequirements,
       minTemperature: minTemperature ?? this.minTemperature,
       maxTemperature: maxTemperature ?? this.maxTemperature,
       humidityMin: humidityMin ?? this.humidityMin,
       humidityMax: humidityMax ?? this.humidityMax,
       soilType: soilType ?? this.soilType,
+      soilMoisture: soilMoisture ?? this.soilMoisture,
+      repottingFrequencyMonths:
+          repottingFrequencyMonths ?? this.repottingFrequencyMonths,
+      pruningInfo: pruningInfo ?? this.pruningInfo,
       toxicity: toxicity ?? this.toxicity,
       modelLabelId: modelLabelId ?? this.modelLabelId,
       imageAssetPath: imageAssetPath ?? this.imageAssetPath,
@@ -1477,6 +1794,9 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     if (family.present) {
       map['family'] = Variable<String>(family.value);
     }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
@@ -1485,6 +1805,14 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     }
     if (defaultWateringDays.present) {
       map['default_watering_days'] = Variable<int>(defaultWateringDays.value);
+    }
+    if (fertilizingFrequencyDays.present) {
+      map['fertilizing_frequency_days'] = Variable<int>(
+        fertilizingFrequencyDays.value,
+      );
+    }
+    if (fertilizerType.present) {
+      map['fertilizer_type'] = Variable<String>(fertilizerType.value);
     }
     if (lightRequirements.present) {
       map['light_requirements'] = Variable<String>(lightRequirements.value);
@@ -1503,6 +1831,17 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     }
     if (soilType.present) {
       map['soil_type'] = Variable<String>(soilType.value);
+    }
+    if (soilMoisture.present) {
+      map['soil_moisture'] = Variable<String>(soilMoisture.value);
+    }
+    if (repottingFrequencyMonths.present) {
+      map['repotting_frequency_months'] = Variable<int>(
+        repottingFrequencyMonths.value,
+      );
+    }
+    if (pruningInfo.present) {
+      map['pruning_info'] = Variable<String>(pruningInfo.value);
     }
     if (toxicity.present) {
       map['toxicity'] = Variable<String>(toxicity.value);
@@ -1529,15 +1868,21 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
           ..write('commonName: $commonName, ')
           ..write('scientificName: $scientificName, ')
           ..write('family: $family, ')
+          ..write('category: $category, ')
           ..write('description: $description, ')
           ..write('careGuideJson: $careGuideJson, ')
           ..write('defaultWateringDays: $defaultWateringDays, ')
+          ..write('fertilizingFrequencyDays: $fertilizingFrequencyDays, ')
+          ..write('fertilizerType: $fertilizerType, ')
           ..write('lightRequirements: $lightRequirements, ')
           ..write('minTemperature: $minTemperature, ')
           ..write('maxTemperature: $maxTemperature, ')
           ..write('humidityMin: $humidityMin, ')
           ..write('humidityMax: $humidityMax, ')
           ..write('soilType: $soilType, ')
+          ..write('soilMoisture: $soilMoisture, ')
+          ..write('repottingFrequencyMonths: $repottingFrequencyMonths, ')
+          ..write('pruningInfo: $pruningInfo, ')
           ..write('toxicity: $toxicity, ')
           ..write('modelLabelId: $modelLabelId, ')
           ..write('imageAssetPath: $imageAssetPath, ')
@@ -1760,6 +2105,18 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         type: DriftSqlType.dateTime,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _lastRepottedAtMeta = const VerificationMeta(
+    'lastRepottedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastRepottedAt =
+      GeneratedColumn<DateTime>(
+        'last_repotted_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _nextWaterDueMeta = const VerificationMeta(
     'nextWaterDue',
   );
@@ -1818,6 +2175,7 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
     seedlingPlantingDate,
     lastWateredAt,
     lastFertilizedAt,
+    lastRepottedAt,
     nextWaterDue,
     createdAt,
     isArchived,
@@ -1970,6 +2328,15 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         ),
       );
     }
+    if (data.containsKey('last_repotted_at')) {
+      context.handle(
+        _lastRepottedAtMeta,
+        lastRepottedAt.isAcceptableOrUnknown(
+          data['last_repotted_at']!,
+          _lastRepottedAtMeta,
+        ),
+      );
+    }
     if (data.containsKey('next_water_due')) {
       context.handle(
         _nextWaterDueMeta,
@@ -2072,6 +2439,10 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}last_fertilized_at'],
       ),
+      lastRepottedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_repotted_at'],
+      ),
       nextWaterDue: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}next_water_due'],
@@ -2112,6 +2483,10 @@ class Plant extends DataClass implements Insertable<Plant> {
   final DateTime? seedlingPlantingDate;
   final DateTime? lastWateredAt;
   final DateTime? lastFertilizedAt;
+
+  /// Дата последней пересадки. Если null — берётся [createdAt]
+  /// в расчёте следующей пересадки.
+  final DateTime? lastRepottedAt;
   final DateTime? nextWaterDue;
   final DateTime createdAt;
   final bool isArchived;
@@ -2134,6 +2509,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     this.seedlingPlantingDate,
     this.lastWateredAt,
     this.lastFertilizedAt,
+    this.lastRepottedAt,
     this.nextWaterDue,
     required this.createdAt,
     required this.isArchived,
@@ -2190,6 +2566,9 @@ class Plant extends DataClass implements Insertable<Plant> {
     }
     if (!nullToAbsent || lastFertilizedAt != null) {
       map['last_fertilized_at'] = Variable<DateTime>(lastFertilizedAt);
+    }
+    if (!nullToAbsent || lastRepottedAt != null) {
+      map['last_repotted_at'] = Variable<DateTime>(lastRepottedAt);
     }
     if (!nullToAbsent || nextWaterDue != null) {
       map['next_water_due'] = Variable<DateTime>(nextWaterDue);
@@ -2249,6 +2628,9 @@ class Plant extends DataClass implements Insertable<Plant> {
       lastFertilizedAt: lastFertilizedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(lastFertilizedAt),
+      lastRepottedAt: lastRepottedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastRepottedAt),
       nextWaterDue: nextWaterDue == null && nullToAbsent
           ? const Value.absent()
           : Value(nextWaterDue),
@@ -2291,6 +2673,7 @@ class Plant extends DataClass implements Insertable<Plant> {
       lastFertilizedAt: serializer.fromJson<DateTime?>(
         json['lastFertilizedAt'],
       ),
+      lastRepottedAt: serializer.fromJson<DateTime?>(json['lastRepottedAt']),
       nextWaterDue: serializer.fromJson<DateTime?>(json['nextWaterDue']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       isArchived: serializer.fromJson<bool>(json['isArchived']),
@@ -2322,6 +2705,7 @@ class Plant extends DataClass implements Insertable<Plant> {
       ),
       'lastWateredAt': serializer.toJson<DateTime?>(lastWateredAt),
       'lastFertilizedAt': serializer.toJson<DateTime?>(lastFertilizedAt),
+      'lastRepottedAt': serializer.toJson<DateTime?>(lastRepottedAt),
       'nextWaterDue': serializer.toJson<DateTime?>(nextWaterDue),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'isArchived': serializer.toJson<bool>(isArchived),
@@ -2347,6 +2731,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     Value<DateTime?> seedlingPlantingDate = const Value.absent(),
     Value<DateTime?> lastWateredAt = const Value.absent(),
     Value<DateTime?> lastFertilizedAt = const Value.absent(),
+    Value<DateTime?> lastRepottedAt = const Value.absent(),
     Value<DateTime?> nextWaterDue = const Value.absent(),
     DateTime? createdAt,
     bool? isArchived,
@@ -2387,6 +2772,9 @@ class Plant extends DataClass implements Insertable<Plant> {
     lastFertilizedAt: lastFertilizedAt.present
         ? lastFertilizedAt.value
         : this.lastFertilizedAt,
+    lastRepottedAt: lastRepottedAt.present
+        ? lastRepottedAt.value
+        : this.lastRepottedAt,
     nextWaterDue: nextWaterDue.present ? nextWaterDue.value : this.nextWaterDue,
     createdAt: createdAt ?? this.createdAt,
     isArchived: isArchived ?? this.isArchived,
@@ -2431,6 +2819,9 @@ class Plant extends DataClass implements Insertable<Plant> {
       lastFertilizedAt: data.lastFertilizedAt.present
           ? data.lastFertilizedAt.value
           : this.lastFertilizedAt,
+      lastRepottedAt: data.lastRepottedAt.present
+          ? data.lastRepottedAt.value
+          : this.lastRepottedAt,
       nextWaterDue: data.nextWaterDue.present
           ? data.nextWaterDue.value
           : this.nextWaterDue,
@@ -2462,6 +2853,7 @@ class Plant extends DataClass implements Insertable<Plant> {
           ..write('seedlingPlantingDate: $seedlingPlantingDate, ')
           ..write('lastWateredAt: $lastWateredAt, ')
           ..write('lastFertilizedAt: $lastFertilizedAt, ')
+          ..write('lastRepottedAt: $lastRepottedAt, ')
           ..write('nextWaterDue: $nextWaterDue, ')
           ..write('createdAt: $createdAt, ')
           ..write('isArchived: $isArchived')
@@ -2489,6 +2881,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     seedlingPlantingDate,
     lastWateredAt,
     lastFertilizedAt,
+    lastRepottedAt,
     nextWaterDue,
     createdAt,
     isArchived,
@@ -2515,6 +2908,7 @@ class Plant extends DataClass implements Insertable<Plant> {
           other.seedlingPlantingDate == this.seedlingPlantingDate &&
           other.lastWateredAt == this.lastWateredAt &&
           other.lastFertilizedAt == this.lastFertilizedAt &&
+          other.lastRepottedAt == this.lastRepottedAt &&
           other.nextWaterDue == this.nextWaterDue &&
           other.createdAt == this.createdAt &&
           other.isArchived == this.isArchived);
@@ -2539,6 +2933,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
   final Value<DateTime?> seedlingPlantingDate;
   final Value<DateTime?> lastWateredAt;
   final Value<DateTime?> lastFertilizedAt;
+  final Value<DateTime?> lastRepottedAt;
   final Value<DateTime?> nextWaterDue;
   final Value<DateTime> createdAt;
   final Value<bool> isArchived;
@@ -2561,6 +2956,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.seedlingPlantingDate = const Value.absent(),
     this.lastWateredAt = const Value.absent(),
     this.lastFertilizedAt = const Value.absent(),
+    this.lastRepottedAt = const Value.absent(),
     this.nextWaterDue = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.isArchived = const Value.absent(),
@@ -2584,6 +2980,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.seedlingPlantingDate = const Value.absent(),
     this.lastWateredAt = const Value.absent(),
     this.lastFertilizedAt = const Value.absent(),
+    this.lastRepottedAt = const Value.absent(),
     this.nextWaterDue = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.isArchived = const Value.absent(),
@@ -2608,6 +3005,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Expression<DateTime>? seedlingPlantingDate,
     Expression<DateTime>? lastWateredAt,
     Expression<DateTime>? lastFertilizedAt,
+    Expression<DateTime>? lastRepottedAt,
     Expression<DateTime>? nextWaterDue,
     Expression<DateTime>? createdAt,
     Expression<bool>? isArchived,
@@ -2635,6 +3033,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
         'seedling_planting_date': seedlingPlantingDate,
       if (lastWateredAt != null) 'last_watered_at': lastWateredAt,
       if (lastFertilizedAt != null) 'last_fertilized_at': lastFertilizedAt,
+      if (lastRepottedAt != null) 'last_repotted_at': lastRepottedAt,
       if (nextWaterDue != null) 'next_water_due': nextWaterDue,
       if (createdAt != null) 'created_at': createdAt,
       if (isArchived != null) 'is_archived': isArchived,
@@ -2660,6 +3059,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Value<DateTime?>? seedlingPlantingDate,
     Value<DateTime?>? lastWateredAt,
     Value<DateTime?>? lastFertilizedAt,
+    Value<DateTime?>? lastRepottedAt,
     Value<DateTime?>? nextWaterDue,
     Value<DateTime>? createdAt,
     Value<bool>? isArchived,
@@ -2685,6 +3085,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
       seedlingPlantingDate: seedlingPlantingDate ?? this.seedlingPlantingDate,
       lastWateredAt: lastWateredAt ?? this.lastWateredAt,
       lastFertilizedAt: lastFertilizedAt ?? this.lastFertilizedAt,
+      lastRepottedAt: lastRepottedAt ?? this.lastRepottedAt,
       nextWaterDue: nextWaterDue ?? this.nextWaterDue,
       createdAt: createdAt ?? this.createdAt,
       isArchived: isArchived ?? this.isArchived,
@@ -2756,6 +3157,9 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     if (lastFertilizedAt.present) {
       map['last_fertilized_at'] = Variable<DateTime>(lastFertilizedAt.value);
     }
+    if (lastRepottedAt.present) {
+      map['last_repotted_at'] = Variable<DateTime>(lastRepottedAt.value);
+    }
     if (nextWaterDue.present) {
       map['next_water_due'] = Variable<DateTime>(nextWaterDue.value);
     }
@@ -2789,6 +3193,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
           ..write('seedlingPlantingDate: $seedlingPlantingDate, ')
           ..write('lastWateredAt: $lastWateredAt, ')
           ..write('lastFertilizedAt: $lastFertilizedAt, ')
+          ..write('lastRepottedAt: $lastRepottedAt, ')
           ..write('nextWaterDue: $nextWaterDue, ')
           ..write('createdAt: $createdAt, ')
           ..write('isArchived: $isArchived')
@@ -7514,15 +7919,21 @@ typedef $$PlantSpeciesTableCreateCompanionBuilder =
       required String commonName,
       required String scientificName,
       Value<String?> family,
+      Value<String?> category,
       Value<String?> description,
       Value<String?> careGuideJson,
       Value<int?> defaultWateringDays,
+      Value<int?> fertilizingFrequencyDays,
+      Value<String?> fertilizerType,
       Value<String?> lightRequirements,
       Value<int?> minTemperature,
       Value<int?> maxTemperature,
       Value<int?> humidityMin,
       Value<int?> humidityMax,
       Value<String?> soilType,
+      Value<String?> soilMoisture,
+      Value<int?> repottingFrequencyMonths,
+      Value<String?> pruningInfo,
       Value<String?> toxicity,
       Value<String?> modelLabelId,
       Value<String?> imageAssetPath,
@@ -7535,15 +7946,21 @@ typedef $$PlantSpeciesTableUpdateCompanionBuilder =
       Value<String> commonName,
       Value<String> scientificName,
       Value<String?> family,
+      Value<String?> category,
       Value<String?> description,
       Value<String?> careGuideJson,
       Value<int?> defaultWateringDays,
+      Value<int?> fertilizingFrequencyDays,
+      Value<String?> fertilizerType,
       Value<String?> lightRequirements,
       Value<int?> minTemperature,
       Value<int?> maxTemperature,
       Value<int?> humidityMin,
       Value<int?> humidityMax,
       Value<String?> soilType,
+      Value<String?> soilMoisture,
+      Value<int?> repottingFrequencyMonths,
+      Value<String?> pruningInfo,
       Value<String?> toxicity,
       Value<String?> modelLabelId,
       Value<String?> imageAssetPath,
@@ -7604,6 +8021,11 @@ class $$PlantSpeciesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get description => $composableBuilder(
     column: $table.description,
     builder: (column) => ColumnFilters(column),
@@ -7616,6 +8038,16 @@ class $$PlantSpeciesTableFilterComposer
 
   ColumnFilters<int> get defaultWateringDays => $composableBuilder(
     column: $table.defaultWateringDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fertilizingFrequencyDays => $composableBuilder(
+    column: $table.fertilizingFrequencyDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fertilizerType => $composableBuilder(
+    column: $table.fertilizerType,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7646,6 +8078,21 @@ class $$PlantSpeciesTableFilterComposer
 
   ColumnFilters<String> get soilType => $composableBuilder(
     column: $table.soilType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get soilMoisture => $composableBuilder(
+    column: $table.soilMoisture,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get repottingFrequencyMonths => $composableBuilder(
+    column: $table.repottingFrequencyMonths,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pruningInfo => $composableBuilder(
+    column: $table.pruningInfo,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7724,6 +8171,11 @@ class $$PlantSpeciesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get description => $composableBuilder(
     column: $table.description,
     builder: (column) => ColumnOrderings(column),
@@ -7736,6 +8188,16 @@ class $$PlantSpeciesTableOrderingComposer
 
   ColumnOrderings<int> get defaultWateringDays => $composableBuilder(
     column: $table.defaultWateringDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fertilizingFrequencyDays => $composableBuilder(
+    column: $table.fertilizingFrequencyDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fertilizerType => $composableBuilder(
+    column: $table.fertilizerType,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -7766,6 +8228,21 @@ class $$PlantSpeciesTableOrderingComposer
 
   ColumnOrderings<String> get soilType => $composableBuilder(
     column: $table.soilType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get soilMoisture => $composableBuilder(
+    column: $table.soilMoisture,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get repottingFrequencyMonths => $composableBuilder(
+    column: $table.repottingFrequencyMonths,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pruningInfo => $composableBuilder(
+    column: $table.pruningInfo,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -7815,6 +8292,9 @@ class $$PlantSpeciesTableAnnotationComposer
   GeneratedColumn<String> get family =>
       $composableBuilder(column: $table.family, builder: (column) => column);
 
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
   GeneratedColumn<String> get description => $composableBuilder(
     column: $table.description,
     builder: (column) => column,
@@ -7827,6 +8307,16 @@ class $$PlantSpeciesTableAnnotationComposer
 
   GeneratedColumn<int> get defaultWateringDays => $composableBuilder(
     column: $table.defaultWateringDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get fertilizingFrequencyDays => $composableBuilder(
+    column: $table.fertilizingFrequencyDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get fertilizerType => $composableBuilder(
+    column: $table.fertilizerType,
     builder: (column) => column,
   );
 
@@ -7857,6 +8347,21 @@ class $$PlantSpeciesTableAnnotationComposer
 
   GeneratedColumn<String> get soilType =>
       $composableBuilder(column: $table.soilType, builder: (column) => column);
+
+  GeneratedColumn<String> get soilMoisture => $composableBuilder(
+    column: $table.soilMoisture,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get repottingFrequencyMonths => $composableBuilder(
+    column: $table.repottingFrequencyMonths,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get pruningInfo => $composableBuilder(
+    column: $table.pruningInfo,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get toxicity =>
       $composableBuilder(column: $table.toxicity, builder: (column) => column);
@@ -7932,15 +8437,21 @@ class $$PlantSpeciesTableTableManager
                 Value<String> commonName = const Value.absent(),
                 Value<String> scientificName = const Value.absent(),
                 Value<String?> family = const Value.absent(),
+                Value<String?> category = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<String?> careGuideJson = const Value.absent(),
                 Value<int?> defaultWateringDays = const Value.absent(),
+                Value<int?> fertilizingFrequencyDays = const Value.absent(),
+                Value<String?> fertilizerType = const Value.absent(),
                 Value<String?> lightRequirements = const Value.absent(),
                 Value<int?> minTemperature = const Value.absent(),
                 Value<int?> maxTemperature = const Value.absent(),
                 Value<int?> humidityMin = const Value.absent(),
                 Value<int?> humidityMax = const Value.absent(),
                 Value<String?> soilType = const Value.absent(),
+                Value<String?> soilMoisture = const Value.absent(),
+                Value<int?> repottingFrequencyMonths = const Value.absent(),
+                Value<String?> pruningInfo = const Value.absent(),
                 Value<String?> toxicity = const Value.absent(),
                 Value<String?> modelLabelId = const Value.absent(),
                 Value<String?> imageAssetPath = const Value.absent(),
@@ -7951,15 +8462,21 @@ class $$PlantSpeciesTableTableManager
                 commonName: commonName,
                 scientificName: scientificName,
                 family: family,
+                category: category,
                 description: description,
                 careGuideJson: careGuideJson,
                 defaultWateringDays: defaultWateringDays,
+                fertilizingFrequencyDays: fertilizingFrequencyDays,
+                fertilizerType: fertilizerType,
                 lightRequirements: lightRequirements,
                 minTemperature: minTemperature,
                 maxTemperature: maxTemperature,
                 humidityMin: humidityMin,
                 humidityMax: humidityMax,
                 soilType: soilType,
+                soilMoisture: soilMoisture,
+                repottingFrequencyMonths: repottingFrequencyMonths,
+                pruningInfo: pruningInfo,
                 toxicity: toxicity,
                 modelLabelId: modelLabelId,
                 imageAssetPath: imageAssetPath,
@@ -7972,15 +8489,21 @@ class $$PlantSpeciesTableTableManager
                 required String commonName,
                 required String scientificName,
                 Value<String?> family = const Value.absent(),
+                Value<String?> category = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<String?> careGuideJson = const Value.absent(),
                 Value<int?> defaultWateringDays = const Value.absent(),
+                Value<int?> fertilizingFrequencyDays = const Value.absent(),
+                Value<String?> fertilizerType = const Value.absent(),
                 Value<String?> lightRequirements = const Value.absent(),
                 Value<int?> minTemperature = const Value.absent(),
                 Value<int?> maxTemperature = const Value.absent(),
                 Value<int?> humidityMin = const Value.absent(),
                 Value<int?> humidityMax = const Value.absent(),
                 Value<String?> soilType = const Value.absent(),
+                Value<String?> soilMoisture = const Value.absent(),
+                Value<int?> repottingFrequencyMonths = const Value.absent(),
+                Value<String?> pruningInfo = const Value.absent(),
                 Value<String?> toxicity = const Value.absent(),
                 Value<String?> modelLabelId = const Value.absent(),
                 Value<String?> imageAssetPath = const Value.absent(),
@@ -7991,15 +8514,21 @@ class $$PlantSpeciesTableTableManager
                 commonName: commonName,
                 scientificName: scientificName,
                 family: family,
+                category: category,
                 description: description,
                 careGuideJson: careGuideJson,
                 defaultWateringDays: defaultWateringDays,
+                fertilizingFrequencyDays: fertilizingFrequencyDays,
+                fertilizerType: fertilizerType,
                 lightRequirements: lightRequirements,
                 minTemperature: minTemperature,
                 maxTemperature: maxTemperature,
                 humidityMin: humidityMin,
                 humidityMax: humidityMax,
                 soilType: soilType,
+                soilMoisture: soilMoisture,
+                repottingFrequencyMonths: repottingFrequencyMonths,
+                pruningInfo: pruningInfo,
                 toxicity: toxicity,
                 modelLabelId: modelLabelId,
                 imageAssetPath: imageAssetPath,
@@ -8082,6 +8611,7 @@ typedef $$PlantsTableCreateCompanionBuilder =
       Value<DateTime?> seedlingPlantingDate,
       Value<DateTime?> lastWateredAt,
       Value<DateTime?> lastFertilizedAt,
+      Value<DateTime?> lastRepottedAt,
       Value<DateTime?> nextWaterDue,
       Value<DateTime> createdAt,
       Value<bool> isArchived,
@@ -8106,6 +8636,7 @@ typedef $$PlantsTableUpdateCompanionBuilder =
       Value<DateTime?> seedlingPlantingDate,
       Value<DateTime?> lastWateredAt,
       Value<DateTime?> lastFertilizedAt,
+      Value<DateTime?> lastRepottedAt,
       Value<DateTime?> nextWaterDue,
       Value<DateTime> createdAt,
       Value<bool> isArchived,
@@ -8290,6 +8821,11 @@ class $$PlantsTableFilterComposer
 
   ColumnFilters<DateTime> get lastFertilizedAt => $composableBuilder(
     column: $table.lastFertilizedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastRepottedAt => $composableBuilder(
+    column: $table.lastRepottedAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8519,6 +9055,11 @@ class $$PlantsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get lastRepottedAt => $composableBuilder(
+    column: $table.lastRepottedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get nextWaterDue => $composableBuilder(
     column: $table.nextWaterDue,
     builder: (column) => ColumnOrderings(column),
@@ -8655,6 +9196,11 @@ class $$PlantsTableAnnotationComposer
 
   GeneratedColumn<DateTime> get lastFertilizedAt => $composableBuilder(
     column: $table.lastFertilizedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get lastRepottedAt => $composableBuilder(
+    column: $table.lastRepottedAt,
     builder: (column) => column,
   );
 
@@ -8845,6 +9391,7 @@ class $$PlantsTableTableManager
                 Value<DateTime?> seedlingPlantingDate = const Value.absent(),
                 Value<DateTime?> lastWateredAt = const Value.absent(),
                 Value<DateTime?> lastFertilizedAt = const Value.absent(),
+                Value<DateTime?> lastRepottedAt = const Value.absent(),
                 Value<DateTime?> nextWaterDue = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<bool> isArchived = const Value.absent(),
@@ -8867,6 +9414,7 @@ class $$PlantsTableTableManager
                 seedlingPlantingDate: seedlingPlantingDate,
                 lastWateredAt: lastWateredAt,
                 lastFertilizedAt: lastFertilizedAt,
+                lastRepottedAt: lastRepottedAt,
                 nextWaterDue: nextWaterDue,
                 createdAt: createdAt,
                 isArchived: isArchived,
@@ -8891,6 +9439,7 @@ class $$PlantsTableTableManager
                 Value<DateTime?> seedlingPlantingDate = const Value.absent(),
                 Value<DateTime?> lastWateredAt = const Value.absent(),
                 Value<DateTime?> lastFertilizedAt = const Value.absent(),
+                Value<DateTime?> lastRepottedAt = const Value.absent(),
                 Value<DateTime?> nextWaterDue = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<bool> isArchived = const Value.absent(),
@@ -8913,6 +9462,7 @@ class $$PlantsTableTableManager
                 seedlingPlantingDate: seedlingPlantingDate,
                 lastWateredAt: lastWateredAt,
                 lastFertilizedAt: lastFertilizedAt,
+                lastRepottedAt: lastRepottedAt,
                 nextWaterDue: nextWaterDue,
                 createdAt: createdAt,
                 isArchived: isArchived,

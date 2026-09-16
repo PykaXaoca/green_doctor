@@ -9,6 +9,12 @@ abstract class CareEventRepository {
   );
   Future<List<CareEvent>> getRecent(int limit);
   Future<List<CareEvent>> getInRange(DateTime from, DateTime to);
+  Future<CareEvent?> getById(int id);
+  Future<CareEvent?> getLastByPlantAndType(
+    int plantId,
+    String type, {
+    DateTime? before,
+  });
   Future<int> add(CareEventsCompanion event);
   Future<void> delete(int id);
   Future<int> countByType(String type);

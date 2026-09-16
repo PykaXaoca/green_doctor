@@ -3,13 +3,18 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/calendar/presentation/screens/calendar_screen.dart';
 import '../../features/diagnosis/presentation/screens/active_treatments_screen.dart';
+import '../../features/diagnosis/presentation/screens/describe_symptoms_screen.dart';
 import '../../features/diagnosis/presentation/screens/diagnosis_screen.dart';
 import '../../features/diagnosis/presentation/screens/treatment_screen.dart';
 import '../../features/identification/presentation/screens/identify_screen.dart';
 import '../../features/plants/presentation/screens/plant_detail_screen.dart';
 import '../../features/plants/presentation/screens/plant_form_screen.dart';
 import '../../features/plants/presentation/screens/plants_list_screen.dart';
+import '../../features/plants/presentation/screens/watering_schedule_screen.dart';
+import '../../features/profile/presentation/screens/care_schedule_settings_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/settings/presentation/screens/about_screen.dart';
+import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/today/presentation/screens/today_screen.dart';
 
 class _StubScreen extends StatelessWidget {
@@ -113,6 +118,27 @@ class AppRouter {
               GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfileScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'settings',
+                    builder: (context, state) => const SettingsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'about',
+                        builder: (context, state) => const AboutScreen(),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'watering-schedule',
+                    builder: (context, state) => const WateringScheduleScreen(),
+                  ),
+                  GoRoute(
+                    path: 'care-schedule',
+                    builder: (context, state) =>
+                        const CareScheduleSettingsScreen(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -130,6 +156,15 @@ class AppRouter {
                 state.pathParameters['plantId'] ?? '',
               );
               return DiagnosisScreen(plantId: plantId);
+            },
+          ),
+          GoRoute(
+            path: 'describe/:plantId',
+            builder: (context, state) {
+              final plantId = int.tryParse(
+                state.pathParameters['plantId'] ?? '',
+              );
+              return DescribeSymptomsScreen(plantId: plantId);
             },
           ),
           GoRoute(

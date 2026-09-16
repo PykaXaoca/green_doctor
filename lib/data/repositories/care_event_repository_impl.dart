@@ -26,6 +26,16 @@ class CareEventRepositoryImpl implements CareEventRepository {
       _db.careEventDao.getInRange(from, to);
 
   @override
+  Future<CareEvent?> getById(int id) => _db.careEventDao.getById(id);
+
+  @override
+  Future<CareEvent?> getLastByPlantAndType(
+    int plantId,
+    String type, {
+    DateTime? before,
+  }) => _db.careEventDao.getLastByPlantAndType(plantId, type, before: before);
+
+  @override
   Future<int> add(CareEventsCompanion event) =>
       _db.careEventDao.insertEvent(event);
 

@@ -6,11 +6,12 @@ import 'package:geolocator/geolocator.dart';
 import '../config/app_config.dart';
 import '../database/database.dart';
 
-/// Сервис получения погоды через OpenWeatherMap с кешированием.
+/// Сервис получения погоды через Open-Meteo с кешированием.
+///
+/// Open-Meteo — бесплатный API без ключа и регистрации.
+/// Документация: https://open-meteo.com/en/docs
 class WeatherService {
   WeatherService(this._db, {Dio? dio}) : _dio = dio ?? Dio() {
-    // Ключ OpenWeatherMap передаётся в query-параметрах. Чтобы он случайно
-    // не попал в логи или в Sentry, отключаем логирование тела/URL.
     _dio.options
       ..connectTimeout = const Duration(seconds: 10)
       ..receiveTimeout = const Duration(seconds: 10)
@@ -19,6 +20,8 @@ class WeatherService {
 
   final AppDatabase _db;
   final Dio _dio;
+
+  static const String _baseUrl = 'https://api.open-meteo.com/v1/forecast';
 
   /// Получить текущие координаты (с запросом разрешения).
   Future<Position?> getCurrentPosition() async {
@@ -42,36 +45,30 @@ class WeatherService {
   }
 
   /// Получить погоду для координат. Сначала проверяет кеш.
-  /// Если кеша нет — загружает через сеть.
-  ///
-  /// Если API-ключ не задан при сборке (--dart-define=OPENWEATHER_API_KEY),
-  /// сервис работает в offline-режиме: отдаёт самый свежий кеш или null.
   Future<WeatherSnapshot?> getWeather({
     required double lat,
     required double lon,
     bool forceRefresh = false,
   }) async {
-    // Без ключа сеть не трогаем — отдаём кеш.
-    if (!AppConfig.hasWeatherKey) {
-      return await _getLatestCached();
-    }
-
     if (!forceRefresh) {
       final cached = await _db.weatherDao.getFresh(lat, lon);
       if (cached != null) {
-        return _parseSnapshot(cached.payloadJson);
+        return _parseOpenMeteo(cached.payloadJson);
       }
     }
 
     try {
       final response = await _dio.get<Map<String, dynamic>>(
-        '${AppConfig.openWeatherBaseUrl}/forecast',
+        _baseUrl,
         queryParameters: {
-          'lat': lat,
-          'lon': lon,
-          'appid': AppConfig.openWeatherApiKey,
-          'units': 'metric',
-          'lang': 'ru',
+          'latitude': lat,
+          'longitude': lon,
+          'current': 'temperature_2m,relative_humidity_2m,weather_code',
+          'daily':
+              'temperature_2m_max,temperature_2m_min,'
+              'precipitation_probability_max',
+          'timezone': 'auto',
+          'forecast_days': 5,
         },
       );
 
@@ -88,9 +85,8 @@ class WeatherService {
         ),
       );
 
-      return _parseSnapshot(jsonEncode(data));
+      return _parseOpenMeteo(jsonEncode(data));
     } catch (_) {
-      // Сеть упала или ключ невалиден — отдаём кеш.
       return await _getLatestCached();
     }
   }
@@ -105,61 +101,136 @@ class WeatherService {
     final latest = all.reduce(
       (a, b) => a.fetchedAt.isAfter(b.fetchedAt) ? a : b,
     );
-    return _parseSnapshot(latest.payloadJson);
+    return _parseOpenMeteo(latest.payloadJson);
   }
 
-  WeatherSnapshot? _parseSnapshot(String json) {
+  WeatherSnapshot? _parseOpenMeteo(String json) {
     try {
       final map = jsonDecode(json) as Map<String, dynamic>;
-      final list = (map['list'] as List).cast<Map<String, dynamic>>();
-      if (list.isEmpty) return null;
 
-      final current = list.first;
-      final currentMain = current['main'] as Map<String, dynamic>;
-      final currentWeather =
-          (current['weather'] as List).first as Map<String, dynamic>;
-      final currentDt = DateTime.fromMillisecondsSinceEpoch(
-        (current['dt'] as int) * 1000,
-      );
+      final current = map['current'] as Map<String, dynamic>?;
+      if (current == null) return null;
 
-      final byDay = <DateTime, List<Map<String, dynamic>>>{};
-      for (final item in list) {
-        final dt = DateTime.fromMillisecondsSinceEpoch(
-          (item['dt'] as int) * 1000,
-        );
-        final day = DateTime(dt.year, dt.month, dt.day);
-        byDay.putIfAbsent(day, () => []).add(item);
+      final currentTemp = (current['temperature_2m'] as num).toDouble();
+      final currentHumidity =
+          (current['relative_humidity_2m'] as num?)?.toInt() ?? 0;
+      final weatherCode = (current['weather_code'] as num?)?.toInt() ?? 0;
+      final currentTimeStr = current['time'] as String?;
+      final currentDt = currentTimeStr != null
+          ? DateTime.tryParse(currentTimeStr) ?? DateTime.now()
+          : DateTime.now();
+
+      final daily = map['daily'] as Map<String, dynamic>?;
+      final dailyForecasts = <DailyForecast>[];
+      if (daily != null) {
+        final times = (daily['time'] as List).cast<String>();
+        final maxes = (daily['temperature_2m_max'] as List).cast<num>();
+        final mins = (daily['temperature_2m_min'] as List).cast<num>();
+        final pops = daily['precipitation_probability_max'] is List
+            ? (daily['precipitation_probability_max'] as List)
+            : const [];
+
+        for (var i = 0; i < times.length; i++) {
+          final date = DateTime.tryParse(times[i]);
+          if (date == null) continue;
+          final popValue = i < pops.length && pops[i] != null
+              ? (pops[i] as num).toDouble() / 100.0
+              : 0.0;
+          dailyForecasts.add(
+            DailyForecast(
+              date: DateTime(date.year, date.month, date.day),
+              tempMin: mins[i].toDouble(),
+              tempMax: maxes[i].toDouble(),
+              precipitationProbability: popValue.clamp(0.0, 1.0),
+            ),
+          );
+        }
       }
-
-      final daily = byDay.entries.map((e) {
-        final temps = e.value
-            .map((i) => (i['main'] as Map)['temp'] as num)
-            .toList();
-        final pops = e.value
-            .map((i) => ((i['pop'] as num?) ?? 0).toDouble())
-            .toList();
-        return DailyForecast(
-          date: e.key,
-          tempMin: temps.reduce((a, b) => a < b ? a : b).toDouble(),
-          tempMax: temps.reduce((a, b) => a > b ? a : b).toDouble(),
-          precipitationProbability: pops
-              .reduce((a, b) => a > b ? a : b)
-              .clamp(0.0, 1.0),
-        );
-      }).toList()..sort((a, b) => a.date.compareTo(b.date));
 
       return WeatherSnapshot(
         fetchedAt: DateTime.now(),
-        currentTemp: (currentMain['temp'] as num).toDouble(),
-        currentHumidity: (currentMain['humidity'] as num).toInt(),
-        currentDescription: (currentWeather['description'] as String?) ?? '',
-        currentIcon: (currentWeather['icon'] as String?) ?? '',
+        currentTemp: currentTemp,
+        currentHumidity: currentHumidity,
+        currentDescription: _descriptionForCode(weatherCode),
+        currentIcon: _iconForCode(weatherCode),
         currentDt: currentDt,
-        daily: daily,
+        daily: dailyForecasts,
       );
     } catch (_) {
       return null;
     }
+  }
+
+  /// WMO weather code → текстовое описание на русском.
+  String _descriptionForCode(int code) {
+    switch (code) {
+      case 0:
+        return 'Ясно';
+      case 1:
+        return 'Преимущественно ясно';
+      case 2:
+        return 'Переменная облачность';
+      case 3:
+        return 'Пасмурно';
+      case 45:
+      case 48:
+        return 'Туман';
+      case 51:
+      case 53:
+      case 55:
+        return 'Морось';
+      case 56:
+      case 57:
+        return 'Ледяная морось';
+      case 61:
+        return 'Небольшой дождь';
+      case 63:
+        return 'Дождь';
+      case 65:
+        return 'Сильный дождь';
+      case 66:
+      case 67:
+        return 'Ледяной дождь';
+      case 71:
+        return 'Небольшой снег';
+      case 73:
+        return 'Снег';
+      case 75:
+        return 'Сильный снег';
+      case 77:
+        return 'Снежная крупа';
+      case 80:
+      case 81:
+      case 82:
+        return 'Ливень';
+      case 85:
+      case 86:
+        return 'Снегопад';
+      case 95:
+        return 'Гроза';
+      case 96:
+      case 99:
+        return 'Гроза с градом';
+      default:
+        return 'Погода';
+    }
+  }
+
+  /// WMO weather code → код иконки, совместимый с тем, что уже
+  /// использует `WeatherHeader._weatherIcon` (`01`, `02`, `04`, `09`,
+  /// `10`, `11`, `13`, `50`).
+  String _iconForCode(int code) {
+    if (code == 0) return '01';
+    if (code == 1 || code == 2) return '02';
+    if (code == 3) return '04';
+    if (code == 45 || code == 48) return '50';
+    if (code >= 51 && code <= 57) return '09';
+    if (code >= 61 && code <= 67) return '10';
+    if (code >= 71 && code <= 77) return '13';
+    if (code >= 80 && code <= 82) return '09';
+    if (code >= 85 && code <= 86) return '13';
+    if (code >= 95) return '11';
+    return '03';
   }
 }
 

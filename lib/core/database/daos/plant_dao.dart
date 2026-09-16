@@ -13,6 +13,13 @@ class PlantDao extends DatabaseAccessor<AppDatabase> with _$PlantDaoMixin {
     plants,
   )..where((t) => t.userId.equals(userId) & t.isArchived.equals(false))).get();
 
+  /// Архивные растения пользователя — для раздела «В архиве».
+  Future<List<Plant>> getArchivedByUser(int userId) =>
+      (select(plants)
+            ..where((t) => t.userId.equals(userId) & t.isArchived.equals(true))
+            ..orderBy([(t) => OrderingTerm.desc(t.createdAt)]))
+          .get();
+
   Future<List<Plant>> getAllActive() =>
       (select(plants)..where((t) => t.isArchived.equals(false))).get();
 
@@ -27,6 +34,12 @@ class PlantDao extends DatabaseAccessor<AppDatabase> with _$PlantDaoMixin {
   Future<int> archivePlant(int id) =>
       (update(plants)..where((t) => t.id.equals(id))).write(
         const PlantsCompanion(isArchived: Value(true)),
+      );
+
+  /// Вернуть растение из архива.
+  Future<int> unarchivePlant(int id) =>
+      (update(plants)..where((t) => t.id.equals(id))).write(
+        const PlantsCompanion(isArchived: Value(false)),
       );
 
   Future<int> deletePlant(int id) =>

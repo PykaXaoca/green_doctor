@@ -1,0 +1,9 @@
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.jpg" # Путь к вашему исходному файлу
+  min_sdk_android: 21
+
+  # Настройки для адаптивных иконок Android (API 26+)
+  adaptive_icon_background: "#FFFFFF" # Цвет фона (или путь к изображению)
+  adaptive_icon_foreground: "assets/icon/icon_2.jpg" # Изображение переднего плана

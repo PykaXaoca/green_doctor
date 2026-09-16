@@ -1,18 +1,38 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:drift/drift.dart';
 
 import '../database/database.dart';
 import '../services/gamification_service.dart';
-import '../services/notification_service.dart';
+import '../services/image_storage_service.dart';
+import '../services/treatment_plan_source.dart';
+import '../services/treatment_scheduler.dart';
 
 /// Use case начала лечения растения.
+///
+/// Логика:
+///  1. Копирует фото диагноза в постоянную папку приложения
+///     (иначе image_picker может очистить временный файл).
+///  2. Создаёт запись диагноза в БД.
+///  3. Запрашивает план лечения у [TreatmentPlanSource] —
+///     сейчас это статический JSON, в будущем может быть ИИ.
+///  4. Сохраняет шаги плана.
+///  5. Планирует уведомления через [TreatmentScheduler].
+///  6. Начисляет XP.
 class StartTreatment {
-  StartTreatment(this._db, this._notifications, this._gamification);
+  StartTreatment(
+    this._db,
+    this._planSource,
+    this._treatmentScheduler,
+    this._gamification,
+    this._imageStorage,
+  );
 
   final AppDatabase _db;
-  final NotificationService _notifications;
+  final TreatmentPlanSource _planSource;
+  final TreatmentScheduler _treatmentScheduler;
   final GamificationService _gamification;
+  final ImageStorageService _imageStorage;
 
   Future<int> call({
     required String diseaseId,
@@ -26,51 +46,46 @@ class StartTreatment {
       throw Exception('Болезнь не найдена: $diseaseId');
     }
 
+    // Сохраняем фото диагноза в постоянную папку приложения.
+    final savedImagePath = await _persistDiagnosisImage(imagePath);
+
     final diagnosisId = await _db.diagnosisDao.insertDiagnosis(
       DiagnosesCompanion(
         plantId: Value(plantId),
         diseaseId: Value(diseaseId),
-        imagePath: Value(imagePath),
+        imagePath: Value(savedImagePath),
         confidence: Value(confidence),
         status: const Value('active'),
       ),
     );
 
-    final planJson = disease.treatmentPlanJson;
-    if (planJson != null && planJson.isNotEmpty && planJson != '[]') {
-      final plan = jsonDecode(planJson) as List<dynamic>;
-      final now = DateTime.now();
+    final diagnosis = await _db.diagnosisDao.getById(diagnosisId);
+    if (diagnosis != null) {
+      Plant? plant;
+      if (plantId != null) {
+        plant = await _db.plantDao.getById(plantId);
+      }
 
-      for (final item in plan) {
-        final map = item as Map<String, dynamic>;
-        final stepNumber = (map['step'] as int?) ?? 0;
-        final title = (map['title'] as String?) ?? 'Шаг $stepNumber';
-        final description = map['description'] as String?;
-        final offsetDays = (map['due_offset_days'] as int?) ?? 0;
+      final drafts = await _planSource.buildPlan(
+        diagnosis: diagnosis,
+        disease: disease,
+        plant: plant,
+      );
 
-        final dueAt = now.add(Duration(days: offsetDays));
-
+      for (final draft in drafts) {
         await _db.diagnosisDao.insertStep(
           TreatmentStepsCompanion(
             diagnosisId: Value(diagnosisId),
-            stepNumber: Value(stepNumber),
-            title: Value(title),
-            description: Value(description),
-            dueAt: Value(dueAt),
+            stepNumber: Value(draft.stepNumber),
+            title: Value(draft.title),
+            description: Value(draft.description),
+            dueAt: Value(draft.dueAt),
           ),
         );
-
-        if (dueAt.isAfter(now)) {
-          final label = plantId != null ? 'Растение #$plantId' : 'Растение';
-          await _notifications.scheduleReminder(
-            reminderId: diagnosisId * 1000 + stepNumber,
-            title: 'Лечение: $label',
-            body: title,
-            when: dueAt,
-          );
-        }
       }
     }
+
+    await _treatmentScheduler.scheduleForDiagnosis(diagnosisId);
 
     await _gamification.addXp(
       userId: userId,
@@ -79,5 +94,27 @@ class StartTreatment {
     );
 
     return diagnosisId;
+  }
+
+  /// Копирует фото в постоянную папку. Возвращает путь к сохранённому
+  /// файлу. Если фото нет или оно уже в нашей папке — возвращает
+  /// исходный путь без копирования.
+  ///
+  /// Ошибки при копировании не блокируют создание диагноза:
+  /// в этом случае возвращается исходный путь (может стать недоступным
+  /// после перезапуска, но хотя бы диагноз сохранится).
+  Future<String?> _persistDiagnosisImage(String? sourcePath) async {
+    if (sourcePath == null || sourcePath.isEmpty) return null;
+
+    // Уже в нашей папке — не копируем повторно.
+    if (sourcePath.contains('pocket_botanist_images')) return sourcePath;
+
+    try {
+      final file = File(sourcePath);
+      if (!file.existsSync()) return sourcePath;
+      return await _imageStorage.saveImage(file, prefix: 'diagnosis');
+    } catch (_) {
+      return sourcePath;
+    }
   }
 }

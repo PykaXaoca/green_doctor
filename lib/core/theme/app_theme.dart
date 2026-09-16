@@ -6,6 +6,9 @@ class AppTheme {
 
   static const Color _seedColor = Color(0xFF2E7D32); // Зелёный
 
+  /// Акцентный цвет для событий лечения в календаре и разделе «Здоровье».
+  static const Color treatmentRed = Color(0xFFD32F2F);
+
   /// Светлая тема.
   static ThemeData get light => ThemeData(
     useMaterial3: true,

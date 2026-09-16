@@ -57,4 +57,33 @@ class CareEventDao extends DatabaseAccessor<AppDatabase>
   Future<int> countByType(String type) => (select(
     careEvents,
   )..where((t) => t.type.equals(type))).get().then((rows) => rows.length);
+
+  // =========================================================================
+  //  Отмена событий ухода
+  // =========================================================================
+
+  /// Одно событие по id.
+  Future<CareEvent?> getById(int id) =>
+      (select(careEvents)..where((t) => t.id.equals(id))).getSingleOrNull();
+
+  /// Последнее событие указанного типа для растения до момента [before].
+  ///
+  /// Если [before] не задан — берётся последнее событие вообще.
+  /// Используется после удаления события, чтобы пересчитать
+  /// `lastWateredAt` / `lastFertilizedAt` у растения.
+  Future<CareEvent?> getLastByPlantAndType(
+    int plantId,
+    String type, {
+    DateTime? before,
+  }) {
+    final query = select(careEvents)
+      ..where((t) => t.plantId.equals(plantId) & t.type.equals(type));
+    if (before != null) {
+      query.where((t) => t.performedAt.isSmallerThanValue(before));
+    }
+    query
+      ..orderBy([(t) => OrderingTerm.desc(t.performedAt)])
+      ..limit(1);
+    return query.getSingleOrNull();
+  }
 }

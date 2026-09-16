@@ -8,6 +8,7 @@ import 'app.dart';
 import 'core/database/database.dart';
 import 'core/providers/repository_providers.dart';
 import 'core/providers/service_providers.dart';
+import 'core/providers/settings_providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,13 +43,22 @@ Future<void> main() async {
     );
   }
 
-  // 5. Уведомления.
+  // 5. Уведомления — инициализация и передача настроек.
   final notifications = container.read(notificationServiceProvider);
   await notifications.initialize();
+
+  final notifSettings = await container.read(
+    notificationSettingsProvider.future,
+  );
+  notifications.updateSettings(notifSettings);
 
   final plantRepo = container.read(plantRepositoryProvider);
   final plants = await plantRepo.getAllActive();
   await notifications.syncAll(plants);
+
+  // 6. Синхронизация уведомлений о шагах лечения.
+  final treatmentScheduler = container.read(treatmentSchedulerProvider);
+  await treatmentScheduler.syncAll();
 
   runApp(
     UncontrolledProviderScope(

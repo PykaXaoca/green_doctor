@@ -8,8 +8,10 @@ import '../../../../core/services/watering_advisor.dart';
 import '../../../../core/services/weather_service.dart';
 import '../../../plants/presentation/providers/plant_providers.dart';
 import '../../../plants/presentation/widgets/plant_card.dart';
+import '../../../plants/presentation/widgets/repotting_banner.dart';
 
-/// Главный экран «Сегодня» — растения, которые нужно полить.
+/// Главный экран «Сегодня» — растения, которые нужно полить,
+/// и напоминания о пересадке.
 class TodayScreen extends ConsumerWidget {
   const TodayScreen({super.key});
 
@@ -17,6 +19,7 @@ class TodayScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dueAsync = ref.watch(plantsDueForWateringProvider);
     final weatherAsync = ref.watch(currentWeatherProvider);
+    final repottingAsync = ref.watch(plantsNeedingRepottingProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -33,6 +36,7 @@ class TodayScreen extends ConsumerWidget {
             onPressed: () {
               ref.invalidate(plantsDueForWateringProvider);
               ref.invalidate(currentWeatherProvider);
+              ref.invalidate(plantsNeedingRepottingProvider);
             },
           ),
         ],
@@ -41,12 +45,15 @@ class TodayScreen extends ConsumerWidget {
         onRefresh: () async {
           ref.invalidate(plantsDueForWateringProvider);
           ref.invalidate(currentWeatherProvider);
+          ref.invalidate(plantsNeedingRepottingProvider);
         },
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
             WeatherHeader(weatherAsync: weatherAsync),
             const SizedBox(height: 16),
+
+            // --- Полив ---
             dueAsync.when(
               loading: () => const Padding(
                 padding: EdgeInsets.all(32),
@@ -63,7 +70,7 @@ class TodayScreen extends ConsumerWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(context, plants.length),
+                    _buildWateringHeader(context, plants.length),
                     const SizedBox(height: 12),
                     ...plants.map(
                       (p) => Padding(
@@ -75,13 +82,32 @@ class TodayScreen extends ConsumerWidget {
                 );
               },
             ),
+
+            // --- Пересадка ---
+            repottingAsync.maybeWhen(
+              data: (list) {
+                if (list.isEmpty) return const SizedBox.shrink();
+                return Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildRepottingHeader(context, list.length),
+                      const SizedBox(height: 12),
+                      ...list.map((s) => RepottingListTile(status: s)),
+                    ],
+                  ),
+                );
+              },
+              orElse: () => const SizedBox.shrink(),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, int count) {
+  Widget _buildWateringHeader(BuildContext context, int count) {
     final theme = Theme.of(context);
     return Card(
       color: theme.colorScheme.primaryContainer,
@@ -110,6 +136,42 @@ class TodayScreen extends ConsumerWidget {
                     '$count ${_plantWord(count)}',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRepottingHeader(BuildContext context, int count) {
+    final theme = Theme.of(context);
+    return Card(
+      color: Colors.orange.shade100,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(Icons.redeem, color: Colors.orange.shade800, size: 32),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Пора пересадить',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.orange.shade900,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    '$count ${_plantWord(count)}',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.orange.shade900,
                     ),
                   ),
                 ],

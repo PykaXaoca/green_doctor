@@ -59,7 +59,7 @@ class _IdentifyScreenState extends ConsumerState<IdentifyScreen> {
           ],
           if (state.results.isNotEmpty) ...[
             const SizedBox(height: 24),
-            _buildResults(state.results),
+            _buildResults(state),
           ],
         ],
       ),
@@ -132,7 +132,7 @@ class _IdentifyScreenState extends ConsumerState<IdentifyScreen> {
     );
   }
 
-  Widget _buildResults(List<RecognitionResult> results) {
+  Widget _buildResults(IdentifyState state) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -141,7 +141,9 @@ class _IdentifyScreenState extends ConsumerState<IdentifyScreen> {
           children: [
             Text('Результаты', style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
-            ...results.map((r) => _ResultTile(result: r)),
+            ...state.results.map(
+              (r) => _ResultTile(result: r, imageFile: state.imageFile),
+            ),
           ],
         ),
       ),
@@ -206,9 +208,10 @@ class _MockModeBanner extends StatelessWidget {
 
 /// Плитка результата с кнопкой «Добавить растение».
 class _ResultTile extends ConsumerStatefulWidget {
-  const _ResultTile({required this.result});
+  const _ResultTile({required this.result, required this.imageFile});
 
   final RecognitionResult result;
+  final File? imageFile;
 
   @override
   ConsumerState<_ResultTile> createState() => _ResultTileState();
@@ -306,13 +309,29 @@ class _ResultTileState extends ConsumerState<_ResultTile> {
     try {
       final controller = ref.read(plantControllerProvider);
       final userId = ref.read(currentUserIdProvider);
+      final imageStorage = ref.read(imageStorageServiceProvider);
+
+      // Сохраняем фото, по которому было распознано растение,
+      // в постоянную папку приложения.
+      String? savedImagePath;
+      final src = widget.imageFile;
+      if (src != null && src.existsSync()) {
+        try {
+          savedImagePath = await imageStorage.saveImage(src, prefix: 'plant');
+        } catch (_) {
+          // Если не удалось сохранить фото — не блокируем добавление.
+          savedImagePath = null;
+        }
+      }
 
       final id = await controller.create(
         PlantsCompanion(
           userId: Value(userId),
           customName: Value(_species!.commonName),
           speciesId: Value(_species!.id),
+          imagePath: Value(savedImagePath),
           wateringFrequencyDays: Value(_species!.defaultWateringDays),
+          fertilizingFrequencyDays: const Value(30),
           soilType: Value(_species!.soilType),
         ),
       );

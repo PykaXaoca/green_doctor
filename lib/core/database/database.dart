@@ -51,18 +51,62 @@ part 'database.g.dart';
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
-  /// Конструктор для тестов (in-memory).
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) async {
       await m.createAll();
     },
+    onUpgrade: (m, from, to) async {
+      // v1 → v2: расширение справочника видов растений.
+      if (from < 2) {
+        await m.addColumn(plantSpecies, plantSpecies.category);
+        await m.addColumn(plantSpecies, plantSpecies.fertilizingFrequencyDays);
+        await m.addColumn(plantSpecies, plantSpecies.fertilizerType);
+        await m.addColumn(plantSpecies, plantSpecies.soilMoisture);
+        await m.addColumn(plantSpecies, plantSpecies.repottingFrequencyMonths);
+        await m.addColumn(plantSpecies, plantSpecies.pruningInfo);
+
+        await customStatement(
+          "DELETE FROM app_meta WHERE key = 'species_imported'",
+        );
+      }
+
+      // v2 → v3: поле `lastRepottedAt` у растения.
+      //
+      // Служит базой отсчёта для следующей пересадки. Если null —
+      // в расчёте используется `createdAt`. Существующие растения
+      // получают null, что эквивалентно старому поведению.
+      if (from < 3) {
+        await m.addColumn(plants, plants.lastRepottedAt);
+      }
+    },
   );
+
+  /// Каскадное удаление растения.
+  Future<void> deletePlantCascade(int plantId) async {
+    await transaction(() async {
+      final diagnosisRows = await (select(
+        diagnoses,
+      )..where((t) => t.plantId.equals(plantId))).get();
+      final diagnosisIds = diagnosisRows.map((d) => d.id).toList();
+
+      if (diagnosisIds.isNotEmpty) {
+        await (delete(
+          treatmentSteps,
+        )..where((t) => t.diagnosisId.isIn(diagnosisIds))).go();
+      }
+
+      await (delete(diagnoses)..where((t) => t.plantId.equals(plantId))).go();
+      await (delete(careEvents)..where((t) => t.plantId.equals(plantId))).go();
+      await (delete(reminders)..where((t) => t.plantId.equals(plantId))).go();
+      await (delete(plants)..where((t) => t.id.equals(plantId))).go();
+    });
+  }
 }
 
 LazyDatabase _openConnection() {
