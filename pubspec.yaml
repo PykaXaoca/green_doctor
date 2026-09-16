@@ -28,7 +28,7 @@ dependencies:
   hive_ce_flutter: ^2.3.4
 
   # --- Уведомления ---
-  flutter_local_notifications: ^21.0.0
+  flutter_local_notifications: 22.3.1
   timezone: ^0.11.1
 
   # --- Изображения ---
