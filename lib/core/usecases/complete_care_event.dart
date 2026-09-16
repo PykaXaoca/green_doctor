@@ -66,6 +66,11 @@ class CompleteCareEvent {
         plantId,
         PlantsCompanion(lastFertilizedAt: Value(now)),
       );
+    } else if (type == 'misting') {
+      await _db.plantDao.updatePlant(
+        plantId,
+        PlantsCompanion(lastMistedAt: Value(now)),
+      );
     } else if (type == 'repotting') {
       await _db.plantDao.updatePlant(
         plantId,

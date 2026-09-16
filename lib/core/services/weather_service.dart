@@ -63,12 +63,18 @@ class WeatherService {
         queryParameters: {
           'latitude': lat,
           'longitude': lon,
-          'current': 'temperature_2m,relative_humidity_2m,weather_code',
+          'current':
+              'temperature_2m,relative_humidity_2m,apparent_temperature,'
+              'is_day,precipitation,weather_code,cloud_cover,'
+              'pressure_msl,wind_speed_10m,wind_direction_10m,uv_index',
           'daily':
-              'temperature_2m_max,temperature_2m_min,'
-              'precipitation_probability_max',
+              'temperature_2m_max,temperature_2m_min,weather_code,'
+              'precipitation_probability_max,precipitation_sum,'
+              'sunrise,sunset,uv_index_max,'
+              'wind_speed_10m_max,wind_direction_10m_dominant',
           'timezone': 'auto',
-          'forecast_days': 5,
+          'forecast_days': 7,
+          'wind_speed_unit': 'ms',
         },
       );
 
@@ -111,10 +117,20 @@ class WeatherService {
       final current = map['current'] as Map<String, dynamic>?;
       if (current == null) return null;
 
-      final currentTemp = (current['temperature_2m'] as num).toDouble();
-      final currentHumidity =
-          (current['relative_humidity_2m'] as num?)?.toInt() ?? 0;
-      final weatherCode = (current['weather_code'] as num?)?.toInt() ?? 0;
+      final currentTemp = _toDouble(current['temperature_2m']) ?? 0.0;
+      final currentHumidity = _toInt(current['relative_humidity_2m']) ?? 0;
+      final apparentTemp =
+          _toDouble(current['apparent_temperature']) ?? currentTemp;
+      final weatherCode = _toInt(current['weather_code']) ?? 0;
+      final isDayRaw = _toInt(current['is_day']);
+      final isDay = isDayRaw == null ? true : isDayRaw == 1;
+      final precipitation = _toDouble(current['precipitation']) ?? 0.0;
+      final cloudCover = _toInt(current['cloud_cover']) ?? 0;
+      final pressure = _toDouble(current['pressure_msl']) ?? 0.0;
+      final windSpeed = _toDouble(current['wind_speed_10m']) ?? 0.0;
+      final windDirection = _toInt(current['wind_direction_10m']) ?? 0;
+      final uvIndex = _toDouble(current['uv_index']);
+
       final currentTimeStr = current['time'] as String?;
       final currentDt = currentTimeStr != null
           ? DateTime.tryParse(currentTimeStr) ?? DateTime.now()
@@ -123,27 +139,47 @@ class WeatherService {
       final daily = map['daily'] as Map<String, dynamic>?;
       final dailyForecasts = <DailyForecast>[];
       if (daily != null) {
-        final times = (daily['time'] as List).cast<String>();
-        final maxes = (daily['temperature_2m_max'] as List).cast<num>();
-        final mins = (daily['temperature_2m_min'] as List).cast<num>();
-        final pops = daily['precipitation_probability_max'] is List
-            ? (daily['precipitation_probability_max'] as List)
-            : const [];
+        final times = daily['time'] as List?;
+        final maxes = daily['temperature_2m_max'] as List?;
+        final mins = daily['temperature_2m_min'] as List?;
+        final codes = daily['weather_code'] as List?;
+        final pops = daily['precipitation_probability_max'] as List?;
+        final precipSums = daily['precipitation_sum'] as List?;
+        final sunrises = daily['sunrise'] as List?;
+        final sunsets = daily['sunset'] as List?;
+        final uvMaxes = daily['uv_index_max'] as List?;
+        final windMaxes = daily['wind_speed_10m_max'] as List?;
+        final windDirs = daily['wind_direction_10m_dominant'] as List?;
 
-        for (var i = 0; i < times.length; i++) {
-          final date = DateTime.tryParse(times[i]);
-          if (date == null) continue;
-          final popValue = i < pops.length && pops[i] != null
-              ? (pops[i] as num).toDouble() / 100.0
-              : 0.0;
-          dailyForecasts.add(
-            DailyForecast(
-              date: DateTime(date.year, date.month, date.day),
-              tempMin: mins[i].toDouble(),
-              tempMax: maxes[i].toDouble(),
-              precipitationProbability: popValue.clamp(0.0, 1.0),
-            ),
-          );
+        if (times != null) {
+          for (var i = 0; i < times.length; i++) {
+            final dateStr = _at<String>(times, i);
+            final date = dateStr != null ? DateTime.tryParse(dateStr) : null;
+            if (date == null) continue;
+
+            final popRaw = _toDouble(_at<num>(pops, i));
+            final pop = ((popRaw ?? 0.0) / 100.0).clamp(0.0, 1.0);
+
+            final code = _toInt(_at<num>(codes, i)) ?? 0;
+
+            dailyForecasts.add(
+              DailyForecast(
+                date: DateTime(date.year, date.month, date.day),
+                tempMin: _toDouble(_at<num>(mins, i)) ?? 0.0,
+                tempMax: _toDouble(_at<num>(maxes, i)) ?? 0.0,
+                precipitationProbability: pop,
+                precipitationSum: _toDouble(_at<num>(precipSums, i)) ?? 0.0,
+                weatherCode: code,
+                icon: _iconForCode(code),
+                description: _descriptionForCode(code),
+                sunrise: _parseDateTime(_at<String>(sunrises, i)),
+                sunset: _parseDateTime(_at<String>(sunsets, i)),
+                uvIndexMax: _toDouble(_at<num>(uvMaxes, i)),
+                windSpeedMax: _toDouble(_at<num>(windMaxes, i)),
+                windDirectionDominant: _toInt(_at<num>(windDirs, i)),
+              ),
+            );
+          }
         }
       }
 
@@ -155,10 +191,45 @@ class WeatherService {
         currentIcon: _iconForCode(weatherCode),
         currentDt: currentDt,
         daily: dailyForecasts,
+        apparentTemp: apparentTemp,
+        isDay: isDay,
+        precipitation: precipitation,
+        cloudCover: cloudCover,
+        pressure: pressure,
+        windSpeed: windSpeed,
+        windDirection: windDirection,
+        uvIndex: uvIndex,
       );
     } catch (_) {
       return null;
     }
+  }
+
+  // -----------------------------------------------------------------
+  //  Вспомогательные парсеры
+  // -----------------------------------------------------------------
+
+  double? _toDouble(Object? v) {
+    if (v == null) return null;
+    if (v is num) return v.toDouble();
+    return null;
+  }
+
+  int? _toInt(Object? v) {
+    if (v == null) return null;
+    if (v is num) return v.toInt();
+    return null;
+  }
+
+  T? _at<T>(List? list, int i) {
+    if (list == null || i < 0 || i >= list.length) return null;
+    final v = list[i];
+    return v is T ? v : null;
+  }
+
+  DateTime? _parseDateTime(String? s) {
+    if (s == null) return null;
+    return DateTime.tryParse(s);
   }
 
   /// WMO weather code → текстовое описание на русском.
@@ -216,9 +287,8 @@ class WeatherService {
     }
   }
 
-  /// WMO weather code → код иконки, совместимый с тем, что уже
-  /// использует `WeatherHeader._weatherIcon` (`01`, `02`, `04`, `09`,
-  /// `10`, `11`, `13`, `50`).
+  /// WMO weather code → код иконки, совместимый с `_weatherIcon`
+  /// (`01`, `02`, `04`, `09`, `10`, `11`, `13`, `50`).
   String _iconForCode(int code) {
     if (code == 0) return '01';
     if (code == 1 || code == 2) return '02';
@@ -244,6 +314,14 @@ class WeatherSnapshot {
     required this.currentIcon,
     required this.currentDt,
     required this.daily,
+    this.apparentTemp,
+    this.isDay = true,
+    this.precipitation = 0.0,
+    this.cloudCover = 0,
+    this.pressure = 0.0,
+    this.windSpeed = 0.0,
+    this.windDirection = 0,
+    this.uvIndex,
   });
 
   final DateTime fetchedAt;
@@ -253,6 +331,30 @@ class WeatherSnapshot {
   final String currentIcon;
   final DateTime currentDt;
   final List<DailyForecast> daily;
+
+  /// Ощущаемая температура.
+  final double? apparentTemp;
+
+  /// День/ночь по данным API.
+  final bool isDay;
+
+  /// Осадки за последний час, мм.
+  final double precipitation;
+
+  /// Облачность, %.
+  final int cloudCover;
+
+  /// Давление на уровне моря, гПа.
+  final double pressure;
+
+  /// Скорость ветра, м/с.
+  final double windSpeed;
+
+  /// Направление ветра, градусы (0–360).
+  final int windDirection;
+
+  /// UV-индекс, может отсутствовать.
+  final double? uvIndex;
 
   /// Прогноз на завтра (если есть).
   DailyForecast? get tomorrow {
@@ -286,6 +388,15 @@ class DailyForecast {
     required this.tempMin,
     required this.tempMax,
     required this.precipitationProbability,
+    this.precipitationSum = 0.0,
+    this.weatherCode = 0,
+    this.icon = '02',
+    this.description = '',
+    this.sunrise,
+    this.sunset,
+    this.uvIndexMax,
+    this.windSpeedMax,
+    this.windDirectionDominant,
   });
 
   final DateTime date;
@@ -294,6 +405,24 @@ class DailyForecast {
 
   /// Вероятность осадков 0.0 – 1.0.
   final double precipitationProbability;
+
+  /// Сумма осадков за день, мм.
+  final double precipitationSum;
+
+  /// WMO-код.
+  final int weatherCode;
+
+  /// Двузначный код иконки, совместимый с `_weatherIcon`.
+  final String icon;
+
+  /// Текстовое описание.
+  final String description;
+
+  final DateTime? sunrise;
+  final DateTime? sunset;
+  final double? uvIndexMax;
+  final double? windSpeedMax;
+  final int? windDirectionDominant;
 
   double get averageTemp => (tempMin + tempMax) / 2;
 }

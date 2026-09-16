@@ -1,4 +1,4 @@
-﻿import 'package:drift/drift.dart';
+import 'package:drift/drift.dart';
 
 import '../../../domain/models/treatment_step_with_diagnosis.dart';
 import '../database.dart';
@@ -107,6 +107,35 @@ class DiagnosisDao extends DatabaseAccessor<AppDatabase>
             ),
           ])
           ..where(treatmentSteps.dueAt.isBetweenValues(from, to))
+          ..orderBy([OrderingTerm.asc(treatmentSteps.dueAt)]);
+
+    final rows = await query.get();
+    return rows
+        .map(
+          (row) => TreatmentStepWithDiagnosis(
+            step: row.readTable(treatmentSteps),
+            diagnosis: row.readTable(diagnoses),
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  /// Незавершённые шаги лечения, у которых `dueAt <= until`.
+  ///
+  /// Используется на экране «Сегодня»: показать всё, что нужно
+  /// сделать сегодня или просрочено, вместе с диагнозом и растением.
+  Future<List<TreatmentStepWithDiagnosis>> getPendingStepsWithDiagnosisUntil(
+    DateTime until,
+  ) async {
+    final query =
+        select(treatmentSteps).join([
+            innerJoin(
+              diagnoses,
+              diagnoses.id.equalsExp(treatmentSteps.diagnosisId),
+            ),
+          ])
+          ..where(treatmentSteps.dueAt.isSmallerOrEqualValue(until))
+          ..where(treatmentSteps.isCompleted.equals(false))
           ..orderBy([OrderingTerm.asc(treatmentSteps.dueAt)]);
 
     final rows = await query.get();

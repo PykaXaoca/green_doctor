@@ -54,7 +54,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -77,12 +77,20 @@ class AppDatabase extends _$AppDatabase {
       }
 
       // v2 → v3: поле `lastRepottedAt` у растения.
-      //
-      // Служит базой отсчёта для следующей пересадки. Если null —
-      // в расчёте используется `createdAt`. Существующие растения
-      // получают null, что эквивалентно старому поведению.
       if (from < 3) {
         await m.addColumn(plants, plants.lastRepottedAt);
+      }
+
+      // v3 → v4: опрыскивание — частота и дата последнего.
+      if (from < 4) {
+        await m.addColumn(plants, plants.mistingFrequencyDays);
+        await m.addColumn(plants, plants.lastMistedAt);
+      }
+
+      // v4 → v5: расширенный профиль — город и био.
+      if (from < 5) {
+        await m.addColumn(appUsers, appUsers.city);
+        await m.addColumn(appUsers, appUsers.bio);
       }
     },
   );
@@ -105,6 +113,26 @@ class AppDatabase extends _$AppDatabase {
       await (delete(careEvents)..where((t) => t.plantId.equals(plantId))).go();
       await (delete(reminders)..where((t) => t.plantId.equals(plantId))).go();
       await (delete(plants)..where((t) => t.id.equals(plantId))).go();
+    });
+  }
+
+  /// Полная очистка данных пользователя: растения, события, диагнозы,
+  /// напоминания, достижения и XP. Пользователь остаётся, но его
+  /// прогресс обнуляется.
+  Future<void> resetUserData(int userId) async {
+    await transaction(() async {
+      await delete(careEvents).go();
+      await delete(treatmentSteps).go();
+      await delete(diagnoses).go();
+      await delete(reminders).go();
+      await delete(plants).go();
+      await (delete(
+        userAchievements,
+      )..where((t) => t.userId.equals(userId))).go();
+      await (delete(userXpEvents)..where((t) => t.userId.equals(userId))).go();
+      await (update(appUsers)..where((t) => t.id.equals(userId))).write(
+        const AppUsersCompanion(xp: Value(0), level: Value(1)),
+      );
     });
   }
 }

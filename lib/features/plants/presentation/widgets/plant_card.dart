@@ -6,11 +6,31 @@ import 'package:intl/intl.dart';
 import '../../../../core/database/database.dart';
 
 /// Карточка растения для списка.
+///
+/// По умолчанию в нижней строке — дата следующего полива.
+/// Если переданы [actionIcon] и [actionText], вместо неё показывается
+/// произвольное действие (удобрение, опрыскивание, лечение и т.д.).
 class PlantCard extends StatelessWidget {
-  const PlantCard({super.key, required this.plant, required this.onTap});
+  const PlantCard({
+    super.key,
+    required this.plant,
+    required this.onTap,
+    this.actionIcon,
+    this.actionText,
+    this.actionColor,
+  });
 
   final Plant plant;
   final VoidCallback onTap;
+
+  /// Иконка для нижней строки. Если null — берётся иконка полива.
+  final IconData? actionIcon;
+
+  /// Текст для нижней строки. Если null — рисуется «Полив: <дата>».
+  final String? actionText;
+
+  /// Цвет иконки. Если null — синий по умолчанию.
+  final Color? actionColor;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +81,10 @@ class PlantCard extends StatelessWidget {
         ? DateFormat('d MMM', 'ru').format(next)
         : 'не задано';
 
+    final icon = actionIcon ?? Icons.water_drop;
+    final text = actionText ?? 'Полив: $nextStr';
+    final color = actionColor ?? Colors.blue[400]!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -86,9 +110,16 @@ class PlantCard extends StatelessWidget {
         const SizedBox(height: 6),
         Row(
           children: [
-            Icon(Icons.water_drop, size: 14, color: Colors.blue[400]),
+            Icon(icon, size: 14, color: color),
             const SizedBox(width: 4),
-            Text('Полив: $nextStr', style: theme.textTheme.bodySmall),
+            Flexible(
+              child: Text(
+                text,
+                style: theme.textTheme.bodySmall,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       ],

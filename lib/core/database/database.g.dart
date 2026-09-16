@@ -47,6 +47,24 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _cityMeta = const VerificationMeta('city');
+  @override
+  late final GeneratedColumn<String> city = GeneratedColumn<String>(
+    'city',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bioMeta = const VerificationMeta('bio');
+  @override
+  late final GeneratedColumn<String> bio = GeneratedColumn<String>(
+    'bio',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _xpMeta = const VerificationMeta('xp');
   @override
   late final GeneratedColumn<int> xp = GeneratedColumn<int>(
@@ -107,6 +125,8 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
     id,
     displayName,
     avatarPath,
+    city,
+    bio,
     xp,
     level,
     subscriptionTier,
@@ -141,6 +161,18 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
       context.handle(
         _avatarPathMeta,
         avatarPath.isAcceptableOrUnknown(data['avatar_path']!, _avatarPathMeta),
+      );
+    }
+    if (data.containsKey('city')) {
+      context.handle(
+        _cityMeta,
+        city.isAcceptableOrUnknown(data['city']!, _cityMeta),
+      );
+    }
+    if (data.containsKey('bio')) {
+      context.handle(
+        _bioMeta,
+        bio.isAcceptableOrUnknown(data['bio']!, _bioMeta),
       );
     }
     if (data.containsKey('xp')) {
@@ -197,6 +229,14 @@ class $AppUsersTable extends AppUsers with TableInfo<$AppUsersTable, AppUser> {
         DriftSqlType.string,
         data['${effectivePrefix}avatar_path'],
       ),
+      city: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}city'],
+      ),
+      bio: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}bio'],
+      ),
       xp: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}xp'],
@@ -230,6 +270,13 @@ class AppUser extends DataClass implements Insertable<AppUser> {
   final int id;
   final String? displayName;
   final String? avatarPath;
+
+  /// Город пользователя. Отображается в профиле, используется
+  /// только в UI — на расчёты не влияет.
+  final String? city;
+
+  /// Короткое описание «о себе».
+  final String? bio;
   final int xp;
   final int level;
   final String subscriptionTier;
@@ -239,6 +286,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
     required this.id,
     this.displayName,
     this.avatarPath,
+    this.city,
+    this.bio,
     required this.xp,
     required this.level,
     required this.subscriptionTier,
@@ -254,6 +303,12 @@ class AppUser extends DataClass implements Insertable<AppUser> {
     }
     if (!nullToAbsent || avatarPath != null) {
       map['avatar_path'] = Variable<String>(avatarPath);
+    }
+    if (!nullToAbsent || city != null) {
+      map['city'] = Variable<String>(city);
+    }
+    if (!nullToAbsent || bio != null) {
+      map['bio'] = Variable<String>(bio);
     }
     map['xp'] = Variable<int>(xp);
     map['level'] = Variable<int>(level);
@@ -274,6 +329,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
       avatarPath: avatarPath == null && nullToAbsent
           ? const Value.absent()
           : Value(avatarPath),
+      city: city == null && nullToAbsent ? const Value.absent() : Value(city),
+      bio: bio == null && nullToAbsent ? const Value.absent() : Value(bio),
       xp: Value(xp),
       level: Value(level),
       subscriptionTier: Value(subscriptionTier),
@@ -293,6 +350,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
       id: serializer.fromJson<int>(json['id']),
       displayName: serializer.fromJson<String?>(json['displayName']),
       avatarPath: serializer.fromJson<String?>(json['avatarPath']),
+      city: serializer.fromJson<String?>(json['city']),
+      bio: serializer.fromJson<String?>(json['bio']),
       xp: serializer.fromJson<int>(json['xp']),
       level: serializer.fromJson<int>(json['level']),
       subscriptionTier: serializer.fromJson<String>(json['subscriptionTier']),
@@ -309,6 +368,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
       'id': serializer.toJson<int>(id),
       'displayName': serializer.toJson<String?>(displayName),
       'avatarPath': serializer.toJson<String?>(avatarPath),
+      'city': serializer.toJson<String?>(city),
+      'bio': serializer.toJson<String?>(bio),
       'xp': serializer.toJson<int>(xp),
       'level': serializer.toJson<int>(level),
       'subscriptionTier': serializer.toJson<String>(subscriptionTier),
@@ -321,6 +382,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
     int? id,
     Value<String?> displayName = const Value.absent(),
     Value<String?> avatarPath = const Value.absent(),
+    Value<String?> city = const Value.absent(),
+    Value<String?> bio = const Value.absent(),
     int? xp,
     int? level,
     String? subscriptionTier,
@@ -330,6 +393,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
     id: id ?? this.id,
     displayName: displayName.present ? displayName.value : this.displayName,
     avatarPath: avatarPath.present ? avatarPath.value : this.avatarPath,
+    city: city.present ? city.value : this.city,
+    bio: bio.present ? bio.value : this.bio,
     xp: xp ?? this.xp,
     level: level ?? this.level,
     subscriptionTier: subscriptionTier ?? this.subscriptionTier,
@@ -347,6 +412,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
       avatarPath: data.avatarPath.present
           ? data.avatarPath.value
           : this.avatarPath,
+      city: data.city.present ? data.city.value : this.city,
+      bio: data.bio.present ? data.bio.value : this.bio,
       xp: data.xp.present ? data.xp.value : this.xp,
       level: data.level.present ? data.level.value : this.level,
       subscriptionTier: data.subscriptionTier.present
@@ -365,6 +432,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
           ..write('id: $id, ')
           ..write('displayName: $displayName, ')
           ..write('avatarPath: $avatarPath, ')
+          ..write('city: $city, ')
+          ..write('bio: $bio, ')
           ..write('xp: $xp, ')
           ..write('level: $level, ')
           ..write('subscriptionTier: $subscriptionTier, ')
@@ -379,6 +448,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
     id,
     displayName,
     avatarPath,
+    city,
+    bio,
     xp,
     level,
     subscriptionTier,
@@ -392,6 +463,8 @@ class AppUser extends DataClass implements Insertable<AppUser> {
           other.id == this.id &&
           other.displayName == this.displayName &&
           other.avatarPath == this.avatarPath &&
+          other.city == this.city &&
+          other.bio == this.bio &&
           other.xp == this.xp &&
           other.level == this.level &&
           other.subscriptionTier == this.subscriptionTier &&
@@ -403,6 +476,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
   final Value<int> id;
   final Value<String?> displayName;
   final Value<String?> avatarPath;
+  final Value<String?> city;
+  final Value<String?> bio;
   final Value<int> xp;
   final Value<int> level;
   final Value<String> subscriptionTier;
@@ -412,6 +487,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
     this.id = const Value.absent(),
     this.displayName = const Value.absent(),
     this.avatarPath = const Value.absent(),
+    this.city = const Value.absent(),
+    this.bio = const Value.absent(),
     this.xp = const Value.absent(),
     this.level = const Value.absent(),
     this.subscriptionTier = const Value.absent(),
@@ -422,6 +499,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
     this.id = const Value.absent(),
     this.displayName = const Value.absent(),
     this.avatarPath = const Value.absent(),
+    this.city = const Value.absent(),
+    this.bio = const Value.absent(),
     this.xp = const Value.absent(),
     this.level = const Value.absent(),
     this.subscriptionTier = const Value.absent(),
@@ -432,6 +511,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
     Expression<int>? id,
     Expression<String>? displayName,
     Expression<String>? avatarPath,
+    Expression<String>? city,
+    Expression<String>? bio,
     Expression<int>? xp,
     Expression<int>? level,
     Expression<String>? subscriptionTier,
@@ -442,6 +523,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
       if (id != null) 'id': id,
       if (displayName != null) 'display_name': displayName,
       if (avatarPath != null) 'avatar_path': avatarPath,
+      if (city != null) 'city': city,
+      if (bio != null) 'bio': bio,
       if (xp != null) 'xp': xp,
       if (level != null) 'level': level,
       if (subscriptionTier != null) 'subscription_tier': subscriptionTier,
@@ -454,6 +537,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
     Value<int>? id,
     Value<String?>? displayName,
     Value<String?>? avatarPath,
+    Value<String?>? city,
+    Value<String?>? bio,
     Value<int>? xp,
     Value<int>? level,
     Value<String>? subscriptionTier,
@@ -464,6 +549,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
       id: id ?? this.id,
       displayName: displayName ?? this.displayName,
       avatarPath: avatarPath ?? this.avatarPath,
+      city: city ?? this.city,
+      bio: bio ?? this.bio,
       xp: xp ?? this.xp,
       level: level ?? this.level,
       subscriptionTier: subscriptionTier ?? this.subscriptionTier,
@@ -483,6 +570,12 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
     }
     if (avatarPath.present) {
       map['avatar_path'] = Variable<String>(avatarPath.value);
+    }
+    if (city.present) {
+      map['city'] = Variable<String>(city.value);
+    }
+    if (bio.present) {
+      map['bio'] = Variable<String>(bio.value);
     }
     if (xp.present) {
       map['xp'] = Variable<int>(xp.value);
@@ -508,6 +601,8 @@ class AppUsersCompanion extends UpdateCompanion<AppUser> {
           ..write('id: $id, ')
           ..write('displayName: $displayName, ')
           ..write('avatarPath: $avatarPath, ')
+          ..write('city: $city, ')
+          ..write('bio: $bio, ')
           ..write('xp: $xp, ')
           ..write('level: $level, ')
           ..write('subscriptionTier: $subscriptionTier, ')
@@ -2006,6 +2101,16 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         type: DriftSqlType.int,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _mistingFrequencyDaysMeta =
+      const VerificationMeta('mistingFrequencyDays');
+  @override
+  late final GeneratedColumn<int> mistingFrequencyDays = GeneratedColumn<int>(
+    'misting_frequency_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _soilTypeMeta = const VerificationMeta(
     'soilType',
   );
@@ -2105,6 +2210,17 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         type: DriftSqlType.dateTime,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _lastMistedAtMeta = const VerificationMeta(
+    'lastMistedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastMistedAt = GeneratedColumn<DateTime>(
+    'last_misted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _lastRepottedAtMeta = const VerificationMeta(
     'lastRepottedAt',
   );
@@ -2166,6 +2282,7 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
     lightDirection,
     wateringFrequencyDays,
     fertilizingFrequencyDays,
+    mistingFrequencyDays,
     soilType,
     potSize,
     notes,
@@ -2175,6 +2292,7 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
     seedlingPlantingDate,
     lastWateredAt,
     lastFertilizedAt,
+    lastMistedAt,
     lastRepottedAt,
     nextWaterDue,
     createdAt,
@@ -2256,6 +2374,15 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         ),
       );
     }
+    if (data.containsKey('misting_frequency_days')) {
+      context.handle(
+        _mistingFrequencyDaysMeta,
+        mistingFrequencyDays.isAcceptableOrUnknown(
+          data['misting_frequency_days']!,
+          _mistingFrequencyDaysMeta,
+        ),
+      );
+    }
     if (data.containsKey('soil_type')) {
       context.handle(
         _soilTypeMeta,
@@ -2325,6 +2452,15 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         lastFertilizedAt.isAcceptableOrUnknown(
           data['last_fertilized_at']!,
           _lastFertilizedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_misted_at')) {
+      context.handle(
+        _lastMistedAtMeta,
+        lastMistedAt.isAcceptableOrUnknown(
+          data['last_misted_at']!,
+          _lastMistedAtMeta,
         ),
       );
     }
@@ -2403,6 +2539,10 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         DriftSqlType.int,
         data['${effectivePrefix}fertilizing_frequency_days'],
       ),
+      mistingFrequencyDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}misting_frequency_days'],
+      ),
       soilType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}soil_type'],
@@ -2439,6 +2579,10 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}last_fertilized_at'],
       ),
+      lastMistedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_misted_at'],
+      ),
       lastRepottedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}last_repotted_at'],
@@ -2474,6 +2618,11 @@ class Plant extends DataClass implements Insertable<Plant> {
   final String? lightDirection;
   final int? wateringFrequencyDays;
   final int? fertilizingFrequencyDays;
+
+  /// Частота опрыскивания в днях. Если null — опрыскивание
+  /// не отслеживается, растение не появляется в блоке
+  /// «Опрыскивание» на экране «Сегодня».
+  final int? mistingFrequencyDays;
   final String? soilType;
   final String? potSize;
   final String? notes;
@@ -2483,6 +2632,9 @@ class Plant extends DataClass implements Insertable<Plant> {
   final DateTime? seedlingPlantingDate;
   final DateTime? lastWateredAt;
   final DateTime? lastFertilizedAt;
+
+  /// Дата последнего опрыскивания. Если null — берётся [createdAt].
+  final DateTime? lastMistedAt;
 
   /// Дата последней пересадки. Если null — берётся [createdAt]
   /// в расчёте следующей пересадки.
@@ -2500,6 +2652,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     this.lightDirection,
     this.wateringFrequencyDays,
     this.fertilizingFrequencyDays,
+    this.mistingFrequencyDays,
     this.soilType,
     this.potSize,
     this.notes,
@@ -2509,6 +2662,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     this.seedlingPlantingDate,
     this.lastWateredAt,
     this.lastFertilizedAt,
+    this.lastMistedAt,
     this.lastRepottedAt,
     this.nextWaterDue,
     required this.createdAt,
@@ -2540,6 +2694,9 @@ class Plant extends DataClass implements Insertable<Plant> {
         fertilizingFrequencyDays,
       );
     }
+    if (!nullToAbsent || mistingFrequencyDays != null) {
+      map['misting_frequency_days'] = Variable<int>(mistingFrequencyDays);
+    }
     if (!nullToAbsent || soilType != null) {
       map['soil_type'] = Variable<String>(soilType);
     }
@@ -2566,6 +2723,9 @@ class Plant extends DataClass implements Insertable<Plant> {
     }
     if (!nullToAbsent || lastFertilizedAt != null) {
       map['last_fertilized_at'] = Variable<DateTime>(lastFertilizedAt);
+    }
+    if (!nullToAbsent || lastMistedAt != null) {
+      map['last_misted_at'] = Variable<DateTime>(lastMistedAt);
     }
     if (!nullToAbsent || lastRepottedAt != null) {
       map['last_repotted_at'] = Variable<DateTime>(lastRepottedAt);
@@ -2601,6 +2761,9 @@ class Plant extends DataClass implements Insertable<Plant> {
       fertilizingFrequencyDays: fertilizingFrequencyDays == null && nullToAbsent
           ? const Value.absent()
           : Value(fertilizingFrequencyDays),
+      mistingFrequencyDays: mistingFrequencyDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mistingFrequencyDays),
       soilType: soilType == null && nullToAbsent
           ? const Value.absent()
           : Value(soilType),
@@ -2628,6 +2791,9 @@ class Plant extends DataClass implements Insertable<Plant> {
       lastFertilizedAt: lastFertilizedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(lastFertilizedAt),
+      lastMistedAt: lastMistedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastMistedAt),
       lastRepottedAt: lastRepottedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(lastRepottedAt),
@@ -2658,6 +2824,9 @@ class Plant extends DataClass implements Insertable<Plant> {
       fertilizingFrequencyDays: serializer.fromJson<int?>(
         json['fertilizingFrequencyDays'],
       ),
+      mistingFrequencyDays: serializer.fromJson<int?>(
+        json['mistingFrequencyDays'],
+      ),
       soilType: serializer.fromJson<String?>(json['soilType']),
       potSize: serializer.fromJson<String?>(json['potSize']),
       notes: serializer.fromJson<String?>(json['notes']),
@@ -2673,6 +2842,7 @@ class Plant extends DataClass implements Insertable<Plant> {
       lastFertilizedAt: serializer.fromJson<DateTime?>(
         json['lastFertilizedAt'],
       ),
+      lastMistedAt: serializer.fromJson<DateTime?>(json['lastMistedAt']),
       lastRepottedAt: serializer.fromJson<DateTime?>(json['lastRepottedAt']),
       nextWaterDue: serializer.fromJson<DateTime?>(json['nextWaterDue']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -2694,6 +2864,7 @@ class Plant extends DataClass implements Insertable<Plant> {
       'fertilizingFrequencyDays': serializer.toJson<int?>(
         fertilizingFrequencyDays,
       ),
+      'mistingFrequencyDays': serializer.toJson<int?>(mistingFrequencyDays),
       'soilType': serializer.toJson<String?>(soilType),
       'potSize': serializer.toJson<String?>(potSize),
       'notes': serializer.toJson<String?>(notes),
@@ -2705,6 +2876,7 @@ class Plant extends DataClass implements Insertable<Plant> {
       ),
       'lastWateredAt': serializer.toJson<DateTime?>(lastWateredAt),
       'lastFertilizedAt': serializer.toJson<DateTime?>(lastFertilizedAt),
+      'lastMistedAt': serializer.toJson<DateTime?>(lastMistedAt),
       'lastRepottedAt': serializer.toJson<DateTime?>(lastRepottedAt),
       'nextWaterDue': serializer.toJson<DateTime?>(nextWaterDue),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -2722,6 +2894,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     Value<String?> lightDirection = const Value.absent(),
     Value<int?> wateringFrequencyDays = const Value.absent(),
     Value<int?> fertilizingFrequencyDays = const Value.absent(),
+    Value<int?> mistingFrequencyDays = const Value.absent(),
     Value<String?> soilType = const Value.absent(),
     Value<String?> potSize = const Value.absent(),
     Value<String?> notes = const Value.absent(),
@@ -2731,6 +2904,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     Value<DateTime?> seedlingPlantingDate = const Value.absent(),
     Value<DateTime?> lastWateredAt = const Value.absent(),
     Value<DateTime?> lastFertilizedAt = const Value.absent(),
+    Value<DateTime?> lastMistedAt = const Value.absent(),
     Value<DateTime?> lastRepottedAt = const Value.absent(),
     Value<DateTime?> nextWaterDue = const Value.absent(),
     DateTime? createdAt,
@@ -2751,6 +2925,9 @@ class Plant extends DataClass implements Insertable<Plant> {
     fertilizingFrequencyDays: fertilizingFrequencyDays.present
         ? fertilizingFrequencyDays.value
         : this.fertilizingFrequencyDays,
+    mistingFrequencyDays: mistingFrequencyDays.present
+        ? mistingFrequencyDays.value
+        : this.mistingFrequencyDays,
     soilType: soilType.present ? soilType.value : this.soilType,
     potSize: potSize.present ? potSize.value : this.potSize,
     notes: notes.present ? notes.value : this.notes,
@@ -2772,6 +2949,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     lastFertilizedAt: lastFertilizedAt.present
         ? lastFertilizedAt.value
         : this.lastFertilizedAt,
+    lastMistedAt: lastMistedAt.present ? lastMistedAt.value : this.lastMistedAt,
     lastRepottedAt: lastRepottedAt.present
         ? lastRepottedAt.value
         : this.lastRepottedAt,
@@ -2798,6 +2976,9 @@ class Plant extends DataClass implements Insertable<Plant> {
       fertilizingFrequencyDays: data.fertilizingFrequencyDays.present
           ? data.fertilizingFrequencyDays.value
           : this.fertilizingFrequencyDays,
+      mistingFrequencyDays: data.mistingFrequencyDays.present
+          ? data.mistingFrequencyDays.value
+          : this.mistingFrequencyDays,
       soilType: data.soilType.present ? data.soilType.value : this.soilType,
       potSize: data.potSize.present ? data.potSize.value : this.potSize,
       notes: data.notes.present ? data.notes.value : this.notes,
@@ -2819,6 +3000,9 @@ class Plant extends DataClass implements Insertable<Plant> {
       lastFertilizedAt: data.lastFertilizedAt.present
           ? data.lastFertilizedAt.value
           : this.lastFertilizedAt,
+      lastMistedAt: data.lastMistedAt.present
+          ? data.lastMistedAt.value
+          : this.lastMistedAt,
       lastRepottedAt: data.lastRepottedAt.present
           ? data.lastRepottedAt.value
           : this.lastRepottedAt,
@@ -2844,6 +3028,7 @@ class Plant extends DataClass implements Insertable<Plant> {
           ..write('lightDirection: $lightDirection, ')
           ..write('wateringFrequencyDays: $wateringFrequencyDays, ')
           ..write('fertilizingFrequencyDays: $fertilizingFrequencyDays, ')
+          ..write('mistingFrequencyDays: $mistingFrequencyDays, ')
           ..write('soilType: $soilType, ')
           ..write('potSize: $potSize, ')
           ..write('notes: $notes, ')
@@ -2853,6 +3038,7 @@ class Plant extends DataClass implements Insertable<Plant> {
           ..write('seedlingPlantingDate: $seedlingPlantingDate, ')
           ..write('lastWateredAt: $lastWateredAt, ')
           ..write('lastFertilizedAt: $lastFertilizedAt, ')
+          ..write('lastMistedAt: $lastMistedAt, ')
           ..write('lastRepottedAt: $lastRepottedAt, ')
           ..write('nextWaterDue: $nextWaterDue, ')
           ..write('createdAt: $createdAt, ')
@@ -2872,6 +3058,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     lightDirection,
     wateringFrequencyDays,
     fertilizingFrequencyDays,
+    mistingFrequencyDays,
     soilType,
     potSize,
     notes,
@@ -2881,6 +3068,7 @@ class Plant extends DataClass implements Insertable<Plant> {
     seedlingPlantingDate,
     lastWateredAt,
     lastFertilizedAt,
+    lastMistedAt,
     lastRepottedAt,
     nextWaterDue,
     createdAt,
@@ -2899,6 +3087,7 @@ class Plant extends DataClass implements Insertable<Plant> {
           other.lightDirection == this.lightDirection &&
           other.wateringFrequencyDays == this.wateringFrequencyDays &&
           other.fertilizingFrequencyDays == this.fertilizingFrequencyDays &&
+          other.mistingFrequencyDays == this.mistingFrequencyDays &&
           other.soilType == this.soilType &&
           other.potSize == this.potSize &&
           other.notes == this.notes &&
@@ -2908,6 +3097,7 @@ class Plant extends DataClass implements Insertable<Plant> {
           other.seedlingPlantingDate == this.seedlingPlantingDate &&
           other.lastWateredAt == this.lastWateredAt &&
           other.lastFertilizedAt == this.lastFertilizedAt &&
+          other.lastMistedAt == this.lastMistedAt &&
           other.lastRepottedAt == this.lastRepottedAt &&
           other.nextWaterDue == this.nextWaterDue &&
           other.createdAt == this.createdAt &&
@@ -2924,6 +3114,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
   final Value<String?> lightDirection;
   final Value<int?> wateringFrequencyDays;
   final Value<int?> fertilizingFrequencyDays;
+  final Value<int?> mistingFrequencyDays;
   final Value<String?> soilType;
   final Value<String?> potSize;
   final Value<String?> notes;
@@ -2933,6 +3124,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
   final Value<DateTime?> seedlingPlantingDate;
   final Value<DateTime?> lastWateredAt;
   final Value<DateTime?> lastFertilizedAt;
+  final Value<DateTime?> lastMistedAt;
   final Value<DateTime?> lastRepottedAt;
   final Value<DateTime?> nextWaterDue;
   final Value<DateTime> createdAt;
@@ -2947,6 +3139,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.lightDirection = const Value.absent(),
     this.wateringFrequencyDays = const Value.absent(),
     this.fertilizingFrequencyDays = const Value.absent(),
+    this.mistingFrequencyDays = const Value.absent(),
     this.soilType = const Value.absent(),
     this.potSize = const Value.absent(),
     this.notes = const Value.absent(),
@@ -2956,6 +3149,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.seedlingPlantingDate = const Value.absent(),
     this.lastWateredAt = const Value.absent(),
     this.lastFertilizedAt = const Value.absent(),
+    this.lastMistedAt = const Value.absent(),
     this.lastRepottedAt = const Value.absent(),
     this.nextWaterDue = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -2971,6 +3165,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.lightDirection = const Value.absent(),
     this.wateringFrequencyDays = const Value.absent(),
     this.fertilizingFrequencyDays = const Value.absent(),
+    this.mistingFrequencyDays = const Value.absent(),
     this.soilType = const Value.absent(),
     this.potSize = const Value.absent(),
     this.notes = const Value.absent(),
@@ -2980,6 +3175,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.seedlingPlantingDate = const Value.absent(),
     this.lastWateredAt = const Value.absent(),
     this.lastFertilizedAt = const Value.absent(),
+    this.lastMistedAt = const Value.absent(),
     this.lastRepottedAt = const Value.absent(),
     this.nextWaterDue = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -2996,6 +3192,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Expression<String>? lightDirection,
     Expression<int>? wateringFrequencyDays,
     Expression<int>? fertilizingFrequencyDays,
+    Expression<int>? mistingFrequencyDays,
     Expression<String>? soilType,
     Expression<String>? potSize,
     Expression<String>? notes,
@@ -3005,6 +3202,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Expression<DateTime>? seedlingPlantingDate,
     Expression<DateTime>? lastWateredAt,
     Expression<DateTime>? lastFertilizedAt,
+    Expression<DateTime>? lastMistedAt,
     Expression<DateTime>? lastRepottedAt,
     Expression<DateTime>? nextWaterDue,
     Expression<DateTime>? createdAt,
@@ -3022,6 +3220,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
         'watering_frequency_days': wateringFrequencyDays,
       if (fertilizingFrequencyDays != null)
         'fertilizing_frequency_days': fertilizingFrequencyDays,
+      if (mistingFrequencyDays != null)
+        'misting_frequency_days': mistingFrequencyDays,
       if (soilType != null) 'soil_type': soilType,
       if (potSize != null) 'pot_size': potSize,
       if (notes != null) 'notes': notes,
@@ -3033,6 +3233,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
         'seedling_planting_date': seedlingPlantingDate,
       if (lastWateredAt != null) 'last_watered_at': lastWateredAt,
       if (lastFertilizedAt != null) 'last_fertilized_at': lastFertilizedAt,
+      if (lastMistedAt != null) 'last_misted_at': lastMistedAt,
       if (lastRepottedAt != null) 'last_repotted_at': lastRepottedAt,
       if (nextWaterDue != null) 'next_water_due': nextWaterDue,
       if (createdAt != null) 'created_at': createdAt,
@@ -3050,6 +3251,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Value<String?>? lightDirection,
     Value<int?>? wateringFrequencyDays,
     Value<int?>? fertilizingFrequencyDays,
+    Value<int?>? mistingFrequencyDays,
     Value<String?>? soilType,
     Value<String?>? potSize,
     Value<String?>? notes,
@@ -3059,6 +3261,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Value<DateTime?>? seedlingPlantingDate,
     Value<DateTime?>? lastWateredAt,
     Value<DateTime?>? lastFertilizedAt,
+    Value<DateTime?>? lastMistedAt,
     Value<DateTime?>? lastRepottedAt,
     Value<DateTime?>? nextWaterDue,
     Value<DateTime>? createdAt,
@@ -3076,6 +3279,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
           wateringFrequencyDays ?? this.wateringFrequencyDays,
       fertilizingFrequencyDays:
           fertilizingFrequencyDays ?? this.fertilizingFrequencyDays,
+      mistingFrequencyDays: mistingFrequencyDays ?? this.mistingFrequencyDays,
       soilType: soilType ?? this.soilType,
       potSize: potSize ?? this.potSize,
       notes: notes ?? this.notes,
@@ -3085,6 +3289,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
       seedlingPlantingDate: seedlingPlantingDate ?? this.seedlingPlantingDate,
       lastWateredAt: lastWateredAt ?? this.lastWateredAt,
       lastFertilizedAt: lastFertilizedAt ?? this.lastFertilizedAt,
+      lastMistedAt: lastMistedAt ?? this.lastMistedAt,
       lastRepottedAt: lastRepottedAt ?? this.lastRepottedAt,
       nextWaterDue: nextWaterDue ?? this.nextWaterDue,
       createdAt: createdAt ?? this.createdAt,
@@ -3126,6 +3331,9 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
         fertilizingFrequencyDays.value,
       );
     }
+    if (mistingFrequencyDays.present) {
+      map['misting_frequency_days'] = Variable<int>(mistingFrequencyDays.value);
+    }
     if (soilType.present) {
       map['soil_type'] = Variable<String>(soilType.value);
     }
@@ -3157,6 +3365,9 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     if (lastFertilizedAt.present) {
       map['last_fertilized_at'] = Variable<DateTime>(lastFertilizedAt.value);
     }
+    if (lastMistedAt.present) {
+      map['last_misted_at'] = Variable<DateTime>(lastMistedAt.value);
+    }
     if (lastRepottedAt.present) {
       map['last_repotted_at'] = Variable<DateTime>(lastRepottedAt.value);
     }
@@ -3184,6 +3395,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
           ..write('lightDirection: $lightDirection, ')
           ..write('wateringFrequencyDays: $wateringFrequencyDays, ')
           ..write('fertilizingFrequencyDays: $fertilizingFrequencyDays, ')
+          ..write('mistingFrequencyDays: $mistingFrequencyDays, ')
           ..write('soilType: $soilType, ')
           ..write('potSize: $potSize, ')
           ..write('notes: $notes, ')
@@ -3193,6 +3405,7 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
           ..write('seedlingPlantingDate: $seedlingPlantingDate, ')
           ..write('lastWateredAt: $lastWateredAt, ')
           ..write('lastFertilizedAt: $lastFertilizedAt, ')
+          ..write('lastMistedAt: $lastMistedAt, ')
           ..write('lastRepottedAt: $lastRepottedAt, ')
           ..write('nextWaterDue: $nextWaterDue, ')
           ..write('createdAt: $createdAt, ')
@@ -7358,6 +7571,8 @@ typedef $$AppUsersTableCreateCompanionBuilder =
       Value<int> id,
       Value<String?> displayName,
       Value<String?> avatarPath,
+      Value<String?> city,
+      Value<String?> bio,
       Value<int> xp,
       Value<int> level,
       Value<String> subscriptionTier,
@@ -7369,6 +7584,8 @@ typedef $$AppUsersTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String?> displayName,
       Value<String?> avatarPath,
+      Value<String?> city,
+      Value<String?> bio,
       Value<int> xp,
       Value<int> level,
       Value<String> subscriptionTier,
@@ -7459,6 +7676,16 @@ class $$AppUsersTableFilterComposer
 
   ColumnFilters<String> get avatarPath => $composableBuilder(
     column: $table.avatarPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get bio => $composableBuilder(
+    column: $table.bio,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7587,6 +7814,16 @@ class $$AppUsersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get bio => $composableBuilder(
+    column: $table.bio,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get xp => $composableBuilder(
     column: $table.xp,
     builder: (column) => ColumnOrderings(column),
@@ -7634,6 +7871,12 @@ class $$AppUsersTableAnnotationComposer
     column: $table.avatarPath,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get city =>
+      $composableBuilder(column: $table.city, builder: (column) => column);
+
+  GeneratedColumn<String> get bio =>
+      $composableBuilder(column: $table.bio, builder: (column) => column);
 
   GeneratedColumn<int> get xp =>
       $composableBuilder(column: $table.xp, builder: (column) => column);
@@ -7765,6 +8008,8 @@ class $$AppUsersTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String?> displayName = const Value.absent(),
                 Value<String?> avatarPath = const Value.absent(),
+                Value<String?> city = const Value.absent(),
+                Value<String?> bio = const Value.absent(),
                 Value<int> xp = const Value.absent(),
                 Value<int> level = const Value.absent(),
                 Value<String> subscriptionTier = const Value.absent(),
@@ -7774,6 +8019,8 @@ class $$AppUsersTableTableManager
                 id: id,
                 displayName: displayName,
                 avatarPath: avatarPath,
+                city: city,
+                bio: bio,
                 xp: xp,
                 level: level,
                 subscriptionTier: subscriptionTier,
@@ -7785,6 +8032,8 @@ class $$AppUsersTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String?> displayName = const Value.absent(),
                 Value<String?> avatarPath = const Value.absent(),
+                Value<String?> city = const Value.absent(),
+                Value<String?> bio = const Value.absent(),
                 Value<int> xp = const Value.absent(),
                 Value<int> level = const Value.absent(),
                 Value<String> subscriptionTier = const Value.absent(),
@@ -7794,6 +8043,8 @@ class $$AppUsersTableTableManager
                 id: id,
                 displayName: displayName,
                 avatarPath: avatarPath,
+                city: city,
+                bio: bio,
                 xp: xp,
                 level: level,
                 subscriptionTier: subscriptionTier,
@@ -8602,6 +8853,7 @@ typedef $$PlantsTableCreateCompanionBuilder =
       Value<String?> lightDirection,
       Value<int?> wateringFrequencyDays,
       Value<int?> fertilizingFrequencyDays,
+      Value<int?> mistingFrequencyDays,
       Value<String?> soilType,
       Value<String?> potSize,
       Value<String?> notes,
@@ -8611,6 +8863,7 @@ typedef $$PlantsTableCreateCompanionBuilder =
       Value<DateTime?> seedlingPlantingDate,
       Value<DateTime?> lastWateredAt,
       Value<DateTime?> lastFertilizedAt,
+      Value<DateTime?> lastMistedAt,
       Value<DateTime?> lastRepottedAt,
       Value<DateTime?> nextWaterDue,
       Value<DateTime> createdAt,
@@ -8627,6 +8880,7 @@ typedef $$PlantsTableUpdateCompanionBuilder =
       Value<String?> lightDirection,
       Value<int?> wateringFrequencyDays,
       Value<int?> fertilizingFrequencyDays,
+      Value<int?> mistingFrequencyDays,
       Value<String?> soilType,
       Value<String?> potSize,
       Value<String?> notes,
@@ -8636,6 +8890,7 @@ typedef $$PlantsTableUpdateCompanionBuilder =
       Value<DateTime?> seedlingPlantingDate,
       Value<DateTime?> lastWateredAt,
       Value<DateTime?> lastFertilizedAt,
+      Value<DateTime?> lastMistedAt,
       Value<DateTime?> lastRepottedAt,
       Value<DateTime?> nextWaterDue,
       Value<DateTime> createdAt,
@@ -8779,6 +9034,11 @@ class $$PlantsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<int> get mistingFrequencyDays => $composableBuilder(
+    column: $table.mistingFrequencyDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get soilType => $composableBuilder(
     column: $table.soilType,
     builder: (column) => ColumnFilters(column),
@@ -8821,6 +9081,11 @@ class $$PlantsTableFilterComposer
 
   ColumnFilters<DateTime> get lastFertilizedAt => $composableBuilder(
     column: $table.lastFertilizedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastMistedAt => $composableBuilder(
+    column: $table.lastMistedAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -9010,6 +9275,11 @@ class $$PlantsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get mistingFrequencyDays => $composableBuilder(
+    column: $table.mistingFrequencyDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get soilType => $composableBuilder(
     column: $table.soilType,
     builder: (column) => ColumnOrderings(column),
@@ -9052,6 +9322,11 @@ class $$PlantsTableOrderingComposer
 
   ColumnOrderings<DateTime> get lastFertilizedAt => $composableBuilder(
     column: $table.lastFertilizedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastMistedAt => $composableBuilder(
+    column: $table.lastMistedAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -9160,6 +9435,11 @@ class $$PlantsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<int> get mistingFrequencyDays => $composableBuilder(
+    column: $table.mistingFrequencyDays,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get soilType =>
       $composableBuilder(column: $table.soilType, builder: (column) => column);
 
@@ -9196,6 +9476,11 @@ class $$PlantsTableAnnotationComposer
 
   GeneratedColumn<DateTime> get lastFertilizedAt => $composableBuilder(
     column: $table.lastFertilizedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get lastMistedAt => $composableBuilder(
+    column: $table.lastMistedAt,
     builder: (column) => column,
   );
 
@@ -9382,6 +9667,7 @@ class $$PlantsTableTableManager
                 Value<String?> lightDirection = const Value.absent(),
                 Value<int?> wateringFrequencyDays = const Value.absent(),
                 Value<int?> fertilizingFrequencyDays = const Value.absent(),
+                Value<int?> mistingFrequencyDays = const Value.absent(),
                 Value<String?> soilType = const Value.absent(),
                 Value<String?> potSize = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
@@ -9391,6 +9677,7 @@ class $$PlantsTableTableManager
                 Value<DateTime?> seedlingPlantingDate = const Value.absent(),
                 Value<DateTime?> lastWateredAt = const Value.absent(),
                 Value<DateTime?> lastFertilizedAt = const Value.absent(),
+                Value<DateTime?> lastMistedAt = const Value.absent(),
                 Value<DateTime?> lastRepottedAt = const Value.absent(),
                 Value<DateTime?> nextWaterDue = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -9405,6 +9692,7 @@ class $$PlantsTableTableManager
                 lightDirection: lightDirection,
                 wateringFrequencyDays: wateringFrequencyDays,
                 fertilizingFrequencyDays: fertilizingFrequencyDays,
+                mistingFrequencyDays: mistingFrequencyDays,
                 soilType: soilType,
                 potSize: potSize,
                 notes: notes,
@@ -9414,6 +9702,7 @@ class $$PlantsTableTableManager
                 seedlingPlantingDate: seedlingPlantingDate,
                 lastWateredAt: lastWateredAt,
                 lastFertilizedAt: lastFertilizedAt,
+                lastMistedAt: lastMistedAt,
                 lastRepottedAt: lastRepottedAt,
                 nextWaterDue: nextWaterDue,
                 createdAt: createdAt,
@@ -9430,6 +9719,7 @@ class $$PlantsTableTableManager
                 Value<String?> lightDirection = const Value.absent(),
                 Value<int?> wateringFrequencyDays = const Value.absent(),
                 Value<int?> fertilizingFrequencyDays = const Value.absent(),
+                Value<int?> mistingFrequencyDays = const Value.absent(),
                 Value<String?> soilType = const Value.absent(),
                 Value<String?> potSize = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
@@ -9439,6 +9729,7 @@ class $$PlantsTableTableManager
                 Value<DateTime?> seedlingPlantingDate = const Value.absent(),
                 Value<DateTime?> lastWateredAt = const Value.absent(),
                 Value<DateTime?> lastFertilizedAt = const Value.absent(),
+                Value<DateTime?> lastMistedAt = const Value.absent(),
                 Value<DateTime?> lastRepottedAt = const Value.absent(),
                 Value<DateTime?> nextWaterDue = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -9453,6 +9744,7 @@ class $$PlantsTableTableManager
                 lightDirection: lightDirection,
                 wateringFrequencyDays: wateringFrequencyDays,
                 fertilizingFrequencyDays: fertilizingFrequencyDays,
+                mistingFrequencyDays: mistingFrequencyDays,
                 soilType: soilType,
                 potSize: potSize,
                 notes: notes,
@@ -9462,6 +9754,7 @@ class $$PlantsTableTableManager
                 seedlingPlantingDate: seedlingPlantingDate,
                 lastWateredAt: lastWateredAt,
                 lastFertilizedAt: lastFertilizedAt,
+                lastMistedAt: lastMistedAt,
                 lastRepottedAt: lastRepottedAt,
                 nextWaterDue: nextWaterDue,
                 createdAt: createdAt,

@@ -12,10 +12,12 @@ import '../../features/plants/presentation/screens/plant_form_screen.dart';
 import '../../features/plants/presentation/screens/plants_list_screen.dart';
 import '../../features/plants/presentation/screens/watering_schedule_screen.dart';
 import '../../features/profile/presentation/screens/care_schedule_settings_screen.dart';
+import '../../features/profile/presentation/screens/profile_edit_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/settings/presentation/screens/about_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/today/presentation/screens/today_screen.dart';
+import '../../features/today/presentation/screens/weather_detail_screen.dart';
 
 class _StubScreen extends StatelessWidget {
   const _StubScreen({required this.title, required this.icon});
@@ -62,6 +64,10 @@ class AppRouter {
                   GoRoute(
                     path: 'calendar',
                     builder: (context, state) => const CalendarScreen(),
+                  ),
+                  GoRoute(
+                    path: 'weather',
+                    builder: (context, state) => const WeatherDetailScreen(),
                   ),
                 ],
               ),
@@ -119,6 +125,10 @@ class AppRouter {
                 path: '/profile',
                 builder: (context, state) => const ProfileScreen(),
                 routes: [
+                  GoRoute(
+                    path: 'edit',
+                    builder: (context, state) => const ProfileEditScreen(),
+                  ),
                   GoRoute(
                     path: 'settings',
                     builder: (context, state) => const SettingsScreen(),

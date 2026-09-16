@@ -1,4 +1,4 @@
-﻿import 'package:drift/drift.dart';
+import 'package:drift/drift.dart';
 
 // ============================================================
 // 1. Пользователи приложения (локальный профиль)
@@ -8,6 +8,14 @@ class AppUsers extends Table {
   TextColumn get displayName =>
       text().withLength(min: 1, max: 100).nullable()();
   TextColumn get avatarPath => text().nullable()();
+
+  /// Город пользователя. Отображается в профиле, используется
+  /// только в UI — на расчёты не влияет.
+  TextColumn get city => text().nullable()();
+
+  /// Короткое описание «о себе».
+  TextColumn get bio => text().nullable()();
+
   IntColumn get xp => integer().withDefault(const Constant(0))();
   IntColumn get level => integer().withDefault(const Constant(1))();
   TextColumn get subscriptionTier =>
@@ -61,6 +69,12 @@ class Plants extends Table {
   TextColumn get lightDirection => text().nullable()();
   IntColumn get wateringFrequencyDays => integer().nullable()();
   IntColumn get fertilizingFrequencyDays => integer().nullable()();
+
+  /// Частота опрыскивания в днях. Если null — опрыскивание
+  /// не отслеживается, растение не появляется в блоке
+  /// «Опрыскивание» на экране «Сегодня».
+  IntColumn get mistingFrequencyDays => integer().nullable()();
+
   TextColumn get soilType => text().nullable()();
   TextColumn get potSize => text().nullable()();
   TextColumn get notes => text().nullable()();
@@ -74,6 +88,9 @@ class Plants extends Table {
   // --- Состояние ухода ---
   DateTimeColumn get lastWateredAt => dateTime().nullable()();
   DateTimeColumn get lastFertilizedAt => dateTime().nullable()();
+
+  /// Дата последнего опрыскивания. Если null — берётся [createdAt].
+  DateTimeColumn get lastMistedAt => dateTime().nullable()();
 
   /// Дата последней пересадки. Если null — берётся [createdAt]
   /// в расчёте следующей пересадки.

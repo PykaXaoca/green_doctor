@@ -142,19 +142,14 @@ class HealthSection extends ConsumerWidget {
     try {
       final userId = ref.read(currentUserIdProvider);
       final controller = ref.read(diagnosisControllerProvider);
-      final id = await controller.startTreatment(
+      await controller.startTreatment(
         diseaseId: disease.id,
         userId: userId,
         plantId: plantId,
       );
-
-      if (!context.mounted) return;
-      showAppSnackBar(
-        context,
-        'Лечение начато: ${disease.name}',
-        actionLabel: 'Открыть',
-        actionRoute: '/diagnosis/treatment/$id',
-      );
+      // Snackbar «Лечение начато» намеренно не показываем —
+      // карточка болезни появится в блоке «Здоровье» автоматически
+      // после инвалидации провайдера в контроллере.
     } catch (e) {
       if (!context.mounted) return;
       showErrorSnackBar(context, 'Ошибка: $e');
