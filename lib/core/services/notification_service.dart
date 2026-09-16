@@ -71,7 +71,7 @@ class NotificationService {
     const linuxInit = LinuxInitializationSettings(defaultActionName: 'Открыть');
     const windowsInit = WindowsInitializationSettings(
       appName: 'Карманный ботаник',
-      appUserModelId: 'com.yourcompany.pocket_botanist',
+      appUserModelId: 'com.pykaxaoca.pocketbotanist',
       guid: 'a3f5c8e0-7b21-4f6a-9d1e-6c4f2a1b8e3d',
     );
     const initSettings = InitializationSettings(
