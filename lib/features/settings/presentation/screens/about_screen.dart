@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-/// Версия приложения. Обновляйте вручную при релизах.
-const String kAppVersion = '0.9.0';
+/// Версия приложения, полученная из pubspec.yaml через package_info_plus.
+///
+/// Возвращает строку вида `1.0.0` (без build number — он внутренний,
+/// нужен только Google Play). Если плагин недоступен, показываем «—».
+final appVersionProvider = FutureProvider<String>((ref) async {
+  try {
+    final info = await PackageInfo.fromPlatform();
+    return info.version;
+  } catch (_) {
+    return '—';
+  }
+});
 
 /// Экран «О приложении».
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends ConsumerWidget {
   const AboutScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final versionAsync = ref.watch(appVersionProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('О приложении')),
@@ -41,10 +54,24 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'Версия $kAppVersion',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.outline,
+                versionAsync.when(
+                  loading: () => Text(
+                    'Версия ...',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.outline,
+                    ),
+                  ),
+                  error: (_, _) => Text(
+                    'Версия —',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.outline,
+                    ),
+                  ),
+                  data: (version) => Text(
+                    'Версия $version',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.outline,
+                    ),
                   ),
                 ),
               ],

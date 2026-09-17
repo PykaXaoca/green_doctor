@@ -1,7 +1,7 @@
 name: pocket_botanist
 description: "Карманный ботаник — офлайн-помощник по уходу за растениями."
 publish_to: 'none'
-version: 0.1.0+1
+version: 1.0.0+1
 
 environment:
   sdk: ^3.10.0
@@ -57,6 +57,7 @@ dependencies:
 
   # --- Покупки (подключим позже) ---
   purchases_flutter: ^10.9.1
+  package_info_plus: ^10.2.1
 
 dev_dependencies:
   flutter_test:
