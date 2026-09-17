@@ -187,8 +187,11 @@ class _PlantFormScreenState extends ConsumerState<PlantFormScreen> {
     final picked = await showDatePicker(
       context: context,
       initialDate: _seedlingPlantingDate ?? now,
-      firstDate: DateTime(now.year - 5),
-      lastDate: DateTime(now.year + 2),
+      // Широкий диапазон: можно указать дерево или куст, посаженный
+      // много лет назад (например, 30-50 лет), и запланировать
+      // посадку на несколько лет вперёд.
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2100),
       locale: const Locale('ru'),
     );
     if (picked != null) {
