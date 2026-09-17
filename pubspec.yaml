@@ -54,9 +54,7 @@ dependencies:
 
   # --- Логирование ---
   sentry_flutter: ^9.25.0
-
-  # --- Покупки (подключим позже) ---
-  purchases_flutter: ^10.9.1
+  
   package_info_plus: ^10.2.1
 
 dev_dependencies:
