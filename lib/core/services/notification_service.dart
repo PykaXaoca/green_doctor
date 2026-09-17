@@ -37,6 +37,10 @@ class NotificationService {
   static const String _channelDescription =
       'Напоминания о поливе, удобрении и других действиях';
 
+  /// Имя drawable-ресурса иконки уведомлений. Должно совпадать с
+  /// `flutter_launcher_icons.android` в pubspec.
+  static const String _iconName = '@mipmap/launcher_icon';
+
   static const int _maxNotificationId = 0x7FFFFFFF;
 
   static const Map<String, int> _typePrefixes = <String, int>{
@@ -62,7 +66,7 @@ class NotificationService {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('UTC'));
 
-    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidInit = AndroidInitializationSettings(_iconName);
     const iosInit = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -262,7 +266,7 @@ class NotificationService {
         channelDescription: _channelDescription,
         importance: Importance.high,
         priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
+        icon: _iconName,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),
@@ -294,7 +298,7 @@ class NotificationService {
         channelDescription: _channelDescription,
         importance: Importance.high,
         priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
+        icon: _iconName,
         styleInformation: BigTextStyleInformation(''),
       ),
       iOS: DarwinNotificationDetails(),
@@ -363,7 +367,7 @@ class NotificationService {
         channelDescription: _channelDescription,
         importance: Importance.high,
         priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
+        icon: _iconName,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),
@@ -421,7 +425,7 @@ class NotificationService {
         channelDescription: _channelDescription,
         importance: Importance.high,
         priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
+        icon: _iconName,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),
@@ -458,7 +462,7 @@ class NotificationService {
         channelDescription: _channelDescription,
         importance: Importance.high,
         priority: Priority.high,
-        icon: '@mipmap/ic_launcher',
+        icon: _iconName,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),

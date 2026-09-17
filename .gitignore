@@ -74,3 +74,8 @@ bugreport-*.zip
 # IDE
 .idea/
 *.iml
+
+# Release signing secrets — never commit
+android/key.properties
+*.jks
+*.keystore
