@@ -97,8 +97,8 @@ class HealthSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Text(
-          'Заметили пятна, налёт или вредителей? Выберите способ '
-          'диагностики — мы подскажем вероятные болезни и план лечения.',
+          'Заметили пятна, налёт или вредителей? Опишите симптомы — '
+          'мы подскажем вероятные болезни, или выберите болезнь вручную.',
           style: TextStyle(fontSize: 13, color: Colors.black54),
         ),
         const SizedBox(height: 12),
@@ -107,18 +107,14 @@ class HealthSection extends ConsumerWidget {
     );
   }
 
-  /// Три способа начать диагностику. Всегда вертикально, с полными
+  /// Способы начать диагностику. Всегда вертикально, с полными
   /// подписями — форма не зависит от того, есть ли активные диагнозы.
+  ///
+  /// Диагностика по фото временно скрыта, пока не подключена модель ИИ.
   Widget _actionButtons(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FilledButton.icon(
-          onPressed: () => context.push('/diagnosis/plant/$plantId'),
-          icon: const Icon(Icons.healing),
-          label: const Text('Диагностировать по фото'),
-        ),
-        const SizedBox(height: 8),
         FilledButton.tonalIcon(
           onPressed: () => context.push('/diagnosis/describe/$plantId'),
           icon: const Icon(Icons.description_outlined),
@@ -147,9 +143,9 @@ class HealthSection extends ConsumerWidget {
         userId: userId,
         plantId: plantId,
       );
-      // Snackbar «Лечение начато» намеренно не показываем —
-      // карточка болезни появится в блоке «Здоровье» автоматически
-      // после инвалидации провайдера в контроллере.
+      // Snackbar «Лечение начато» намеренно не показываем — карточка
+      // болезни появится в блоке «Здоровье» автоматически после
+      // инвалидации провайдера в контроллере.
     } catch (e) {
       if (!context.mounted) return;
       showErrorSnackBar(context, 'Ошибка: $e');

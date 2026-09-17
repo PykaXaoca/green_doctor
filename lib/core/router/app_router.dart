@@ -6,7 +6,6 @@ import '../../features/diagnosis/presentation/screens/active_treatments_screen.d
 import '../../features/diagnosis/presentation/screens/describe_symptoms_screen.dart';
 import '../../features/diagnosis/presentation/screens/diagnosis_screen.dart';
 import '../../features/diagnosis/presentation/screens/treatment_screen.dart';
-import '../../features/identification/presentation/screens/identify_screen.dart';
 import '../../features/plants/presentation/screens/plant_detail_screen.dart';
 import '../../features/plants/presentation/screens/plant_form_screen.dart';
 import '../../features/plants/presentation/screens/plants_list_screen.dart';
@@ -114,14 +113,6 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/identify',
-                builder: (context, state) => const IdentifyScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfileScreen(),
                 routes: [
@@ -159,15 +150,6 @@ class AppRouter {
         path: '/diagnosis',
         builder: (context, state) => const DiagnosisScreen(),
         routes: [
-          GoRoute(
-            path: 'plant/:plantId',
-            builder: (context, state) {
-              final plantId = int.tryParse(
-                state.pathParameters['plantId'] ?? '',
-              );
-              return DiagnosisScreen(plantId: plantId);
-            },
-          ),
           GoRoute(
             path: 'describe/:plantId',
             builder: (context, state) {
@@ -230,11 +212,6 @@ class _ScaffoldWithNavBar extends StatelessWidget {
             icon: Icon(Icons.local_florist_outlined),
             selectedIcon: Icon(Icons.local_florist),
             label: 'Растения',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.camera_alt_outlined),
-            selectedIcon: Icon(Icons.camera_alt),
-            label: 'Определить',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
