@@ -6,4 +6,4 @@ flutter_launcher_icons:
 
   # Настройки для адаптивных иконок Android (API 26+)
   adaptive_icon_background: "#FFFFFF" # Цвет фона (или путь к изображению)
-  adaptive_icon_foreground: "assets/icon/icon_2.jpg" # Изображение переднего плана
+  adaptive_icon_foreground: "assets/icon/icon.jpg" # Изображение переднего плана
