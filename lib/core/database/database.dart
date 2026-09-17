@@ -54,7 +54,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -91,6 +91,27 @@ class AppDatabase extends _$AppDatabase {
       if (from < 5) {
         await m.addColumn(appUsers, appUsers.city);
         await m.addColumn(appUsers, appUsers.bio);
+      }
+
+      // v5 → v6: садовые растения — сезонный уход и стадии роста.
+      if (from < 6) {
+        // Справочник видов: признак «комнатное» + JSON сезонных
+        // рекомендаций. Старые записи получат `isIndoor = true`,
+        // но при следующем запуске справочник переимпортируется
+        // (мы сбрасываем флаг ниже) и значения перезапишутся
+        // корректно.
+        await m.addColumn(plantSpecies, plantSpecies.isIndoor);
+        await m.addColumn(plantSpecies, plantSpecies.seasonalCareJson);
+
+        // Растение пользователя: дата посадки и текущая стадия роста.
+        await m.addColumn(plants, plants.plantedAt);
+        await m.addColumn(plants, plants.growthStage);
+
+        // Форсируем переимпорт справочника при следующем запуске,
+        // чтобы заполнились новые поля.
+        await customStatement(
+          "DELETE FROM app_meta WHERE key = 'species_imported'",
+        );
       }
     },
   );

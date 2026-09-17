@@ -872,6 +872,32 @@ class $PlantSpeciesTable extends PlantSpecies
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _isIndoorMeta = const VerificationMeta(
+    'isIndoor',
+  );
+  @override
+  late final GeneratedColumn<bool> isIndoor = GeneratedColumn<bool>(
+    'is_indoor',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_indoor" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _seasonalCareJsonMeta = const VerificationMeta(
+    'seasonalCareJson',
+  );
+  @override
+  late final GeneratedColumn<String> seasonalCareJson = GeneratedColumn<String>(
+    'seasonal_care_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -897,6 +923,8 @@ class $PlantSpeciesTable extends PlantSpecies
     modelLabelId,
     imageAssetPath,
     isPremium,
+    isIndoor,
+    seasonalCareJson,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1099,6 +1127,21 @@ class $PlantSpeciesTable extends PlantSpecies
         isPremium.isAcceptableOrUnknown(data['is_premium']!, _isPremiumMeta),
       );
     }
+    if (data.containsKey('is_indoor')) {
+      context.handle(
+        _isIndoorMeta,
+        isIndoor.isAcceptableOrUnknown(data['is_indoor']!, _isIndoorMeta),
+      );
+    }
+    if (data.containsKey('seasonal_care_json')) {
+      context.handle(
+        _seasonalCareJsonMeta,
+        seasonalCareJson.isAcceptableOrUnknown(
+          data['seasonal_care_json']!,
+          _seasonalCareJsonMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1200,6 +1243,14 @@ class $PlantSpeciesTable extends PlantSpecies
         DriftSqlType.bool,
         data['${effectivePrefix}is_premium'],
       )!,
+      isIndoor: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_indoor'],
+      )!,
+      seasonalCareJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}seasonal_care_json'],
+      ),
     );
   }
 
@@ -1233,6 +1284,28 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
   final String? modelLabelId;
   final String? imageAssetPath;
   final bool isPremium;
+
+  /// `true` — комнатное растение. `false` — садовое (улично-садовое).
+  ///
+  /// Значение выставляется при импорте справочника: если в
+  /// `category` есть слово «комнатн» или это «суккулент», то
+  /// растение считается комнатным, иначе — садовым.
+  final bool isIndoor;
+
+  /// JSON с рекомендациями по стадиям роста для садовых растений.
+  ///
+  /// Структура:
+  /// ```json
+  /// {
+  ///   "growing":   "Полив, подкормка азотом",
+  ///   "flowering": "Не обрезать, не пересаживать",
+  ///   "fruiting":  "Подкормка калием, сбор урожая",
+  ///   "dormant":   "Обрезка, подготовка к зиме"
+  /// }
+  /// ```
+  ///
+  /// Для комнатных видов может быть `null`.
+  final String? seasonalCareJson;
   const PlantSpecy({
     required this.id,
     required this.commonName,
@@ -1257,6 +1330,8 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     this.modelLabelId,
     this.imageAssetPath,
     required this.isPremium,
+    required this.isIndoor,
+    this.seasonalCareJson,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1326,6 +1401,10 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       map['image_asset_path'] = Variable<String>(imageAssetPath);
     }
     map['is_premium'] = Variable<bool>(isPremium);
+    map['is_indoor'] = Variable<bool>(isIndoor);
+    if (!nullToAbsent || seasonalCareJson != null) {
+      map['seasonal_care_json'] = Variable<String>(seasonalCareJson);
+    }
     return map;
   }
 
@@ -1392,6 +1471,10 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           ? const Value.absent()
           : Value(imageAssetPath),
       isPremium: Value(isPremium),
+      isIndoor: Value(isIndoor),
+      seasonalCareJson: seasonalCareJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(seasonalCareJson),
     );
   }
 
@@ -1432,6 +1515,8 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       modelLabelId: serializer.fromJson<String?>(json['modelLabelId']),
       imageAssetPath: serializer.fromJson<String?>(json['imageAssetPath']),
       isPremium: serializer.fromJson<bool>(json['isPremium']),
+      isIndoor: serializer.fromJson<bool>(json['isIndoor']),
+      seasonalCareJson: serializer.fromJson<String?>(json['seasonalCareJson']),
     );
   }
   @override
@@ -1465,6 +1550,8 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
       'modelLabelId': serializer.toJson<String?>(modelLabelId),
       'imageAssetPath': serializer.toJson<String?>(imageAssetPath),
       'isPremium': serializer.toJson<bool>(isPremium),
+      'isIndoor': serializer.toJson<bool>(isIndoor),
+      'seasonalCareJson': serializer.toJson<String?>(seasonalCareJson),
     };
   }
 
@@ -1492,6 +1579,8 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     Value<String?> modelLabelId = const Value.absent(),
     Value<String?> imageAssetPath = const Value.absent(),
     bool? isPremium,
+    bool? isIndoor,
+    Value<String?> seasonalCareJson = const Value.absent(),
   }) => PlantSpecy(
     id: id ?? this.id,
     commonName: commonName ?? this.commonName,
@@ -1534,6 +1623,10 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
         ? imageAssetPath.value
         : this.imageAssetPath,
     isPremium: isPremium ?? this.isPremium,
+    isIndoor: isIndoor ?? this.isIndoor,
+    seasonalCareJson: seasonalCareJson.present
+        ? seasonalCareJson.value
+        : this.seasonalCareJson,
   );
   PlantSpecy copyWithCompanion(PlantSpeciesCompanion data) {
     return PlantSpecy(
@@ -1594,6 +1687,10 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           ? data.imageAssetPath.value
           : this.imageAssetPath,
       isPremium: data.isPremium.present ? data.isPremium.value : this.isPremium,
+      isIndoor: data.isIndoor.present ? data.isIndoor.value : this.isIndoor,
+      seasonalCareJson: data.seasonalCareJson.present
+          ? data.seasonalCareJson.value
+          : this.seasonalCareJson,
     );
   }
 
@@ -1622,7 +1719,9 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           ..write('toxicity: $toxicity, ')
           ..write('modelLabelId: $modelLabelId, ')
           ..write('imageAssetPath: $imageAssetPath, ')
-          ..write('isPremium: $isPremium')
+          ..write('isPremium: $isPremium, ')
+          ..write('isIndoor: $isIndoor, ')
+          ..write('seasonalCareJson: $seasonalCareJson')
           ..write(')'))
         .toString();
   }
@@ -1652,6 +1751,8 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
     modelLabelId,
     imageAssetPath,
     isPremium,
+    isIndoor,
+    seasonalCareJson,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -1679,7 +1780,9 @@ class PlantSpecy extends DataClass implements Insertable<PlantSpecy> {
           other.toxicity == this.toxicity &&
           other.modelLabelId == this.modelLabelId &&
           other.imageAssetPath == this.imageAssetPath &&
-          other.isPremium == this.isPremium);
+          other.isPremium == this.isPremium &&
+          other.isIndoor == this.isIndoor &&
+          other.seasonalCareJson == this.seasonalCareJson);
 }
 
 class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
@@ -1706,6 +1809,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
   final Value<String?> modelLabelId;
   final Value<String?> imageAssetPath;
   final Value<bool> isPremium;
+  final Value<bool> isIndoor;
+  final Value<String?> seasonalCareJson;
   final Value<int> rowid;
   const PlantSpeciesCompanion({
     this.id = const Value.absent(),
@@ -1731,6 +1836,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     this.modelLabelId = const Value.absent(),
     this.imageAssetPath = const Value.absent(),
     this.isPremium = const Value.absent(),
+    this.isIndoor = const Value.absent(),
+    this.seasonalCareJson = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   PlantSpeciesCompanion.insert({
@@ -1757,6 +1864,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     this.modelLabelId = const Value.absent(),
     this.imageAssetPath = const Value.absent(),
     this.isPremium = const Value.absent(),
+    this.isIndoor = const Value.absent(),
+    this.seasonalCareJson = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        commonName = Value(commonName),
@@ -1785,6 +1894,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     Expression<String>? modelLabelId,
     Expression<String>? imageAssetPath,
     Expression<bool>? isPremium,
+    Expression<bool>? isIndoor,
+    Expression<String>? seasonalCareJson,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1814,6 +1925,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
       if (modelLabelId != null) 'model_label_id': modelLabelId,
       if (imageAssetPath != null) 'image_asset_path': imageAssetPath,
       if (isPremium != null) 'is_premium': isPremium,
+      if (isIndoor != null) 'is_indoor': isIndoor,
+      if (seasonalCareJson != null) 'seasonal_care_json': seasonalCareJson,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1842,6 +1955,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     Value<String?>? modelLabelId,
     Value<String?>? imageAssetPath,
     Value<bool>? isPremium,
+    Value<bool>? isIndoor,
+    Value<String?>? seasonalCareJson,
     Value<int>? rowid,
   }) {
     return PlantSpeciesCompanion(
@@ -1870,6 +1985,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
       modelLabelId: modelLabelId ?? this.modelLabelId,
       imageAssetPath: imageAssetPath ?? this.imageAssetPath,
       isPremium: isPremium ?? this.isPremium,
+      isIndoor: isIndoor ?? this.isIndoor,
+      seasonalCareJson: seasonalCareJson ?? this.seasonalCareJson,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1950,6 +2067,12 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
     if (isPremium.present) {
       map['is_premium'] = Variable<bool>(isPremium.value);
     }
+    if (isIndoor.present) {
+      map['is_indoor'] = Variable<bool>(isIndoor.value);
+    }
+    if (seasonalCareJson.present) {
+      map['seasonal_care_json'] = Variable<String>(seasonalCareJson.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1982,6 +2105,8 @@ class PlantSpeciesCompanion extends UpdateCompanion<PlantSpecy> {
           ..write('modelLabelId: $modelLabelId, ')
           ..write('imageAssetPath: $imageAssetPath, ')
           ..write('isPremium: $isPremium, ')
+          ..write('isIndoor: $isIndoor, ')
+          ..write('seasonalCareJson: $seasonalCareJson, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2186,6 +2311,28 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         type: DriftSqlType.dateTime,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _plantedAtMeta = const VerificationMeta(
+    'plantedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> plantedAt = GeneratedColumn<DateTime>(
+    'planted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _growthStageMeta = const VerificationMeta(
+    'growthStage',
+  );
+  @override
+  late final GeneratedColumn<String> growthStage = GeneratedColumn<String>(
+    'growth_stage',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _lastWateredAtMeta = const VerificationMeta(
     'lastWateredAt',
   );
@@ -2290,6 +2437,8 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
     seedVarietyName,
     plantingLocation,
     seedlingPlantingDate,
+    plantedAt,
+    growthStage,
     lastWateredAt,
     lastFertilizedAt,
     lastMistedAt,
@@ -2437,6 +2586,21 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         ),
       );
     }
+    if (data.containsKey('planted_at')) {
+      context.handle(
+        _plantedAtMeta,
+        plantedAt.isAcceptableOrUnknown(data['planted_at']!, _plantedAtMeta),
+      );
+    }
+    if (data.containsKey('growth_stage')) {
+      context.handle(
+        _growthStageMeta,
+        growthStage.isAcceptableOrUnknown(
+          data['growth_stage']!,
+          _growthStageMeta,
+        ),
+      );
+    }
     if (data.containsKey('last_watered_at')) {
       context.handle(
         _lastWateredAtMeta,
@@ -2571,6 +2735,14 @@ class $PlantsTable extends Plants with TableInfo<$PlantsTable, Plant> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}seedling_planting_date'],
       ),
+      plantedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}planted_at'],
+      ),
+      growthStage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}growth_stage'],
+      ),
       lastWateredAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}last_watered_at'],
@@ -2630,6 +2802,19 @@ class Plant extends DataClass implements Insertable<Plant> {
   final String? seedVarietyName;
   final String? plantingLocation;
   final DateTime? seedlingPlantingDate;
+
+  /// Дата посадки взрослого садового растения. Может быть указана
+  /// давно (например, дерево посажено 20 лет назад).
+  final DateTime? plantedAt;
+
+  /// Текущая стадия роста (переопределяется пользователем вручную).
+  ///
+  /// Если `null` — стадия определяется автоматически сервисом
+  /// `SeasonDetector` по календарю, геопозиции и дате посадки.
+  ///
+  /// Возможные значения: `'growing'`, `'flowering'`, `'fruiting'`,
+  /// `'dormant'`, `'young'`.
+  final String? growthStage;
   final DateTime? lastWateredAt;
   final DateTime? lastFertilizedAt;
 
@@ -2660,6 +2845,8 @@ class Plant extends DataClass implements Insertable<Plant> {
     this.seedVarietyName,
     this.plantingLocation,
     this.seedlingPlantingDate,
+    this.plantedAt,
+    this.growthStage,
     this.lastWateredAt,
     this.lastFertilizedAt,
     this.lastMistedAt,
@@ -2717,6 +2904,12 @@ class Plant extends DataClass implements Insertable<Plant> {
     }
     if (!nullToAbsent || seedlingPlantingDate != null) {
       map['seedling_planting_date'] = Variable<DateTime>(seedlingPlantingDate);
+    }
+    if (!nullToAbsent || plantedAt != null) {
+      map['planted_at'] = Variable<DateTime>(plantedAt);
+    }
+    if (!nullToAbsent || growthStage != null) {
+      map['growth_stage'] = Variable<String>(growthStage);
     }
     if (!nullToAbsent || lastWateredAt != null) {
       map['last_watered_at'] = Variable<DateTime>(lastWateredAt);
@@ -2785,6 +2978,12 @@ class Plant extends DataClass implements Insertable<Plant> {
       seedlingPlantingDate: seedlingPlantingDate == null && nullToAbsent
           ? const Value.absent()
           : Value(seedlingPlantingDate),
+      plantedAt: plantedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plantedAt),
+      growthStage: growthStage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(growthStage),
       lastWateredAt: lastWateredAt == null && nullToAbsent
           ? const Value.absent()
           : Value(lastWateredAt),
@@ -2838,6 +3037,8 @@ class Plant extends DataClass implements Insertable<Plant> {
       seedlingPlantingDate: serializer.fromJson<DateTime?>(
         json['seedlingPlantingDate'],
       ),
+      plantedAt: serializer.fromJson<DateTime?>(json['plantedAt']),
+      growthStage: serializer.fromJson<String?>(json['growthStage']),
       lastWateredAt: serializer.fromJson<DateTime?>(json['lastWateredAt']),
       lastFertilizedAt: serializer.fromJson<DateTime?>(
         json['lastFertilizedAt'],
@@ -2874,6 +3075,8 @@ class Plant extends DataClass implements Insertable<Plant> {
       'seedlingPlantingDate': serializer.toJson<DateTime?>(
         seedlingPlantingDate,
       ),
+      'plantedAt': serializer.toJson<DateTime?>(plantedAt),
+      'growthStage': serializer.toJson<String?>(growthStage),
       'lastWateredAt': serializer.toJson<DateTime?>(lastWateredAt),
       'lastFertilizedAt': serializer.toJson<DateTime?>(lastFertilizedAt),
       'lastMistedAt': serializer.toJson<DateTime?>(lastMistedAt),
@@ -2902,6 +3105,8 @@ class Plant extends DataClass implements Insertable<Plant> {
     Value<String?> seedVarietyName = const Value.absent(),
     Value<String?> plantingLocation = const Value.absent(),
     Value<DateTime?> seedlingPlantingDate = const Value.absent(),
+    Value<DateTime?> plantedAt = const Value.absent(),
+    Value<String?> growthStage = const Value.absent(),
     Value<DateTime?> lastWateredAt = const Value.absent(),
     Value<DateTime?> lastFertilizedAt = const Value.absent(),
     Value<DateTime?> lastMistedAt = const Value.absent(),
@@ -2943,6 +3148,8 @@ class Plant extends DataClass implements Insertable<Plant> {
     seedlingPlantingDate: seedlingPlantingDate.present
         ? seedlingPlantingDate.value
         : this.seedlingPlantingDate,
+    plantedAt: plantedAt.present ? plantedAt.value : this.plantedAt,
+    growthStage: growthStage.present ? growthStage.value : this.growthStage,
     lastWateredAt: lastWateredAt.present
         ? lastWateredAt.value
         : this.lastWateredAt,
@@ -2994,6 +3201,10 @@ class Plant extends DataClass implements Insertable<Plant> {
       seedlingPlantingDate: data.seedlingPlantingDate.present
           ? data.seedlingPlantingDate.value
           : this.seedlingPlantingDate,
+      plantedAt: data.plantedAt.present ? data.plantedAt.value : this.plantedAt,
+      growthStage: data.growthStage.present
+          ? data.growthStage.value
+          : this.growthStage,
       lastWateredAt: data.lastWateredAt.present
           ? data.lastWateredAt.value
           : this.lastWateredAt,
@@ -3036,6 +3247,8 @@ class Plant extends DataClass implements Insertable<Plant> {
           ..write('seedVarietyName: $seedVarietyName, ')
           ..write('plantingLocation: $plantingLocation, ')
           ..write('seedlingPlantingDate: $seedlingPlantingDate, ')
+          ..write('plantedAt: $plantedAt, ')
+          ..write('growthStage: $growthStage, ')
           ..write('lastWateredAt: $lastWateredAt, ')
           ..write('lastFertilizedAt: $lastFertilizedAt, ')
           ..write('lastMistedAt: $lastMistedAt, ')
@@ -3066,6 +3279,8 @@ class Plant extends DataClass implements Insertable<Plant> {
     seedVarietyName,
     plantingLocation,
     seedlingPlantingDate,
+    plantedAt,
+    growthStage,
     lastWateredAt,
     lastFertilizedAt,
     lastMistedAt,
@@ -3095,6 +3310,8 @@ class Plant extends DataClass implements Insertable<Plant> {
           other.seedVarietyName == this.seedVarietyName &&
           other.plantingLocation == this.plantingLocation &&
           other.seedlingPlantingDate == this.seedlingPlantingDate &&
+          other.plantedAt == this.plantedAt &&
+          other.growthStage == this.growthStage &&
           other.lastWateredAt == this.lastWateredAt &&
           other.lastFertilizedAt == this.lastFertilizedAt &&
           other.lastMistedAt == this.lastMistedAt &&
@@ -3122,6 +3339,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
   final Value<String?> seedVarietyName;
   final Value<String?> plantingLocation;
   final Value<DateTime?> seedlingPlantingDate;
+  final Value<DateTime?> plantedAt;
+  final Value<String?> growthStage;
   final Value<DateTime?> lastWateredAt;
   final Value<DateTime?> lastFertilizedAt;
   final Value<DateTime?> lastMistedAt;
@@ -3147,6 +3366,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.seedVarietyName = const Value.absent(),
     this.plantingLocation = const Value.absent(),
     this.seedlingPlantingDate = const Value.absent(),
+    this.plantedAt = const Value.absent(),
+    this.growthStage = const Value.absent(),
     this.lastWateredAt = const Value.absent(),
     this.lastFertilizedAt = const Value.absent(),
     this.lastMistedAt = const Value.absent(),
@@ -3173,6 +3394,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     this.seedVarietyName = const Value.absent(),
     this.plantingLocation = const Value.absent(),
     this.seedlingPlantingDate = const Value.absent(),
+    this.plantedAt = const Value.absent(),
+    this.growthStage = const Value.absent(),
     this.lastWateredAt = const Value.absent(),
     this.lastFertilizedAt = const Value.absent(),
     this.lastMistedAt = const Value.absent(),
@@ -3200,6 +3423,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Expression<String>? seedVarietyName,
     Expression<String>? plantingLocation,
     Expression<DateTime>? seedlingPlantingDate,
+    Expression<DateTime>? plantedAt,
+    Expression<String>? growthStage,
     Expression<DateTime>? lastWateredAt,
     Expression<DateTime>? lastFertilizedAt,
     Expression<DateTime>? lastMistedAt,
@@ -3231,6 +3456,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
       if (plantingLocation != null) 'planting_location': plantingLocation,
       if (seedlingPlantingDate != null)
         'seedling_planting_date': seedlingPlantingDate,
+      if (plantedAt != null) 'planted_at': plantedAt,
+      if (growthStage != null) 'growth_stage': growthStage,
       if (lastWateredAt != null) 'last_watered_at': lastWateredAt,
       if (lastFertilizedAt != null) 'last_fertilized_at': lastFertilizedAt,
       if (lastMistedAt != null) 'last_misted_at': lastMistedAt,
@@ -3259,6 +3486,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
     Value<String?>? seedVarietyName,
     Value<String?>? plantingLocation,
     Value<DateTime?>? seedlingPlantingDate,
+    Value<DateTime?>? plantedAt,
+    Value<String?>? growthStage,
     Value<DateTime?>? lastWateredAt,
     Value<DateTime?>? lastFertilizedAt,
     Value<DateTime?>? lastMistedAt,
@@ -3287,6 +3516,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
       seedVarietyName: seedVarietyName ?? this.seedVarietyName,
       plantingLocation: plantingLocation ?? this.plantingLocation,
       seedlingPlantingDate: seedlingPlantingDate ?? this.seedlingPlantingDate,
+      plantedAt: plantedAt ?? this.plantedAt,
+      growthStage: growthStage ?? this.growthStage,
       lastWateredAt: lastWateredAt ?? this.lastWateredAt,
       lastFertilizedAt: lastFertilizedAt ?? this.lastFertilizedAt,
       lastMistedAt: lastMistedAt ?? this.lastMistedAt,
@@ -3359,6 +3590,12 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
         seedlingPlantingDate.value,
       );
     }
+    if (plantedAt.present) {
+      map['planted_at'] = Variable<DateTime>(plantedAt.value);
+    }
+    if (growthStage.present) {
+      map['growth_stage'] = Variable<String>(growthStage.value);
+    }
     if (lastWateredAt.present) {
       map['last_watered_at'] = Variable<DateTime>(lastWateredAt.value);
     }
@@ -3403,6 +3640,8 @@ class PlantsCompanion extends UpdateCompanion<Plant> {
           ..write('seedVarietyName: $seedVarietyName, ')
           ..write('plantingLocation: $plantingLocation, ')
           ..write('seedlingPlantingDate: $seedlingPlantingDate, ')
+          ..write('plantedAt: $plantedAt, ')
+          ..write('growthStage: $growthStage, ')
           ..write('lastWateredAt: $lastWateredAt, ')
           ..write('lastFertilizedAt: $lastFertilizedAt, ')
           ..write('lastMistedAt: $lastMistedAt, ')
@@ -8189,6 +8428,8 @@ typedef $$PlantSpeciesTableCreateCompanionBuilder =
       Value<String?> modelLabelId,
       Value<String?> imageAssetPath,
       Value<bool> isPremium,
+      Value<bool> isIndoor,
+      Value<String?> seasonalCareJson,
       Value<int> rowid,
     });
 typedef $$PlantSpeciesTableUpdateCompanionBuilder =
@@ -8216,6 +8457,8 @@ typedef $$PlantSpeciesTableUpdateCompanionBuilder =
       Value<String?> modelLabelId,
       Value<String?> imageAssetPath,
       Value<bool> isPremium,
+      Value<bool> isIndoor,
+      Value<String?> seasonalCareJson,
       Value<int> rowid,
     });
 
@@ -8364,6 +8607,16 @@ class $$PlantSpeciesTableFilterComposer
 
   ColumnFilters<bool> get isPremium => $composableBuilder(
     column: $table.isPremium,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isIndoor => $composableBuilder(
+    column: $table.isIndoor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get seasonalCareJson => $composableBuilder(
+    column: $table.seasonalCareJson,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8516,6 +8769,16 @@ class $$PlantSpeciesTableOrderingComposer
     column: $table.isPremium,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get isIndoor => $composableBuilder(
+    column: $table.isIndoor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get seasonalCareJson => $composableBuilder(
+    column: $table.seasonalCareJson,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$PlantSpeciesTableAnnotationComposer
@@ -8630,6 +8893,14 @@ class $$PlantSpeciesTableAnnotationComposer
   GeneratedColumn<bool> get isPremium =>
       $composableBuilder(column: $table.isPremium, builder: (column) => column);
 
+  GeneratedColumn<bool> get isIndoor =>
+      $composableBuilder(column: $table.isIndoor, builder: (column) => column);
+
+  GeneratedColumn<String> get seasonalCareJson => $composableBuilder(
+    column: $table.seasonalCareJson,
+    builder: (column) => column,
+  );
+
   Expression<T> plantsRefs<T extends Object>(
     Expression<T> Function($$PlantsTableAnnotationComposer a) f,
   ) {
@@ -8707,6 +8978,8 @@ class $$PlantSpeciesTableTableManager
                 Value<String?> modelLabelId = const Value.absent(),
                 Value<String?> imageAssetPath = const Value.absent(),
                 Value<bool> isPremium = const Value.absent(),
+                Value<bool> isIndoor = const Value.absent(),
+                Value<String?> seasonalCareJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PlantSpeciesCompanion(
                 id: id,
@@ -8732,6 +9005,8 @@ class $$PlantSpeciesTableTableManager
                 modelLabelId: modelLabelId,
                 imageAssetPath: imageAssetPath,
                 isPremium: isPremium,
+                isIndoor: isIndoor,
+                seasonalCareJson: seasonalCareJson,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -8759,6 +9034,8 @@ class $$PlantSpeciesTableTableManager
                 Value<String?> modelLabelId = const Value.absent(),
                 Value<String?> imageAssetPath = const Value.absent(),
                 Value<bool> isPremium = const Value.absent(),
+                Value<bool> isIndoor = const Value.absent(),
+                Value<String?> seasonalCareJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PlantSpeciesCompanion.insert(
                 id: id,
@@ -8784,6 +9061,8 @@ class $$PlantSpeciesTableTableManager
                 modelLabelId: modelLabelId,
                 imageAssetPath: imageAssetPath,
                 isPremium: isPremium,
+                isIndoor: isIndoor,
+                seasonalCareJson: seasonalCareJson,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -8861,6 +9140,8 @@ typedef $$PlantsTableCreateCompanionBuilder =
       Value<String?> seedVarietyName,
       Value<String?> plantingLocation,
       Value<DateTime?> seedlingPlantingDate,
+      Value<DateTime?> plantedAt,
+      Value<String?> growthStage,
       Value<DateTime?> lastWateredAt,
       Value<DateTime?> lastFertilizedAt,
       Value<DateTime?> lastMistedAt,
@@ -8888,6 +9169,8 @@ typedef $$PlantsTableUpdateCompanionBuilder =
       Value<String?> seedVarietyName,
       Value<String?> plantingLocation,
       Value<DateTime?> seedlingPlantingDate,
+      Value<DateTime?> plantedAt,
+      Value<String?> growthStage,
       Value<DateTime?> lastWateredAt,
       Value<DateTime?> lastFertilizedAt,
       Value<DateTime?> lastMistedAt,
@@ -9071,6 +9354,16 @@ class $$PlantsTableFilterComposer
 
   ColumnFilters<DateTime> get seedlingPlantingDate => $composableBuilder(
     column: $table.seedlingPlantingDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get plantedAt => $composableBuilder(
+    column: $table.plantedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get growthStage => $composableBuilder(
+    column: $table.growthStage,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -9315,6 +9608,16 @@ class $$PlantsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get plantedAt => $composableBuilder(
+    column: $table.plantedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get growthStage => $composableBuilder(
+    column: $table.growthStage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get lastWateredAt => $composableBuilder(
     column: $table.lastWateredAt,
     builder: (column) => ColumnOrderings(column),
@@ -9466,6 +9769,14 @@ class $$PlantsTableAnnotationComposer
 
   GeneratedColumn<DateTime> get seedlingPlantingDate => $composableBuilder(
     column: $table.seedlingPlantingDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get plantedAt =>
+      $composableBuilder(column: $table.plantedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get growthStage => $composableBuilder(
+    column: $table.growthStage,
     builder: (column) => column,
   );
 
@@ -9675,6 +9986,8 @@ class $$PlantsTableTableManager
                 Value<String?> seedVarietyName = const Value.absent(),
                 Value<String?> plantingLocation = const Value.absent(),
                 Value<DateTime?> seedlingPlantingDate = const Value.absent(),
+                Value<DateTime?> plantedAt = const Value.absent(),
+                Value<String?> growthStage = const Value.absent(),
                 Value<DateTime?> lastWateredAt = const Value.absent(),
                 Value<DateTime?> lastFertilizedAt = const Value.absent(),
                 Value<DateTime?> lastMistedAt = const Value.absent(),
@@ -9700,6 +10013,8 @@ class $$PlantsTableTableManager
                 seedVarietyName: seedVarietyName,
                 plantingLocation: plantingLocation,
                 seedlingPlantingDate: seedlingPlantingDate,
+                plantedAt: plantedAt,
+                growthStage: growthStage,
                 lastWateredAt: lastWateredAt,
                 lastFertilizedAt: lastFertilizedAt,
                 lastMistedAt: lastMistedAt,
@@ -9727,6 +10042,8 @@ class $$PlantsTableTableManager
                 Value<String?> seedVarietyName = const Value.absent(),
                 Value<String?> plantingLocation = const Value.absent(),
                 Value<DateTime?> seedlingPlantingDate = const Value.absent(),
+                Value<DateTime?> plantedAt = const Value.absent(),
+                Value<String?> growthStage = const Value.absent(),
                 Value<DateTime?> lastWateredAt = const Value.absent(),
                 Value<DateTime?> lastFertilizedAt = const Value.absent(),
                 Value<DateTime?> lastMistedAt = const Value.absent(),
@@ -9752,6 +10069,8 @@ class $$PlantsTableTableManager
                 seedVarietyName: seedVarietyName,
                 plantingLocation: plantingLocation,
                 seedlingPlantingDate: seedlingPlantingDate,
+                plantedAt: plantedAt,
+                growthStage: growthStage,
                 lastWateredAt: lastWateredAt,
                 lastFertilizedAt: lastFertilizedAt,
                 lastMistedAt: lastMistedAt,

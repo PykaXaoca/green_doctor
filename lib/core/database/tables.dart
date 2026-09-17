@@ -52,6 +52,28 @@ class PlantSpecies extends Table {
   TextColumn get imageAssetPath => text().nullable()();
   BoolColumn get isPremium => boolean().withDefault(const Constant(false))();
 
+  /// `true` — комнатное растение. `false` — садовое (улично-садовое).
+  ///
+  /// Значение выставляется при импорте справочника: если в
+  /// `category` есть слово «комнатн» или это «суккулент», то
+  /// растение считается комнатным, иначе — садовым.
+  BoolColumn get isIndoor => boolean().withDefault(const Constant(true))();
+
+  /// JSON с рекомендациями по стадиям роста для садовых растений.
+  ///
+  /// Структура:
+  /// ```json
+  /// {
+  ///   "growing":   "Полив, подкормка азотом",
+  ///   "flowering": "Не обрезать, не пересаживать",
+  ///   "fruiting":  "Подкормка калием, сбор урожая",
+  ///   "dormant":   "Обрезка, подготовка к зиме"
+  /// }
+  /// ```
+  ///
+  /// Для комнатных видов может быть `null`.
+  TextColumn get seasonalCareJson => text().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }
@@ -84,6 +106,20 @@ class Plants extends Table {
   TextColumn get seedVarietyName => text().nullable()();
   TextColumn get plantingLocation => text().nullable()();
   DateTimeColumn get seedlingPlantingDate => dateTime().nullable()();
+
+  // --- Садовое растение ---
+  /// Дата посадки взрослого садового растения. Может быть указана
+  /// давно (например, дерево посажено 20 лет назад).
+  DateTimeColumn get plantedAt => dateTime().nullable()();
+
+  /// Текущая стадия роста (переопределяется пользователем вручную).
+  ///
+  /// Если `null` — стадия определяется автоматически сервисом
+  /// `SeasonDetector` по календарю, геопозиции и дате посадки.
+  ///
+  /// Возможные значения: `'growing'`, `'flowering'`, `'fruiting'`,
+  /// `'dormant'`, `'young'`.
+  TextColumn get growthStage => text().nullable()();
 
   // --- Состояние ухода ---
   DateTimeColumn get lastWateredAt => dateTime().nullable()();
