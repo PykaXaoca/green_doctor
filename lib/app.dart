@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/providers/service_providers.dart';
@@ -97,6 +98,17 @@ class _PocketBotanistAppState extends ConsumerState<PocketBotanistApp> {
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
       routerConfig: AppRouter.router,
+
+      // Локализация: русский — основной, английский как fallback.
+      // Без этого MaterialLocalizations не находится, и DatePickerDialog,
+      // TimePickerDialog, а также встроенные подписи Material падают.
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('ru'), Locale('en')],
+      locale: const Locale('ru'),
     );
   }
 }

@@ -10,6 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # --- Локализация ---
+  # Нужна для MaterialLocalizations (DatePickerDialog, TimePickerDialog и т.п.).
+  flutter_localizations:
+    sdk: flutter
+
   # --- Состояние ---
   flutter_riverpod: ^3.4.2
   riverpod_annotation: ^4.0.6
@@ -54,7 +59,7 @@ dependencies:
 
   # --- Логирование ---
   sentry_flutter: ^9.25.0
-  
+
   package_info_plus: ^10.2.1
 
 dev_dependencies:
