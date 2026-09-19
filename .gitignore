@@ -79,3 +79,8 @@ bugreport-*.zip
 android/key.properties
 *.jks
 *.keystore
+# Local database dumps
+*.sqlite
+db_from_device.sqlite
+seasonal_keys.txt
+species_ids.txt

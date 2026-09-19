@@ -9,6 +9,7 @@ import '../../features/diagnosis/presentation/screens/treatment_screen.dart';
 import '../../features/plants/presentation/screens/plant_detail_screen.dart';
 import '../../features/plants/presentation/screens/plant_form_screen.dart';
 import '../../features/plants/presentation/screens/plants_list_screen.dart';
+import '../../features/plants/presentation/screens/seasonal_care_screen.dart';
 import '../../features/plants/presentation/screens/watering_schedule_screen.dart';
 import '../../features/profile/presentation/screens/care_schedule_settings_screen.dart';
 import '../../features/profile/presentation/screens/profile_edit_screen.dart';
@@ -102,6 +103,21 @@ class AppRouter {
                             state.pathParameters['id'] ?? '',
                           );
                           return PlantFormScreen(plantId: id);
+                        },
+                      ),
+                      GoRoute(
+                        path: 'seasonal',
+                        builder: (context, state) {
+                          final id = int.tryParse(
+                            state.pathParameters['id'] ?? '',
+                          );
+                          if (id == null) {
+                            return const _StubScreen(
+                              title: 'Растение не найдено',
+                              icon: Icons.error_outline,
+                            );
+                          }
+                          return SeasonalCareScreen(plantId: id);
                         },
                       ),
                     ],
