@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/providers/repository_providers.dart';
 import 'core/providers/service_providers.dart';
 import 'core/providers/settings_providers.dart';
 import 'core/router/app_router.dart';
@@ -16,6 +17,9 @@ class PocketBotanistApp extends ConsumerStatefulWidget {
 }
 
 class _PocketBotanistAppState extends ConsumerState<PocketBotanistApp> {
+  /// Флаг защиты от параллельного запуска синхронизации настроек.
+  bool _syncing = false;
+
   @override
   void initState() {
     super.initState();
@@ -45,10 +49,61 @@ class _PocketBotanistAppState extends ConsumerState<PocketBotanistApp> {
     }
   }
 
-  /// Следит за изменениями темы и настроек уведомлений.
-  void _syncSettingsToServices() {
-    final settings = ref.read(notificationSettingsSyncProvider);
-    ref.read(notificationServiceProvider).updateSettings(settings);
+  /// Синхронизирует настройки уведомлений с сервисом и **пересоздаёт**
+  /// все запланированные уведомления.
+  ///
+  /// Вызывается только при **реальных** изменениях настроек после
+  /// старта приложения. На старте синхронизацию делает [main], поэтому
+  /// первый переход `loading → data` в [ref.listen] пропускается.
+  Future<void> _syncSettingsToServices() async {
+    if (_syncing) return;
+    _syncing = true;
+    try {
+      final settings = ref.read(notificationSettingsSyncProvider);
+      final notifications = ref.read(notificationServiceProvider);
+
+      notifications.updateSettings(settings);
+
+      final plantRepo = ref.read(plantRepositoryProvider);
+      final plants = await plantRepo.getAllActive();
+      await notifications.syncAll(plants);
+
+      final treatmentScheduler = ref.read(treatmentSchedulerProvider);
+      await treatmentScheduler.syncAll();
+    } catch (e, st) {
+      debugPrint('Ошибка пересинхронизации уведомлений: $e');
+      debugPrintStack(stackTrace: st);
+    } finally {
+      _syncing = false;
+    }
+  }
+
+  /// Обработка изменения настроек уведомлений.
+  ///
+  /// Отсеивает:
+  ///  * первый переход `AsyncLoading → AsyncData` при старте (там
+  ///    синхронизация уже сделана из `main.dart`);
+  ///  * повторные срабатывания с тем же значением (Riverpod может
+  ///    пересобирать провайдер без изменения данных).
+  void _onSettingsChanged(
+    NotificationSettings? previous,
+    NotificationSettings? next,
+  ) {
+    // Первый переход loading → data при старте — пропускаем.
+    if (previous == null) return;
+
+    // Нет нового значения — пропускаем.
+    if (next == null) return;
+
+    // Значения идентичны — пропускаем.
+    if (previous.enabled == next.enabled &&
+        previous.summaryHour == next.summaryHour &&
+        previous.groupByDay == next.groupByDay &&
+        previous.treatmentEnabled == next.treatmentEnabled) {
+      return;
+    }
+
+    _syncSettingsToServices();
   }
 
   void _handlePayload(String? payload) {
@@ -82,9 +137,13 @@ class _PocketBotanistAppState extends ConsumerState<PocketBotanistApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Слушаем изменения настроек и передаём в сервис уведомлений.
-    ref.listen(notificationSettingsProvider, (_, _) {
-      _syncSettingsToServices();
+    // Слушаем изменения настроек. Реагируем только на реальные
+    // изменения после старта приложения.
+    ref.listen<AsyncValue<NotificationSettings>>(notificationSettingsProvider, (
+      previous,
+      next,
+    ) {
+      _onSettingsChanged(previous?.asData?.value, next.asData?.value);
     });
 
     final themeModeAsync = ref.watch(appThemeModeProvider);
@@ -99,9 +158,6 @@ class _PocketBotanistAppState extends ConsumerState<PocketBotanistApp> {
       themeMode: themeMode,
       routerConfig: AppRouter.router,
 
-      // Локализация: русский — основной, английский как fallback.
-      // Без этого MaterialLocalizations не находится, и DatePickerDialog,
-      // TimePickerDialog, а также встроенные подписи Material падают.
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
