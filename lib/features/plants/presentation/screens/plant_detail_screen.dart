@@ -11,7 +11,6 @@ import '../../../../core/utils/snack_bars.dart';
 import '../providers/plant_providers.dart';
 import '../widgets/health_section.dart';
 import '../widgets/repotting_banner.dart';
-import '../widgets/species_recommendations_card.dart';
 
 /// Экран деталей растения.
 class PlantDetailScreen extends ConsumerWidget {
@@ -102,7 +101,7 @@ class _PlantDetailView extends ConsumerWidget {
           RepottingBanner(plantId: plant.id),
           _buildCareInfo(ref),
           const SizedBox(height: 16),
-          _buildRecommendations(ref),
+          _buildSeasonalCareLink(context, ref),
           const SizedBox(height: 16),
           HealthSection(plantId: plant.id),
           const SizedBox(height: 16),
@@ -436,7 +435,9 @@ class _PlantDetailView extends ConsumerWidget {
     );
   }
 
-  Widget _buildRecommendations(WidgetRef ref) {
+  /// Ссылка на экран сезонного ухода.
+  /// Появляется только если у вида заполнен seasonalCareJson.
+  Widget _buildSeasonalCareLink(BuildContext context, WidgetRef ref) {
     if (plant.speciesId == null) return const SizedBox.shrink();
 
     final speciesAsync = ref.watch(_speciesByIdProvider(plant.speciesId!));
@@ -444,7 +445,21 @@ class _PlantDetailView extends ConsumerWidget {
     return speciesAsync.maybeWhen(
       data: (species) {
         if (species == null) return const SizedBox.shrink();
-        return SpeciesRecommendationsCard(species: species, readOnly: true);
+        final raw = species.seasonalCareJson;
+        if (raw == null || raw.isEmpty) return const SizedBox.shrink();
+        return Card(
+          child: ListTile(
+            leading: const Icon(Icons.eco, color: Colors.green),
+            title: const Text('Сезонный уход'),
+            subtitle: Text(
+              species.isIndoor == true
+                  ? 'Круглогодичный уход'
+                  : 'Рекомендации по стадии роста',
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push('/plants/${plant.id}/seasonal'),
+          ),
+        );
       },
       orElse: () => const SizedBox.shrink(),
     );
