@@ -113,7 +113,7 @@ class SpeciesImporter {
   }
 
   /// Возвращает список (путь, содержимое) для всех существующих файлов
-  /// вида: <prefix>.json, <prefix>_2.json, <prefix>_3.json, ...
+  /// вида: `<prefix>.json`, `<prefix>_2.json`, `<prefix>_3.json`, ...
   /// Останавливается на первом отсутствующем индексе.
   Future<List<MapEntry<String, String>>> _loadNumberedJson(
     String prefix,
