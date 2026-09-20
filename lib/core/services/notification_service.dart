@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -14,6 +15,15 @@ import '../providers/settings_providers.dart';
 /// настройках: вместо отдельного уведомления на каждое растение
 /// приходит одно — «Сегодня полить N растений». Группировку можно
 /// выключить в настройках.
+///
+/// Планирование идёт через [_scheduleSafely]: сначала пытаемся
+/// использовать точные alarm'ы (`exactAllowWhileIdle`) — они не
+/// задерживаются системой в Doze. Если разрешение на exact alarms
+/// не выдано (Android 12+), фолбэчимся на `inexactAllowWhileIdle`.
+///
+/// Разрешения **не запрашиваются** при инициализации. Их запрашивает
+/// UI в момент, когда пользователь включает уведомления в настройках
+/// (см. [requestPermissions]).
 class NotificationService {
   NotificationService();
 
@@ -60,17 +70,23 @@ class NotificationService {
     _settings = settings;
   }
 
+  /// Инициализация плагина.
+  ///
+  /// **Разрешения не запрашиваются.** Они запрашиваются отдельно
+  /// через [requestPermissions], когда пользователь явно включает
+  /// уведомления в настройках.
   Future<void> initialize() async {
     if (_initialized) return;
 
+    // --- Таймзоны ---
     tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('UTC'));
+    _setupLocalTimezone();
 
     const androidInit = AndroidInitializationSettings(_iconName);
     const iosInit = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
     const linuxInit = LinuxInitializationSettings(defaultActionName: 'Открыть');
     const windowsInit = WindowsInitializationSettings(
@@ -91,8 +107,121 @@ class NotificationService {
       onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse,
     );
 
-    await _requestPermissions();
+    // --- Явно создаём канал на Android ---
+    if (Platform.isAndroid) {
+      final android = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
+      await android?.createNotificationChannel(
+        const AndroidNotificationChannel(
+          _channelId,
+          _channelName,
+          description: _channelDescription,
+          importance: Importance.high,
+          playSound: true,
+          enableVibration: true,
+        ),
+      );
+    }
+
     _initialized = true;
+  }
+
+  /// Тихая проверка: выдано ли разрешение на уведомления (без диалога).
+  ///
+  /// На iOS/macOS всегда возвращает `true` — там разрешения
+  /// запрашиваются только через [requestPermissions].
+  Future<bool> hasPermissions() async {
+    if (!Platform.isAndroid) return true;
+
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (android == null) return false;
+
+    try {
+      final enabled = await android.areNotificationsEnabled();
+      return enabled ?? false;
+    } catch (e) {
+      log('areNotificationsEnabled упал: $e');
+      return false;
+    }
+  }
+
+  /// Запросить разрешения на уведомления и (мягко) на exact alarms.
+  ///
+  /// Возвращает `true`, если разрешение на обычные уведомления
+  /// выдано. Разрешение на exact alarms запрашивается «мягко»:
+  /// если пользователь откажет, планирование всё равно сработает
+  /// в inexact-режиме (см. [_scheduleSafely]).
+  Future<bool> requestPermissions() async {
+    if (!_initialized) await initialize();
+
+    if (Platform.isAndroid) {
+      final android = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
+      if (android == null) return false;
+
+      bool granted = false;
+      try {
+        final result = await android.requestNotificationsPermission();
+        granted = result ?? false;
+        log('POST_NOTIFICATIONS granted: $granted');
+      } catch (e) {
+        log('requestNotificationsPermission упал: $e');
+        return false;
+      }
+
+      // Разрешение на exact alarms — «мягко».
+      try {
+        final exact = await android.requestExactAlarmsPermission();
+        log('SCHEDULE_EXACT_ALARM granted: $exact');
+      } catch (e) {
+        log('requestExactAlarmsPermission недоступен: $e');
+      }
+
+      return granted;
+    }
+
+    if (Platform.isIOS || Platform.isMacOS) {
+      final ios = _plugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >();
+      final granted = await ios?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      return granted ?? false;
+    }
+
+    return true;
+  }
+
+  /// Устанавливает локальную таймзону по текущему смещению системы.
+  ///
+  /// Без пакета `flutter_timezone` нельзя получить IANA-имя зоны,
+  /// зато можно подобрать фиксированное смещение `Etc/GMT±N`.
+  /// (В базе IANA знак инвертирован: `Etc/GMT-5` = UTC+5.)
+  void _setupLocalTimezone() {
+    try {
+      final offsetHours = DateTime.now().timeZoneOffset.inHours;
+      final sign = offsetHours >= 0 ? '-' : '+';
+      final abs = offsetHours.abs();
+      final zoneName = 'Etc/GMT$sign$abs';
+      tz.setLocalLocation(tz.getLocation(zoneName));
+      log(
+        'Таймзона: $zoneName (UTC${offsetHours >= 0 ? '+' : ''}$offsetHours)',
+      );
+    } catch (e) {
+      tz.setLocalLocation(tz.getLocation('UTC'));
+      log('Не удалось установить локальную таймзону, использую UTC: $e');
+    }
   }
 
   void _onDidReceiveNotificationResponse(NotificationResponse response) {
@@ -106,21 +235,64 @@ class NotificationService {
     return details.notificationResponse?.payload;
   }
 
-  Future<void> _requestPermissions() async {
-    if (Platform.isAndroid) {
-      final android = _plugin
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >();
-      await android?.requestNotificationsPermission();
-      await android?.requestExactAlarmsPermission();
-    } else if (Platform.isIOS || Platform.isMacOS) {
-      final ios = _plugin
-          .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin
-          >();
-      await ios?.requestPermissions(alert: true, badge: true, sound: true);
+  /// Отладочный вывод списка запланированных уведомлений.
+  Future<void> _logPending() async {
+    if (!kDebugMode) return;
+    try {
+      final pending = await _plugin.pendingNotificationRequests();
+      log('Запланировано уведомлений: ${pending.length}');
+      for (final p in pending.take(10)) {
+        log('  • id=${p.id} title="${p.title}"');
+      }
+    } catch (e) {
+      log('pendingNotificationRequests недоступен: $e');
     }
+  }
+
+  /// Планирует уведомление с попыткой использовать exact-режим.
+  ///
+  /// Если система не разрешает exact alarms (Android 12+ без явного
+  /// разрешения), ловим исключение и повторяем с inexact-режимом.
+  /// Это гарантирует, что уведомление будет запланировано в любом
+  /// случае, но с разной точностью.
+  Future<void> _scheduleSafely({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime when,
+    required NotificationDetails details,
+    String? payload,
+  }) async {
+    final tzWhen = tz.TZDateTime.from(when, tz.local);
+
+    if (Platform.isAndroid) {
+      try {
+        await _plugin.zonedSchedule(
+          id: id,
+          title: title,
+          body: body,
+          scheduledDate: tzWhen,
+          notificationDetails: details,
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          payload: payload,
+        );
+        return;
+      } on PlatformException catch (e) {
+        log('exactAllowWhileIdle недоступен (${e.code}), фолбэк на inexact');
+      } catch (e) {
+        log('exactAllowWhileIdle упал: $e, фолбэк на inexact');
+      }
+    }
+
+    await _plugin.zonedSchedule(
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: tzWhen,
+      notificationDetails: details,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      payload: payload,
+    );
   }
 
   // =========================================================================
@@ -128,15 +300,6 @@ class NotificationService {
   // =========================================================================
 
   /// Полная синхронизация уведомлений о поливе.
-  ///
-  /// Работает в двух режимах:
-  ///  * **с группировкой** (`_settings.groupByDay == true`): одно
-  ///    уведомление на день, со списком растений;
-  ///  * **индивидуально**: отдельное уведомление на каждое растение
-  ///    в его рекомендуемую дату.
-  ///
-  /// Если уведомления отключены (`_settings.enabled == false`),
-  /// все запланированные уведомления о поливе отменяются.
   Future<void> syncAll(List<Plant> plants) async {
     if (!_initialized) await initialize();
 
@@ -152,17 +315,20 @@ class NotificationService {
       await _plugin.cancel(id: _idFor('watering', p.id));
     }
 
-    // Если уведомления отключены — на этом всё.
-    if (!_settings.enabled) return;
+    if (!_settings.enabled) {
+      log('Уведомления выключены в настройках');
+      return;
+    }
 
     if (_settings.groupByDay) {
       await _syncGrouped(plants, today);
     } else {
       await _syncIndividual(plants, now);
     }
+
+    await _logPending();
   }
 
-  /// Групповой режим — одно уведомление в день.
   Future<void> _syncGrouped(List<Plant> plants, DateTime today) async {
     final Map<DateTime, List<Plant>> byDay = {};
     final overdue = <Plant>[];
@@ -243,7 +409,6 @@ class NotificationService {
     }
   }
 
-  /// Индивидуальный режим — по одному уведомлению на растение.
   Future<void> _syncIndividual(List<Plant> plants, DateTime now) async {
     for (final plant in plants) {
       if (plant.isArchived) continue;
@@ -267,6 +432,8 @@ class NotificationService {
         importance: Importance.high,
         priority: Priority.high,
         icon: _iconName,
+        playSound: true,
+        enableVibration: true,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),
@@ -274,13 +441,12 @@ class NotificationService {
       windows: WindowsNotificationDetails(),
     );
 
-    await _plugin.zonedSchedule(
+    await _scheduleSafely(
       id: _idFor('watering', plant.id),
       title: 'Пора полить ${plant.customName}',
       body: 'Нажмите, чтобы отметить полив',
-      scheduledDate: tz.TZDateTime.from(when, tz.local),
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      when: when,
+      details: details,
       payload: 'plant:${plant.id}',
     );
   }
@@ -291,7 +457,9 @@ class NotificationService {
     required DateTime scheduled,
     required bool hasOverdue,
   }) async {
-    const details = NotificationDetails(
+    final body = _formatBody(plants);
+
+    final details = NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,
         _channelName,
@@ -299,29 +467,29 @@ class NotificationService {
         importance: Importance.high,
         priority: Priority.high,
         icon: _iconName,
-        styleInformation: BigTextStyleInformation(''),
+        playSound: true,
+        enableVibration: true,
+        styleInformation: BigTextStyleInformation(body),
       ),
-      iOS: DarwinNotificationDetails(),
-      macOS: DarwinNotificationDetails(),
-      linux: LinuxNotificationDetails(),
-      windows: WindowsNotificationDetails(),
+      iOS: const DarwinNotificationDetails(),
+      macOS: const DarwinNotificationDetails(),
+      linux: const LinuxNotificationDetails(),
+      windows: const WindowsNotificationDetails(),
     );
 
     final count = plants.length;
     final title = hasOverdue ? 'Полив: есть просроченные' : 'Полив на сегодня';
-    final body = _formatBody(plants);
 
-    await _plugin.zonedSchedule(
+    await _scheduleSafely(
       id: _idFor('watering_summary', _dayKey(day)),
       title: title,
       body: body,
-      scheduledDate: tz.TZDateTime.from(scheduled, tz.local),
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      when: scheduled,
+      details: details,
       payload: 'watering_summary',
     );
 
-    log('Групповое уведомление на $day: $count раст.');
+    log('Групповое уведомление на $scheduled: $count раст.');
   }
 
   String _formatBody(List<Plant> plants) {
@@ -368,6 +536,8 @@ class NotificationService {
         importance: Importance.high,
         priority: Priority.high,
         icon: _iconName,
+        playSound: true,
+        enableVibration: true,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),
@@ -375,13 +545,12 @@ class NotificationService {
       windows: WindowsNotificationDetails(),
     );
 
-    await _plugin.zonedSchedule(
+    await _scheduleSafely(
       id: _idFor('reminder', reminderId),
       title: title,
       body: body,
-      scheduledDate: tz.TZDateTime.from(when, tz.local),
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      when: when,
+      details: details,
       payload: payload,
     );
   }
@@ -426,6 +595,8 @@ class NotificationService {
         importance: Importance.high,
         priority: Priority.high,
         icon: _iconName,
+        playSound: true,
+        enableVibration: true,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),
@@ -433,13 +604,12 @@ class NotificationService {
       windows: WindowsNotificationDetails(),
     );
 
-    await _plugin.zonedSchedule(
+    await _scheduleSafely(
       id: _idFor('treatment', stepId),
       title: 'Лечение: $diseaseName',
       body: stepTitle,
-      scheduledDate: tz.TZDateTime.from(when, tz.local),
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      when: when,
+      details: details,
       payload: 'treatment:$diagnosisId:$stepId',
     );
   }
@@ -463,6 +633,8 @@ class NotificationService {
         importance: Importance.high,
         priority: Priority.high,
         icon: _iconName,
+        playSound: true,
+        enableVibration: true,
       ),
       iOS: DarwinNotificationDetails(),
       macOS: DarwinNotificationDetails(),
@@ -475,6 +647,7 @@ class NotificationService {
       body: 'Если вы видите это — уведомления работают',
       notificationDetails: details,
     );
+    log('Тестовое уведомление показано');
   }
 
   // =========================================================================

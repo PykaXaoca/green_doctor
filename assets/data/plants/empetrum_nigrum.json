@@ -1,0 +1,23 @@
+{
+  "id": "empetrum_nigrum",
+  "common_name": "Водяника (шикша)",
+  "scientific_name": "Empetrum nigrum",
+  "family": "Ericaceae",
+  "category": "Ягодный кустарник",
+  "description": "Стелющийся кустарничек с чёрными ягодами. Растёт в тундре и в горах.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 45,
+  "fertilizer_type": "Для кислотолюбивых, слабый раствор",
+  "light_requirements": "Солнце",
+  "min_temperature": -40,
+  "max_temperature": 22,
+  "humidity_min": 60,
+  "humidity_max": 85,
+  "soil_type": "Кислый торф (pH 4.0-5.5), дренированный",
+  "soil_moisture": "Умеренный, не пересыхать",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Весной удалять старые побеги для стимуляции роста",
+  "toxicity": "Безопасно",
+  "model_label_id": "empetrum_nigrum",
+  "is_premium": false
+}

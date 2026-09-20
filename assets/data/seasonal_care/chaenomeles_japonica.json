@@ -1,0 +1,798 @@
+{
+    "stages": [
+        {
+            "id": "spring",
+            "name": "Весеннее пробуждение",
+            "start_month": 3,
+            "start_day": 15,
+            "end_month": 4,
+            "end_day": 30,
+            "schedule": [
+                {
+                    "period": "15–25 марта",
+                    "temperature": "+2…+5 °C",
+                    "phase": "Почки спят",
+                    "action": "Санитарная обрезка, формировка"
+                },
+                {
+                    "period": "25 марта — 5 апреля",
+                    "temperature": "+5…+8 °C",
+                    "phase": "Набухание почек",
+                    "action": "Побелка, 3 % бордоская"
+                },
+                {
+                    "period": "5–15 апреля",
+                    "temperature": "+8…+12 °C",
+                    "phase": "Зелёный конус",
+                    "action": "Азотная подкормка"
+                },
+                {
+                    "period": "15–25 апреля",
+                    "temperature": "+12…+16 °C",
+                    "phase": "Цветение",
+                    "action": "Обработка от вредителей"
+                }
+            ],
+            "actions": [
+                {
+                    "code": "pruning",
+                    "title": "Обрезка айвы японской",
+                    "description": "Хеномелес — декоративный кустарник с ароматными плодами. Ягоды твёрдые, используются в варенье.",
+                    "window": {
+                        "start_month": 3,
+                        "start_day": 15,
+                        "end_month": 3,
+                        "end_day": 25
+                    },
+                    "priority": "high",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "subheading",
+                            "text": "Что удалять"
+                        },
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Сухие, сломанные, больные ветви",
+                                "Ветви, растущие внутрь",
+                                "Ветви старше 5–6 лет — они уже не дают урожая",
+                                "Слабые, тонкие побеги",
+                                "Корневую поросль"
+                            ]
+                        },
+                        {
+                            "type": "subheading",
+                            "text": "Схема формирования"
+                        },
+                        {
+                            "type": "paragraph",
+                            "text": "Для живой изгороди — обрезка 2 раза за сезон. Для свободного куста — прореживание раз в 2–3 года."
+                        }
+                    ]
+                },
+                {
+                    "code": "whitewash",
+                    "title": "Побелка штамба",
+                    "description": "2 кг извести + 200 г медного купороса + 100 г ПВА на 10 л. В 2 слоя.",
+                    "window": {
+                        "start_month": 3,
+                        "start_day": 25,
+                        "end_month": 4,
+                        "end_day": 5
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Наносить на штамб и основания скелетных ветвей (если формируется деревцем)."
+                        }
+                    ]
+                },
+                {
+                    "code": "first_nitrogen",
+                    "title": "Первая азотная подкормка",
+                    "description": "По таломёрзлой почве.",
+                    "window": {
+                        "start_month": 4,
+                        "start_day": 5,
+                        "end_month": 4,
+                        "end_day": 15
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Мочевина: 20–30 г на 10 л, 2–3 л под куст",
+                                "Аммиачная селитра: 15–20 г на м², разбросать",
+                                "Настой коровяка 1:10: 3–4 л под куст"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "spring_treatments",
+                    "title": "Обработки от вредителей и болезней",
+                    "description": "Серия обработок по фенофазам.",
+                    "window": {
+                        "start_month": 3,
+                        "start_day": 25,
+                        "end_month": 4,
+                        "end_day": 25
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "subheading",
+                            "text": "До распускания почек"
+                        },
+                        {
+                            "type": "paragraph",
+                            "text": "3 % бордоская: 300 г медного купороса + 400 г извести на 10 л. Против пятнистостей, антракноза."
+                        },
+                        {
+                            "type": "subheading",
+                            "text": "Зелёный конус"
+                        },
+                        {
+                            "type": "paragraph",
+                            "text": "«Хорус» 2 г на 10 л — пятнистости."
+                        },
+                        {
+                            "type": "subheading",
+                            "text": "Цветение"
+                        },
+                        {
+                            "type": "paragraph",
+                            "text": "«Актара» 1 г на 10 л — тля, клещ."
+                        }
+                    ]
+                },
+                {
+                    "code": "trunk_circle",
+                    "title": "Приствольный круг",
+                    "description": "Взрыхлить на 5 см, мульча, удалить поросль.",
+                    "window": {
+                        "start_month": 4,
+                        "start_day": 15,
+                        "end_month": 4,
+                        "end_day": 30
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Взрыхлить на 5 см",
+                                "Мульча 5 см",
+                                "Удалить поросль"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "notes": [
+                "Айва японская самоплодна, но перекрёстное опыление повышает урожай",
+                "Декоративный кустарник — цветёт ярко-красными цветками",
+                "Ягоды твёрдые, используются в варенье",
+                "Не обрезать осенью — раны плохо заживают"
+            ]
+        },
+        {
+            "id": "growing",
+            "name": "Активный рост",
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30,
+            "schedule": [
+                {
+                    "period": "1–10 мая",
+                    "temperature": "—",
+                    "phase": "Развёртывание листьев",
+                    "action": "Азотная подкормка"
+                },
+                {
+                    "period": "10–20 мая",
+                    "temperature": "—",
+                    "phase": "Рост побегов",
+                    "action": "Обработка от тли, клеща"
+                },
+                {
+                    "period": "20–31 мая",
+                    "temperature": "—",
+                    "phase": "Завязывание",
+                    "action": "Нормировка не нужна"
+                },
+                {
+                    "period": "1–15 июня",
+                    "temperature": "—",
+                    "phase": "Рост плодов",
+                    "action": "Вторая азотная"
+                },
+                {
+                    "period": "15–30 июня",
+                    "temperature": "—",
+                    "phase": "Рост плодов",
+                    "action": "Обработка от плодожорки"
+                }
+            ],
+            "actions": [
+                {
+                    "code": "watering",
+                    "title": "Полив",
+                    "description": "Айва японская засухоустойчива — полив умеренный.",
+                    "window": {
+                        "start_month": 5,
+                        "start_day": 1,
+                        "end_month": 6,
+                        "end_day": 30
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Умеренная погода: 20–25 л на куст раз в 7–10 дней",
+                                "Жаркая: 25–30 л на куст раз в 5 дней",
+                                "Засушливая: 30–35 л на куст раз в 3–4 дня"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "feeding",
+                    "title": "Подкормки",
+                    "description": "Азот до конца июня. После 10 июля азот не давать.",
+                    "window": {
+                        "start_month": 5,
+                        "start_day": 1,
+                        "end_month": 6,
+                        "end_day": 30
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Настой коровяка 1:10: 3–4 л под куст",
+                                "Мочевина: 20 г на 10 л, 2 л",
+                                "Нитроаммофоска: 25 г на 10 л, 2 л",
+                                "Зола: 1 стакан на 10 л, 2 л"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "pest_protection",
+                    "title": "Защита от вредителей",
+                    "description": "Осматривать каждые 10–14 дней.",
+                    "window": {
+                        "start_month": 5,
+                        "start_day": 1,
+                        "end_month": 6,
+                        "end_day": 30
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Тля — скрученные листья. «Актара» 1 г на 10 л",
+                                "Клещ — паутинка. «Фитоверм» 2 мл на 1 л",
+                                "Пилильщик — объеденные листья. «Битоксибациллин» 20 г на 10 л",
+                                "Плодожорка — червивые плоды. «Кинмикс» 2,5 мл на 10 л"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "diseases",
+                    "title": "Болезни",
+                    "description": "Профилактика и лечение.",
+                    "window": {
+                        "start_month": 5,
+                        "start_day": 1,
+                        "end_month": 6,
+                        "end_day": 30
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Антракноз — тёмные вдавленные пятна. «Скор» 2 мл на 10 л",
+                                "Пятнистости — бурые пятна. «Хорус» 2 г на 10 л",
+                                "Мучнистая роса — белый налёт. «Топаз» 2 мл на 10 л",
+                                "Ржавчина — оранжевые пятна. «Топаз» 2 мл на 10 л"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "loosening_mulch",
+                    "title": "Рыхление и мульча",
+                    "description": "После полива — рыхление на 5 см, мульча 5 см.",
+                    "window": {
+                        "start_month": 5,
+                        "start_day": 1,
+                        "end_month": 6,
+                        "end_day": 30
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Удалять поросль и сорняки."
+                        }
+                    ]
+                }
+            ],
+            "notes": [
+                "Плоды айвы японской созревают в сентябре-октябре",
+                "Ягоды твёрдые, терпкие — используются только в переработке",
+                "Декоративный кустарник — цветёт ярко-красными цветками",
+                "Не опрыскивать в жару выше +28 °C"
+            ]
+        },
+        {
+            "id": "flowering",
+            "name": "Цветение",
+            "start_month": 4,
+            "start_day": 15,
+            "end_month": 5,
+            "end_day": 15,
+            "schedule": [
+                {
+                    "period": "Начало",
+                    "temperature": "+10…+14 °C",
+                    "phase": "3–5 дней",
+                    "action": "Опрыскать мёдом"
+                },
+                {
+                    "period": "Массовое",
+                    "temperature": "+14…+18 °C",
+                    "phase": "7–10 дней",
+                    "action": "Полив умеренный"
+                },
+                {
+                    "period": "Конец",
+                    "temperature": "+16…+20 °C",
+                    "phase": "5–7 дней",
+                    "action": "Фосфорно-калийная подкормка"
+                }
+            ],
+            "actions": [
+                {
+                    "code": "watering_flowering",
+                    "title": "Полив",
+                    "description": "15–20 л раз в 5–7 дней.",
+                    "window": {
+                        "start_month": 4,
+                        "start_day": 15,
+                        "end_month": 5,
+                        "end_day": 15
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Поливать под корень."
+                        }
+                    ]
+                },
+                {
+                    "code": "feeding_flowering",
+                    "title": "Подкормка калием и фосфором",
+                    "description": "Азот не вносить.",
+                    "window": {
+                        "start_month": 4,
+                        "start_day": 15,
+                        "end_month": 5,
+                        "end_day": 15
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Сульфат калия: 15 г на 10 л, 2–3 л",
+                                "Суперфосфат: 25 г на 10 л, 2–3 л",
+                                "Зола: 1 стакан на 10 л, 2 л"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "pollinator_attraction",
+                    "title": "Привлечение опылителей",
+                    "description": "Айва японская — хороший медонос, привлекает пчёл.",
+                    "window": {
+                        "start_month": 4,
+                        "start_day": 15,
+                        "end_month": 5,
+                        "end_day": 15
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Опрыскать мёдом (1 ст. л. на 1 л)."
+                        }
+                    ]
+                },
+                {
+                    "code": "frost_protection",
+                    "title": "Защита от заморозков",
+                    "description": "При −2 °C: дымление, дождевание, агроспан.",
+                    "window": {
+                        "start_month": 4,
+                        "start_day": 15,
+                        "end_month": 5,
+                        "end_day": 15
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Цветёт в апреле-мае — риск заморозков есть. При −2 °C применить дымление, дождевание или укрытие агроспаном."
+                        }
+                    ]
+                },
+                {
+                    "code": "hand_pollination",
+                    "title": "Ручное опыление",
+                    "description": "Не требуется — айва японская самоплодна.",
+                    "window": {
+                        "start_month": 4,
+                        "start_day": 15,
+                        "end_month": 5,
+                        "end_day": 15
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Пчёлы повышают завязываемость."
+                        }
+                    ]
+                }
+            ],
+            "notes": [
+                "Цветение айвы японской длится 15–25 дней",
+                "Ярко-красные цветки — декоративны",
+                "Холод ниже +8 °C — пчёлы не летают",
+                "Цветёт до распускания листьев"
+            ]
+        },
+        {
+            "id": "fruiting",
+            "name": "Налив и созревание плодов",
+            "start_month": 9,
+            "start_day": 1,
+            "end_month": 10,
+            "end_day": 31,
+            "schedule": [
+                {
+                    "period": "Японская",
+                    "temperature": "—",
+                    "phase": "Сентябрь — октябрь",
+                    "action": "Жёлто-зелёные, ароматные"
+                },
+                {
+                    "period": "Крупноплодная",
+                    "temperature": "—",
+                    "phase": "Сентябрь",
+                    "action": "Крупные"
+                }
+            ],
+            "actions": [
+                {
+                    "code": "watering_fruiting",
+                    "title": "Полив",
+                    "description": "В период налива полив нужен.",
+                    "window": {
+                        "start_month": 9,
+                        "start_day": 1,
+                        "end_month": 10,
+                        "end_day": 15
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Налив: 25–30 л на куст раз в 5–7 дней",
+                                "Созревание: 20–25 л на куст раз в 7 дней",
+                                "За 2 недели до сбора: прекратить"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "feeding_fruiting",
+                    "title": "Подкормки",
+                    "description": "Калий и фосфор.",
+                    "window": {
+                        "start_month": 9,
+                        "start_day": 1,
+                        "end_month": 9,
+                        "end_day": 30
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Монофосфат калия: 15 г на 10 л, 2 л",
+                                "Сульфат калия: 20 г на 10 л, 2 л",
+                                "Зола: 1 стакан на 10 л, 2 л"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "harvest",
+                    "title": "Сбор урожая",
+                    "description": "Плоды твёрдые, снимать с плодоножкой.",
+                    "window": {
+                        "start_month": 9,
+                        "start_day": 1,
+                        "end_month": 10,
+                        "end_day": 31
+                    },
+                    "priority": "high",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Японская: снимать при полной зрелости",
+                                "Крупноплодная: снимать при полной зрелости"
+                            ]
+                        },
+                        {
+                            "type": "paragraph",
+                            "text": "Плоды твёрдые, снимать с плодоножкой. Для длительного хранения — переработка или сушка."
+                        }
+                    ]
+                },
+                {
+                    "code": "pest_fruiting",
+                    "title": "Болезни и вредители в период налива",
+                    "description": "Осматривать каждые 3–4 дня.",
+                    "window": {
+                        "start_month": 9,
+                        "start_day": 1,
+                        "end_month": 10,
+                        "end_day": 31
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Плодожорка — червивые плоды. «Кинмикс» 2,5 мл на 10 л",
+                                "Птицы — склёванные плоды. Сетка, отпугиватели",
+                                "Антракноз — тёмные пятна. «Скор» 2 мл на 10 л"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "processing",
+                    "title": "Переработка",
+                    "description": "Плоды твёрдые, терпкие. Используются только в переработке.",
+                    "window": {
+                        "start_month": 9,
+                        "start_day": 15,
+                        "end_month": 10,
+                        "end_day": 31
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Варенье, джем, желе",
+                                "Настойка, ликёр",
+                                "Сушка — добавка к чаю",
+                                "Медицина: витаминное"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "notes": [
+                "Плоды айвы японской созревают в сентябре-октябре",
+                "Ягоды твёрдые, терпкие — только в переработке",
+                "Хранение — в сушёном виде до 2 лет",
+                "Свежие плоды хранятся 2–3 месяца в холодильнике"
+            ]
+        },
+        {
+            "id": "dormant",
+            "name": "Покой и подготовка к зиме",
+            "start_month": 10,
+            "start_day": 1,
+            "end_month": 11,
+            "end_day": 30,
+            "schedule": [
+                {
+                    "period": "1–10 октября",
+                    "temperature": "+5…+10 °C",
+                    "phase": "После листопада",
+                    "action": "Влагозарядный полив"
+                },
+                {
+                    "period": "10–20 октября",
+                    "temperature": "+3…+8 °C",
+                    "phase": "—",
+                    "action": "Санитарная обрезка"
+                },
+                {
+                    "period": "20–31 октября",
+                    "temperature": "0…+5 °C",
+                    "phase": "—",
+                    "action": "Осенняя подкормка, побелка"
+                },
+                {
+                    "period": "Ноябрь",
+                    "temperature": "−5…0 °C",
+                    "phase": "—",
+                    "action": "Мульчирование"
+                }
+            ],
+            "actions": [
+                {
+                    "code": "autumn_watering",
+                    "title": "Влагозарядный полив",
+                    "description": "40–50 л на куст после листопада.",
+                    "window": {
+                        "start_month": 10,
+                        "start_day": 1,
+                        "end_month": 10,
+                        "end_day": 10
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Насыщает почву влагой, защищает корни от зимнего иссушения."
+                        }
+                    ]
+                },
+                {
+                    "code": "autumn_pruning",
+                    "title": "Санитарная обрезка",
+                    "description": "Удалить сухие, больные, сломанные ветви.",
+                    "window": {
+                        "start_month": 10,
+                        "start_day": 10,
+                        "end_month": 10,
+                        "end_day": 20
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Срезы замазать варом. Растительные остатки сжечь."
+                        }
+                    ]
+                },
+                {
+                    "code": "autumn_whitewash",
+                    "title": "Побелка (повторно)",
+                    "description": "Состав как весной.",
+                    "window": {
+                        "start_month": 10,
+                        "start_day": 20,
+                        "end_month": 10,
+                        "end_day": 31
+                    },
+                    "priority": "low",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "2 кг извести + 200 г медного купороса + 100 г ПВА на 10 л. В 2 слоя."
+                        }
+                    ]
+                },
+                {
+                    "code": "autumn_feeding",
+                    "title": "Осенняя подкормка",
+                    "description": "Фосфор и калий. Азот не вносить.",
+                    "window": {
+                        "start_month": 10,
+                        "start_day": 20,
+                        "end_month": 10,
+                        "end_day": 31
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Суперфосфат: 30 г на м²",
+                                "Сульфат калия: 20 г на м²",
+                                "Зола: 2 стакана на м²"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "mulching",
+                    "title": "Мульчирование",
+                    "description": "Торф или компост 10 см. Молодые — лапник.",
+                    "window": {
+                        "start_month": 10,
+                        "start_day": 20,
+                        "end_month": 11,
+                        "end_day": 15
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "paragraph",
+                            "text": "Мульчу не прижимать к стволу."
+                        }
+                    ]
+                },
+                {
+                    "code": "rodent_protection",
+                    "title": "Защита от грызунов",
+                    "description": "Сетка, лапник, спираль. Приманки.",
+                    "window": {
+                        "start_month": 10,
+                        "start_day": 25,
+                        "end_month": 11,
+                        "end_day": 30
+                    },
+                    "priority": "medium",
+                    "recurring": true,
+                    "details": [
+                        {
+                            "type": "bullets",
+                            "items": [
+                                "Сетка металлическая на штамб 60–80 см",
+                                "Лапник",
+                                "Спираль пластиковая",
+                                "Отравленные приманки по периметру"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "notes": [
+                "Айва японская морозостойка (−30 °C) — укрытие только для молодых",
+                "Не обрезать осенью — раны плохо заживают",
+                "В малоснежную зиму накидывать снег",
+                "Весной укрытие снимать постепенно, при +5 °C"
+            ]
+        }
+    ]
+}

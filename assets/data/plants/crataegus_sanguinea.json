@@ -1,0 +1,23 @@
+{
+  "id": "crataegus_sanguinea",
+  "common_name": "Боярышник кроваво-красный",
+  "scientific_name": "Crataegus sanguinea",
+  "family": "Rosaceae",
+  "category": "Ягодный кустарник",
+  "description": "Колючий кустарник или дерево с красными плодами. Лекарственное растение.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или лёгкая полутень",
+  "min_temperature": -40,
+  "max_temperature": 28,
+  "humidity_min": 35,
+  "humidity_max": 60,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчив",
+  "repotting_frequency_months": 60,
+  "pruning_info": "Весной формировать крону или куст, удалять старые ветви",
+  "toxicity": "Безопасно",
+  "model_label_id": "crataegus_sanguinea",
+  "is_premium": false
+}

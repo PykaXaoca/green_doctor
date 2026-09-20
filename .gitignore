@@ -12,11 +12,11 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
+# IntelliJ / IDE
+.idea/
 *.iml
 *.ipr
 *.iws
-.idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -33,31 +33,33 @@ migrate_working_dir/
 /build/
 /coverage/
 
-# Symbolication related
+# Symbolication / Obfuscation
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android Studio build artifacts
 /android/app/debug
 /android/app/profile
 /android/app/release
 
-# Widget Preview related
+# Widget Preview
 .widget_preview/
 
-
-# --- Секреты (блок 1.1) ---
+# --- Секреты ---
 .env
 .env.*
 *.keys
 secrets/
 dart_defines.json
+android/key.properties
+*.jks
+*.keystore
 
-# --- Датасет ML и модели (не коммитим) ---
+# --- ML ---
+# ВАЖНО: строку "*.tflite" убрали. Если появится модель и её нужно
+# включать в assets/, git должен её видеть, иначе сборка на другой
+# машине будет без модели.
 structure_report/
-*.tflite
 
 # IDE / DevTools
 devtools_options.yaml
@@ -70,16 +72,6 @@ android/app/build/
 # Bug reports / dumps from device
 bugreport-*.zip
 *.zip
-
-# IDE
-.idea/
-*.iml
-
-# Release signing secrets — never commit
-android/key.properties
-*.jks
-*.keystore
-# Local database dumps
 *.sqlite
 db_from_device.sqlite
 seasonal_keys.txt

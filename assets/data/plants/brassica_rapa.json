@@ -1,0 +1,23 @@
+{
+  "id": "brassica_rapa",
+  "common_name": "Репа",
+  "scientific_name": "Brassica rapa",
+  "family": "Brassicaceae",
+  "category": "Овощ",
+  "description": "Корнеплод с мягким сладковатым вкусом. Холодостойкая культура.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное, N-P-K 10-10-10",
+  "light_requirements": "Солнце",
+  "min_temperature": -5,
+  "max_temperature": 22,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, нейтральный",
+  "soil_moisture": "Регулярный, равномерный",
+  "repotting_frequency_months": 4,
+  "pruning_info": "Прореживать всходы, оставляя 10-15 см между растениями",
+  "toxicity": "Безопасно",
+  "model_label_id": "brassica_rapa",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "amelanchier_ovalis",
+  "common_name": "Ирга круглолистная",
+  "scientific_name": "Amelanchier ovalis",
+  "family": "Rosaceae",
+  "category": "Ягодный кустарник",
+  "description": "Неприхотливый ягодный кустарник с крупными сладкими ягодами. Переносит любые почвы.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -40,
+  "max_temperature": 28,
+  "humidity_min": 35,
+  "humidity_max": 60,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчива",
+  "repotting_frequency_months": 48,
+  "pruning_info": "Весной удалять слабые и старые ветви, омолаживать раз в 5-6 лет",
+  "toxicity": "Безопасно",
+  "model_label_id": "amelanchier_ovalis",
+  "is_premium": false
+}

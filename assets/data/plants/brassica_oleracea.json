@@ -1,0 +1,23 @@
+{
+  "id": "brassica_oleracea",
+  "common_name": "Капуста белокочанная",
+  "scientific_name": "Brassica oleracea",
+  "family": "Brassicaceae",
+  "category": "Овощ",
+  "description": "Основная овощная культура. Есть ранние, средние и поздние сорта.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для капусты, N-P-K 10-10-10 с органикой",
+  "light_requirements": "Солнце",
+  "min_temperature": -8,
+  "max_temperature": 22,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, влагоёмкий, нейтральный",
+  "soil_moisture": "Регулярный, особенно в период завязывания кочана",
+  "repotting_frequency_months": 4,
+  "pruning_info": "Удалять нижние листья по мере роста, не давать трескаться кочану",
+  "toxicity": "Безопасно",
+  "model_label_id": "brassica_oleracea",
+  "is_premium": false
+}

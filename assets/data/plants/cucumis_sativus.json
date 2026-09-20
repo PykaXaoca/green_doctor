@@ -1,0 +1,23 @@
+{
+  "id": "cucumis_sativus",
+  "common_name": "Огурец",
+  "scientific_name": "Cucumis sativus",
+  "family": "Cucurbitaceae",
+  "category": "Овощ",
+  "description": "Популярная овощная культура. Требует много света, тепла и регулярного полива.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для огурцов, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет, 6-8 часов в день",
+  "min_temperature": 18,
+  "max_temperature": 28,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, рыхлый, с перегноем",
+  "soil_moisture": "Регулярный, без пересыхания",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять нижние боковые побеги, прищипывать верхушки для ветвления",
+  "toxicity": "Безопасно",
+  "model_label_id": "cucumis_sativus",
+  "is_premium": false
+}

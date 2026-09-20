@@ -1,0 +1,23 @@
+{
+  "id": "echinocactus_grusonii",
+  "common_name": "Эхинокактус Грузона",
+  "scientific_name": "Echinocactus grusonii",
+  "family": "Cactaceae",
+  "category": "Кактус",
+  "description": "Крупный шаровидный кактус с золотистыми колючками. Растёт медленно.",
+  "default_watering_days": 21,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для кактусов, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 8,
+  "max_temperature": 35,
+  "humidity_min": 20,
+  "humidity_max": 40,
+  "soil_type": "Кактусовый, песчаный, с дренажом",
+  "soil_moisture": "Полное просыхание между поливами, зимой сухо",
+  "repotting_frequency_months": 48,
+  "pruning_info": "Не требует обрезки, только санитарная чистка",
+  "toxicity": "Безопасно",
+  "model_label_id": "echinocactus_grusonii",
+  "is_premium": false
+}

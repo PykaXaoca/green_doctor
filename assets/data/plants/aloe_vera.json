@@ -1,0 +1,23 @@
+{
+  "id": "aloe_vera",
+  "common_name": "Алоэ вера",
+  "scientific_name": "Aloe vera",
+  "family": "Asphodelaceae",
+  "category": "Суккулент",
+  "description": "Суккулент с лечебными свойствами. Мясистые листья с гелем внутри.",
+  "default_watering_days": 14,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для кактусов и суккулентов, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 10,
+  "max_temperature": 30,
+  "humidity_min": 20,
+  "humidity_max": 40,
+  "soil_type": "Кактусовый, песчаный",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Срезать нижние зрелые листья для использования, удалять повреждённые",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "aloe_vera",
+  "is_premium": false
+}

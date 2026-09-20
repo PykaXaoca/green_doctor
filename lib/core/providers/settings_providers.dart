@@ -61,7 +61,7 @@ final appThemeModeProvider =
 
 class NotificationSettings {
   const NotificationSettings({
-    this.enabled = true,
+    this.enabled = false,
     this.summaryHour = 9,
     this.groupByDay = true,
     this.treatmentEnabled = true,
@@ -95,7 +95,7 @@ class NotificationSettings {
 
   factory NotificationSettings.fromJson(Map<String, dynamic> json) {
     return NotificationSettings(
-      enabled: (json['enabled'] as bool?) ?? true,
+      enabled: (json['enabled'] as bool?) ?? false,
       summaryHour: (json['summaryHour'] as int?) ?? 9,
       groupByDay: (json['groupByDay'] as bool?) ?? true,
       treatmentEnabled: (json['treatmentEnabled'] as bool?) ?? true,

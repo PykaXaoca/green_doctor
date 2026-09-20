@@ -1,0 +1,23 @@
+{
+  "id": "allium_schoenoprasum",
+  "common_name": "Лук зелёный (шнитт-лук)",
+  "scientific_name": "Allium schoenoprasum",
+  "family": "Amaryllidaceae",
+  "category": "Зелень и пряности",
+  "description": "Многолетний лук с нежными тонкими листьями. Растёт пучком, отрастает после срезки.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное для зелени",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -30,
+  "max_temperature": 25,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый",
+  "soil_moisture": "Регулярный, не пересушивать",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Срезать листья на 2-3 см от земли, не давать цвести для продления сбора",
+  "toxicity": "Токсично для кошек и собак",
+  "model_label_id": "allium_schoenoprasum",
+  "is_premium": false
+}

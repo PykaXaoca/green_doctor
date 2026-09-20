@@ -1,0 +1,23 @@
+{
+  "id": "prunus_domestica",
+  "common_name": "Слива",
+  "scientific_name": "Prunus domestica",
+  "family": "Rosaceae",
+  "category": "Садовое дерево",
+  "description": "Плодовое дерево с сочными плодами. Любит солнечные места и влажную почву.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для плодовых деревьев, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -30,
+  "max_temperature": 30,
+  "humidity_min": 45,
+  "humidity_max": 70,
+  "soil_type": "Питательный, влагоёмкий, нейтральный",
+  "soil_moisture": "Регулярный, не переносит пересыхания",
+  "repotting_frequency_months": 120,
+  "pruning_info": "Весной формировать чашевидную крону, удалять загущающие побеги",
+  "toxicity": "Семена содержат цианиды, плоды безопасны",
+  "model_label_id": "prunus_domestica",
+  "is_premium": false
+}

@@ -23,13 +23,19 @@ class WeatherService {
 
   static const String _baseUrl = 'https://api.open-meteo.com/v1/forecast';
 
-  /// Получить текущие координаты (с запросом разрешения).
-  Future<Position?> getCurrentPosition() async {
+  /// Получить текущие координаты.
+  ///
+  /// По умолчанию **не запрашивает** разрешение, если оно ещё не
+  /// выдано — просто возвращает `null`. Чтобы система показала
+  /// диалог, нужно явно передать `requestIfDenied: true`. Это
+  /// делает UI в момент, когда пользователь нажимает кнопку
+  /// «Разрешить геолокацию».
+  Future<Position?> getCurrentPosition({bool requestIfDenied = false}) async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) return null;
 
     var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied && requestIfDenied) {
       permission = await Geolocator.requestPermission();
     }
     if (permission == LocationPermission.denied ||

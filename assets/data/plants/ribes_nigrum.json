@@ -1,0 +1,23 @@
+{
+  "id": "ribes_nigrum",
+  "common_name": "Смородина чёрная",
+  "scientific_name": "Ribes nigrum",
+  "family": "Grossulariaceae",
+  "category": "Ягодный кустарник",
+  "description": "Зимостойкий ягодный кустарник. Ягоды богаты витамином C. Любит влажную почву.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12 с органикой",
+  "light_requirements": "Солнце или лёгкая полутень",
+  "min_temperature": -35,
+  "max_temperature": 25,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Питательный, влагоёмкий, слабокислый",
+  "soil_moisture": "Регулярный, особенно в период налива ягод",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Осенью удалять побеги старше 4 лет, весной — слабые и загущающие",
+  "toxicity": "Безопасно",
+  "model_label_id": "ribes_nigrum",
+  "is_premium": false
+}

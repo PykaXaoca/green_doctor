@@ -1,0 +1,23 @@
+{
+  "id": "graptopetalum_paraguayense",
+  "common_name": "Граптопеталум",
+  "scientific_name": "Graptopetalum paraguayense",
+  "family": "Crassulaceae",
+  "category": "Суккулент",
+  "description": "Суккулент в форме розетки. Листья серо-розовые, легко черенкуется.",
+  "default_watering_days": 14,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для суккулентов, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 5,
+  "max_temperature": 30,
+  "humidity_min": 20,
+  "humidity_max": 40,
+  "soil_type": "Кактусовый, песчаный, с дренажом",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Удалять сухие нижние листья, отделять розетки для размножения",
+  "toxicity": "Безопасно",
+  "model_label_id": "graptopetalum_paraguayense",
+  "is_premium": false
+}

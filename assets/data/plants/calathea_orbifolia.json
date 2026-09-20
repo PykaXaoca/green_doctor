@@ -1,0 +1,23 @@
+{
+  "id": "calathea_orbifolia",
+  "common_name": "Калатея",
+  "scientific_name": "Calathea orbifolia",
+  "family": "Marantaceae",
+  "category": "Комнатное декоративнолиственное",
+  "description": "Растение с крупными листьями в полоску. Складывает листья на ночь.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для декоративнолиственных, слабый раствор",
+  "light_requirements": "Полутень, рассеянный свет",
+  "min_temperature": 18,
+  "max_temperature": 26,
+  "humidity_min": 60,
+  "humidity_max": 90,
+  "soil_type": "Рыхлый, влагоёмкий, слабокислый",
+  "soil_moisture": "Постоянно влажная, не пересыхает",
+  "repotting_frequency_months": 18,
+  "pruning_info": "Удалять сухие края, не мочить листья при опрыскивании",
+  "toxicity": "Безопасно",
+  "model_label_id": "calathea_orbifolia",
+  "is_premium": false
+}

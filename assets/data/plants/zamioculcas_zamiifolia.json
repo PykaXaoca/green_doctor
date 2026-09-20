@@ -1,0 +1,23 @@
+{
+  "id": "zamioculcas_zamiifolia",
+  "common_name": "Замиокулькас замиелистный",
+  "scientific_name": "Zamioculcas zamiifolia",
+  "family": "Araceae",
+  "category": "Суккулент",
+  "description": "Суккулент с глянцевыми тёмно-зелёными листьями. Неприхотлив, переносит засуху.",
+  "default_watering_days": 14,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для кактусов и суккулентов",
+  "light_requirements": "Яркий рассеянный свет или полутень",
+  "min_temperature": 15,
+  "max_temperature": 26,
+  "humidity_min": 30,
+  "humidity_max": 60,
+  "soil_type": "Дренированный, кактусовый",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Удалять пожелтевшие стебли у основания",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "zamioculcas_zamiifolia",
+  "is_premium": false
+}

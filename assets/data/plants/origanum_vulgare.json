@@ -1,0 +1,23 @@
+{
+  "id": "origanum_vulgare",
+  "common_name": "Орегано (душица)",
+  "scientific_name": "Origanum vulgare",
+  "family": "Lamiaceae",
+  "category": "Зелень и пряности",
+  "description": "Ароматная пряная трава. Широко используется в средиземноморской кухне.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 45,
+  "fertilizer_type": "Для пряных трав, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -20,
+  "max_temperature": 28,
+  "humidity_min": 30,
+  "humidity_max": 55,
+  "soil_type": "Песчаный, дренированный, нейтральный",
+  "soil_moisture": "Скудный, засухоустойчив",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Регулярно срезать верхушки, не давать цвести для лучшего аромата",
+  "toxicity": "Безопасно",
+  "model_label_id": "origanum_vulgare",
+  "is_premium": false
+}

@@ -1,0 +1,778 @@
+{
+  "stages": [
+    {
+      "id": "spring",
+      "name": "Весеннее пробуждение",
+      "start_month": 3,
+      "start_day": 10,
+      "end_month": 4,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "10–20 марта",
+          "temperature": "+2…+5 °C",
+          "phase": "Почки спят",
+          "action": "Санитарная обрезка, удаление старых ветвей"
+        },
+        {
+          "period": "20–31 марта",
+          "temperature": "+4…+7 °C",
+          "phase": "Набухание почек",
+          "action": "Первая подкормка"
+        },
+        {
+          "period": "1–10 апреля",
+          "temperature": "+7…+10 °C",
+          "phase": "Зелёный конус",
+          "action": "Обработка от вредителей"
+        },
+        {
+          "period": "10–20 апреля",
+          "temperature": "+10…+14 °C",
+          "phase": "Бутонизация",
+          "action": "Вторая подкормка"
+        }
+      ],
+      "actions": [
+        {
+          "code": "pruning",
+          "title": "Обрезка ирги",
+          "description": "Ирга — кустарник или небольшое деревце высотой 2–4 м. Плодоносит на побегах предыдущего года и многолетних ветвях.",
+          "window": {
+            "start_month": 3,
+            "start_day": 10,
+            "end_month": 3,
+            "end_day": 20
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "subheading",
+              "text": "Что удалять"
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "Ветви старше 7–8 лет — они уже не дают урожая",
+                "Слабые, тонкие, загущающие побеги",
+                "Ветви, лежащие на земле",
+                "Поломанные, больные",
+                "Корневую поросль — обильную"
+              ]
+            },
+            {
+              "type": "subheading",
+              "text": "Идеальный куст"
+            },
+            {
+              "type": "paragraph",
+              "text": "10–15 ветвей разного возраста: 3–4 однолетних, 3–4 двухлетних, 2–3 трёхлетних, 2–3 старых до 7 лет."
+            },
+            {
+              "type": "paragraph",
+              "text": "Сроки: весной, до распускания почек."
+            }
+          ]
+        },
+        {
+          "code": "first_feeding",
+          "title": "Первая подкормка",
+          "description": "Азотная подкормка по таломёрзлой почве.",
+          "window": {
+            "start_month": 3,
+            "start_day": 20,
+            "end_month": 3,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Мочевина: 20–30 г на 10 л, 2–3 л под куст",
+                "Аммиачная селитра: 15–20 г на м², разбросать",
+                "Настой коровяка 1:10: 3–5 л под куст",
+                "Нитроаммофоска: 30 г на 10 л, 2–3 л под куст"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "spring_treatments",
+          "title": "Обработки от вредителей и болезней",
+          "description": "Серия обработок по фенофазам.",
+          "window": {
+            "start_month": 3,
+            "start_day": 20,
+            "end_month": 4,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "subheading",
+              "text": "До распускания почек"
+            },
+            {
+              "type": "paragraph",
+              "text": "3 % бордоская: 300 г медного купороса + 400 г извести на 10 л. Против антракноза, септориоза, мучнистой росы."
+            },
+            {
+              "type": "subheading",
+              "text": "Зелёный конус"
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "«Хорус» 2 г на 10 л — антракноз, септориоз",
+                "«Актара» 1 г на 10 л — тля, ирговая моль"
+              ]
+            },
+            {
+              "type": "subheading",
+              "text": "Развёртывание листьев"
+            },
+            {
+              "type": "paragraph",
+              "text": "«Фитоверм» 2 мл на 1 л — паутинный клещ."
+            }
+          ]
+        },
+        {
+          "code": "trunk_circle",
+          "title": "Приствольный круг",
+          "description": "Взрыхлить на 5–7 см, мульча, удалить поросль.",
+          "window": {
+            "start_month": 4,
+            "start_day": 10,
+            "end_month": 4,
+            "end_day": 20
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Взрыхлить на 5–7 см",
+                "Замульчировать перегноем 5–7 см",
+                "Удалить поросль и сорняки"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Ирга самоплодна, но перекрёстное опыление повышает урожай",
+        "Не обрезать осенью — раны плохо заживают",
+        "Ирга декоративна осенью — листья краснеют",
+        "Хорошо растёт на любых почвах, кроме заболоченных",
+        "Птицы любят иргу — сетка или отпугиватели"
+      ]
+    },
+    {
+      "id": "growing",
+      "name": "Активный рост",
+      "start_month": 5,
+      "start_day": 1,
+      "end_month": 6,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "1–10 мая",
+          "temperature": "—",
+          "phase": "Рост побегов",
+          "action": "Азотная подкормка"
+        },
+        {
+          "period": "10–20 мая",
+          "temperature": "—",
+          "phase": "Бутонизация",
+          "action": "Обработка от тли, моли"
+        },
+        {
+          "period": "20–31 мая",
+          "temperature": "—",
+          "phase": "Цветение",
+          "action": "Полив, подкормка калием"
+        },
+        {
+          "period": "1–15 июня",
+          "temperature": "—",
+          "phase": "Завязывание",
+          "action": "Полив, мульчирование"
+        },
+        {
+          "period": "15–30 июня",
+          "temperature": "—",
+          "phase": "Налив ягод",
+          "action": "Калийная подкормка, сбор"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering",
+          "title": "Полив",
+          "description": "Ирга засухоустойчива, но в период налива ягод полив нужен.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Умеренная погода: 15–20 л на куст раз в 7–10 дней",
+                "Жаркая: 20–25 л на куст раз в 5–7 дней",
+                "Засушливая: 25–30 л на куст раз в 3–4 дня"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "Поливать по бороздам или под корень, не попадая на листья."
+            }
+          ]
+        },
+        {
+          "code": "feeding",
+          "title": "Подкормки",
+          "description": "Азот, калий, фосфор по фазам.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Рост побегов: мочевина 20 г на 10 л, 2 л под куст",
+                "Бутонизация: нитроаммофоска 30 г на 10 л, 2–3 л",
+                "Цветение: сульфат калия 20 г на 10 л, 2–3 л",
+                "Налив ягод: монофосфат калия 15 г на 10 л, 2 л",
+                "Налив ягод: зола 1 стакан на 10 л, 2–3 л"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pest_protection",
+          "title": "Защита от вредителей",
+          "description": "Осматривать каждые 10–14 дней.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Тля — скрученные листья. «Актара» 1 г на 10 л",
+                "Паутинный клещ — паутинка. «Фитоверм» 2 мл на 1 л",
+                "Ирговая моль — мины в листьях. «Актара» 1 г на 10 л",
+                "Листовёртка — скрученные листья с гусеницей. «Битоксибациллин» 20 г на 10 л",
+                "Пилильщик — объеденные листья. «Битоксибациллин» 20 г на 10 л"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "diseases",
+          "title": "Болезни",
+          "description": "Профилактика и лечение.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Антракноз — тёмные вдавленные пятна. «Скор» 2 мл на 10 л",
+                "Септориоз — белые пятна с бурой каймой. «Хорус» 2 г на 10 л",
+                "Мучнистая роса — белый налёт. «Топаз» 2 мл на 10 л",
+                "Ржавчина — оранжевые пятна. «Топаз» 2 мл на 10 л",
+                "Серая гниль — серый налёт на ягодах. Удалять поражённые"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "loosening_mulch",
+          "title": "Рыхление и мульча",
+          "description": "Рыхление после полива на 5 см, мульча 5–7 см.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Удалять поросль и сорняки."
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "В дождливое лето антракноз и серая гниль прогрессируют",
+        "Не опрыскивать во время цветения — пчёлы",
+        "Ирга — хороший медонос",
+        "Птицы любят иргу — сетка или отпугиватели"
+      ]
+    },
+    {
+      "id": "flowering",
+      "name": "Цветение",
+      "start_month": 5,
+      "start_day": 1,
+      "end_month": 5,
+      "end_day": 25,
+      "schedule": [
+        {
+          "period": "Начало",
+          "temperature": "+12…+16 °C",
+          "phase": "2–3 дня",
+          "action": "Опрыскать мёдом"
+        },
+        {
+          "period": "Массовое",
+          "temperature": "+16…+20 °C",
+          "phase": "4–6 дней",
+          "action": "Полив, подкормка калием"
+        },
+        {
+          "period": "Конец",
+          "temperature": "+18…+22 °C",
+          "phase": "2–3 дня",
+          "action": "Фосфорно-калийная подкормка"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering_flowering",
+          "title": "Полив",
+          "description": "15–20 л раз в 7–10 дней.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 25
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Поливать под корень."
+            }
+          ]
+        },
+        {
+          "code": "feeding_flowering",
+          "title": "Подкормка калием и фосфором",
+          "description": "Азот не вносить.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 25
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сульфат калия: 20 г на 10 л, 2–3 л",
+                "Суперфосфат: 30 г на 10 л, 2–3 л",
+                "Зола: 1 стакан на 10 л, 2–3 л"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pollinator_attraction",
+          "title": "Привлечение опылителей",
+          "description": "Ирга — хороший медонос.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 25
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Опрыскать мёдом (1 ст. л. на 1 л)."
+            }
+          ]
+        },
+        {
+          "code": "frost_protection",
+          "title": "Защита от заморозков",
+          "description": "При −2 °C: дымление, дождевание, агроспан.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 25
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "При −2 °C применить дымление, дождевание или укрытие агроспаном."
+            }
+          ]
+        },
+        {
+          "code": "hand_pollination",
+          "title": "Ручное опыление",
+          "description": "Не требуется — ирга самоплодна.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 25
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Ирга цветёт одновременно с яблоней."
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Цветение ирги длится 7–12 дней",
+        "Белые цветки — декоративны",
+        "Холод ниже +10 °C — пчёлы не летают",
+        "Ирга цветёт одновременно с яблоней"
+      ]
+    },
+    {
+      "id": "fruiting",
+      "name": "Налив и созревание ягод",
+      "start_month": 6,
+      "start_day": 15,
+      "end_month": 7,
+      "end_day": 31,
+      "schedule": [
+        {
+          "period": "Круглолистная",
+          "temperature": "—",
+          "phase": "Июнь — июль",
+          "action": "Тёмно-синие"
+        },
+        {
+          "period": "Канадская",
+          "temperature": "—",
+          "phase": "Июль",
+          "action": "Тёмно-красные"
+        },
+        {
+          "period": "Колосистая",
+          "temperature": "—",
+          "phase": "Июль",
+          "action": "Тёмно-синие, крупные"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering_fruiting",
+          "title": "Полив",
+          "description": "В период налива полив нужен.",
+          "window": {
+            "start_month": 6,
+            "start_day": 15,
+            "end_month": 7,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Налив: 20–25 л на куст раз в 5–7 дней",
+                "Созревание: 15–20 л на куст раз в 7 дней",
+                "После сбора: 10–15 л на куст раз в 7 дней"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "feeding_fruiting",
+          "title": "Подкормки",
+          "description": "Калий и фосфор.",
+          "window": {
+            "start_month": 6,
+            "start_day": 15,
+            "end_month": 7,
+            "end_day": 15
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Монофосфат калия: 15 г на 10 л, 2 л",
+                "Сульфат калия: 20 г на 10 л, 2 л",
+                "Зола: 1 стакан на 10 л, 2–3 л"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "За 2 недели до сбора — прекратить опрыскивания."
+            }
+          ]
+        },
+        {
+          "code": "harvest",
+          "title": "Сбор урожая",
+          "description": "Зрелые ягоды осыпаются — стелите плёнку под куст и стряхивайте.",
+          "window": {
+            "start_month": 6,
+            "start_day": 15,
+            "end_month": 7,
+            "end_day": 31
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Круглолистная: поштучно или стряхивать",
+                "Канадская: поштучно",
+                "Колосистая: поштучно"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "Ягоды сладкие, сочные. В холодильнике 3–5 дней. Для длительного хранения — сушка, заморозка."
+            }
+          ]
+        },
+        {
+          "code": "pest_fruiting",
+          "title": "Болезни и вредители в период налива",
+          "description": "Осматривать каждые 3–4 дня.",
+          "window": {
+            "start_month": 6,
+            "start_day": 15,
+            "end_month": 7,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Серая гниль — серый налёт на ягодах. Удалять поражённые",
+                "Тля — скрученные листья. «Актара» 1 г на 10 л",
+                "Пилильщик — объеденные листья. «Битоксибациллин» 20 г на 10 л",
+                "Птицы — склёванные ягоды. Сетка, отпугиватели"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "processing",
+          "title": "Переработка",
+          "description": "Плоды ирги сладкие, сочные — дети любят.",
+          "window": {
+            "start_month": 7,
+            "start_day": 1,
+            "end_month": 7,
+            "end_day": 31
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сок, компот, морс",
+                "Варенье, джем, желе",
+                "Настойка, ликёр",
+                "Сушка — изюм",
+                "Заморозка"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Сбор — в сухую прохладную погоду",
+        "Зрелые ягоды осыпаются — собирать вовремя",
+        "Ирга — сладкая, сочная, дети любят",
+        "Хранение — в сушёном виде до 2 лет, в замороженном — 6 месяцев"
+      ]
+    },
+    {
+      "id": "dormant",
+      "name": "Покой и подготовка к зиме",
+      "start_month": 9,
+      "start_day": 1,
+      "end_month": 11,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "Сентябрь — октябрь",
+          "temperature": "+5…+10 °C",
+          "phase": "—",
+          "action": "Влагозарядный полив"
+        },
+        {
+          "period": "Ноябрь",
+          "temperature": "0…+5 °C",
+          "phase": "—",
+          "action": "Мульчирование"
+        }
+      ],
+      "actions": [
+        {
+          "code": "autumn_watering",
+          "title": "Влагозарядный полив",
+          "description": "20–30 л на куст после листопада.",
+          "window": {
+            "start_month": 9,
+            "start_day": 1,
+            "end_month": 10,
+            "end_day": 31
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Насыщает почву влагой, защищает корни от зимнего иссушения."
+            }
+          ]
+        },
+        {
+          "code": "autumn_pruning",
+          "title": "Санитарная обрезка",
+          "description": "Удалить сухие, больные, сломанные ветви.",
+          "window": {
+            "start_month": 10,
+            "start_day": 1,
+            "end_month": 10,
+            "end_day": 31
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Срезы замазать варом. Растительные остатки сжечь."
+            }
+          ]
+        },
+        {
+          "code": "autumn_feeding",
+          "title": "Осенняя подкормка",
+          "description": "Фосфор и калий. Азот не вносить.",
+          "window": {
+            "start_month": 10,
+            "start_day": 1,
+            "end_month": 10,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Суперфосфат: 30 г на куст",
+                "Сульфат калия: 20 г на куст",
+                "Зола: 2 стакана на куст",
+                "Перегной: 1 ведро на куст"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mulching",
+          "title": "Мульчирование",
+          "description": "Торф или компост 10 см. Молодые — лапник.",
+          "window": {
+            "start_month": 10,
+            "start_day": 20,
+            "end_month": 11,
+            "end_day": 15
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Мульчу не прижимать к стволу."
+            }
+          ]
+        },
+        {
+          "code": "rodent_protection",
+          "title": "Защита от грызунов",
+          "description": "Сетка, лапник, спираль. Приманки.",
+          "window": {
+            "start_month": 10,
+            "start_day": 25,
+            "end_month": 11,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сетка металлическая на штамб 60–80 см",
+                "Лапник",
+                "Спираль пластиковая",
+                "Отравленные приманки по периметру"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Ирга морозостойка (−40 °C) — укрытие только для молодых",
+        "Не обрезать осенью — раны плохо заживают",
+        "В малоснежную зиму накидывать снег",
+        "Весной укрытие снимать постепенно, при +5 °C"
+      ]
+    }
+  ]
+}

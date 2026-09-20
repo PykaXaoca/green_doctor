@@ -1,0 +1,23 @@
+{
+  "id": "forsythia_intermedia",
+  "common_name": "Форзиция промежуточная",
+  "scientific_name": "Forsythia × intermedia",
+  "family": "Oleaceae",
+  "category": "Декоративный кустарник",
+  "description": "Ранневесенний кустарник, покрытый жёлтыми цветками до распускания листьев.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное, N-P-K 10-10-10",
+  "light_requirements": "Солнце или лёгкая полутень",
+  "min_temperature": -30,
+  "max_temperature": 27,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, не переносит застоя воды",
+  "repotting_frequency_months": 60,
+  "pruning_info": "После цветения обрезать отцветшие побеги, весной прореживать",
+  "toxicity": "Умеренно токсично для животных",
+  "model_label_id": "forsythia_intermedia",
+  "is_premium": false
+}

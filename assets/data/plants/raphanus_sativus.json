@@ -1,0 +1,23 @@
+{
+  "id": "raphanus_sativus",
+  "common_name": "Редис",
+  "scientific_name": "Raphanus sativus",
+  "family": "Brassicaceae",
+  "category": "Овощ",
+  "description": "Скороспелый корнеплод. Можно выращивать в горшке и в открытом грунте.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Универсальное, N-P-K 10-10-10",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": 5,
+  "max_temperature": 22,
+  "humidity_min": 60,
+  "humidity_max": 75,
+  "soil_type": "Рыхлый, питательный, без камней",
+  "soil_moisture": "Регулярный, равномерный",
+  "repotting_frequency_months": 3,
+  "pruning_info": "Прореживать всходы, оставляя 3-4 см между растениями",
+  "toxicity": "Безопасно",
+  "model_label_id": "raphanus_sativus",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "capsicum_annuum",
+  "common_name": "Перец сладкий (болгарский)",
+  "scientific_name": "Capsicum annuum",
+  "family": "Solanaceae",
+  "category": "Овощ",
+  "description": "Теплолюбивая овощная культура. Требует много света, тепла и регулярного полива.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для перцев, N-P-K 6-12-12 с кальцием",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 18,
+  "max_temperature": 28,
+  "humidity_min": 55,
+  "humidity_max": 75,
+  "soil_type": "Питательный, рыхлый, нейтральный",
+  "soil_moisture": "Регулярный, без пересыхания",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять первый цветок (королевский), нижние пасынки до развилки",
+  "toxicity": "Безопасно, кроме листьев и стеблей",
+  "model_label_id": "capsicum_annuum",
+  "is_premium": false
+}

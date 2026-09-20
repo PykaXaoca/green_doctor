@@ -1,0 +1,23 @@
+{
+  "id": "syringa_vulgaris",
+  "common_name": "Сирень обыкновенная",
+  "scientific_name": "Syringa vulgaris",
+  "family": "Oleaceae",
+  "category": "Декоративный кустарник",
+  "description": "Крупный ароматный кустарник. Цветёт в мае, цветки в кистях разных оттенков.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное, N-P-K 10-10-10",
+  "light_requirements": "Солнце или лёгкая полутень",
+  "min_temperature": -35,
+  "max_temperature": 27,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчива",
+  "repotting_frequency_months": 60,
+  "pruning_info": "После цветения удалять отцветшие кисти, весной прореживать куст",
+  "toxicity": "Безопасно",
+  "model_label_id": "syringa_vulgaris",
+  "is_premium": false
+}

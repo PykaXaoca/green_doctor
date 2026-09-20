@@ -2,34 +2,59 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 import '../database/database.dart';
+import 'asset_folder_loader.dart';
 
 /// Сервис импорта справочника видов и сезонного ухода.
 ///
-/// Файлы ищутся автоматически по префиксу:
-///   assets/data/plant_species.json, _2.json, _3.json, ...
-///   assets/data/seasonal_care.json, _2.json, _3.json, ...
-/// Достаточно положить новый файл — код менять не нужно.
+/// Источники:
+///   * `assets/data/plants/<id>.json` — по одному файлу на вид.
+///   * `assets/data/seasonal_care/<id>.json` — сезонный уход,
+///     `id` = имя файла без `.json`.
 ///
-/// ВАЖНО: при каждом изменении содержимого assets/data/*.json
-/// увеличивай [_currentVersion] на 1. Иначе приложение не перезальёт
-/// справочник (мета `species_imported` уже стоит в 'true').
+/// Склейка по `id` вида: если для вида есть файл сезонного ухода,
+/// его содержимое кладётся в `PlantSpecies.seasonalCareJson`.
+///
+/// ВАЖНО: при каждом изменении содержимого `assets/data/**`
+/// увеличивай [_currentVersion] на 1. Иначе приложение не
+/// перезальёт справочник (мета `species_imported` уже `'true'`).
 class SpeciesImporter {
   SpeciesImporter(this._db);
 
   final AppDatabase _db;
 
-  static const String _speciesPrefix = 'assets/data/plant_species';
-  static const String _seasonalPrefix = 'assets/data/seasonal_care';
+  static const String _plantsFolder = 'assets/data/plants';
+  static const String _seasonalFolder = 'assets/data/seasonal_care';
+
   static const String _metaKey = 'species_imported';
   static const String _versionKey = 'species_import_version';
 
   /// Версия структуры данных. Меняй при обновлении JSON-файлов.
-  static const int _currentVersion = 2;
-
-  static const int _maxFiles = 50;
+  ///
+  /// История:
+  ///   1 — монолитные `plant_species*.json` + `seasonal_care*.json`
+  ///   2 — введено поле `is_indoor` (вычисляется из category)
+  ///   3 — переезд на папки `plants/` и `seasonal_care/`
+  ///   4 — структурированный формат сезонного ухода для яблони
+  ///       (`stages` → `schedule` / `actions` / `notes`)
+  ///   5 — структурирован сезонный уход для малины и чёрной смородины
+  ///   6 — структурирован сезонный уход для красной смородины и крыжовника
+  ///   7 — структурирован сезонный уход для ежевики и голубики
+  ///   8 — структурирован сезонный уход для жимолости и вишни
+  ///   9 — структурирован сезонный уход для сливы и черешни
+  ///  10 — структурирован сезонный уход для абрикоса и груши
+  ///  11 — структурирован сезонный уход для шелковицы белой и чёрной
+  ///  12 — структурирован сезонный уход для рябины и черёмухи
+  ///  13 — структурирован сезонный уход для боярышника и кизила
+  ///  14 — структурирован сезонный уход для брусники и клюквы
+  ///  15 — структурирован сезонный уход для черники и морошки
+  ///  16 — структурирован сезонный уход для княженики и айвы японской
+  ///  17 — структурирован сезонный уход для ирги и актинидии коломикта
+  ///  18 — структурирован сезонный уход для актинидии деликатесной и лимонника
+  ///  19 — структурирован сезонный уход для бузины и аронии
+  ///  20 — структурирован сезонный уход для барбариса и калины
+  static const int _currentVersion = 20;
 
   Future<int> importIfNeeded() async {
     final items = await _loadAllSpecies();
@@ -71,6 +96,8 @@ class SpeciesImporter {
     return _insertItems(items);
   }
 
+  /// Совместимость: импорт из строки. Ожидается JSON-массив
+  /// объектов растений (как раньше).
   Future<int> importFromJsonString(String rawJson) async {
     final list = jsonDecode(rawJson) as List<dynamic>;
     return _insertItems(list);
@@ -78,67 +105,13 @@ class SpeciesImporter {
 
   // ---------- Загрузка ассетов ----------
 
-  Future<List<dynamic>> _loadAllSpecies() async {
-    final files = await _loadNumberedJson(_speciesPrefix);
-    final result = <dynamic>[];
-    for (final entry in files) {
-      try {
-        final list = jsonDecode(entry.value) as List<dynamic>;
-        result.addAll(list);
-      } catch (e) {
-        if (kDebugMode) {
-          debugPrint('[SpeciesImporter] Ошибка парсинга ${entry.key}: $e');
-        }
-      }
-    }
-    return result;
+  Future<List<Map<String, dynamic>>> _loadAllSpecies() async {
+    final byId = await loadJsonObjectsByIdFromFolder(_plantsFolder);
+    return byId.values.toList(growable: false);
   }
 
-  Future<Map<String, dynamic>> _loadAllSeasonalCare() async {
-    final files = await _loadNumberedJson(_seasonalPrefix);
-    final result = <String, dynamic>{};
-    for (final entry in files) {
-      try {
-        final map = jsonDecode(entry.value) as Map<String, dynamic>;
-        // Внимание: если в файле дублируются ключи, dart:convert оставит
-        // последнее значение. Следи за этим в seasonal_care*.json.
-        result.addAll(map);
-      } catch (e) {
-        if (kDebugMode) {
-          debugPrint('[SpeciesImporter] Ошибка парсинга ${entry.key}: $e');
-        }
-      }
-    }
-    return result;
-  }
-
-  /// Возвращает список (путь, содержимое) для всех существующих файлов
-  /// вида: `<prefix>.json`, `<prefix>_2.json`, `<prefix>_3.json`, ...
-  /// Останавливается на первом отсутствующем индексе.
-  Future<List<MapEntry<String, String>>> _loadNumberedJson(
-    String prefix,
-  ) async {
-    final result = <MapEntry<String, String>>[];
-
-    final first = await _tryLoad('$prefix.json');
-    if (first == null) return result;
-    result.add(MapEntry('$prefix.json', first));
-
-    for (var i = 2; i <= _maxFiles; i++) {
-      final path = '${prefix}_$i.json';
-      final raw = await _tryLoad(path);
-      if (raw == null) break;
-      result.add(MapEntry(path, raw));
-    }
-    return result;
-  }
-
-  Future<String?> _tryLoad(String path) async {
-    try {
-      return await rootBundle.loadString(path);
-    } catch (_) {
-      return null;
-    }
+  Future<Map<String, Map<String, dynamic>>> _loadAllSeasonalCare() async {
+    return loadJsonObjectsByFileName(_seasonalFolder);
   }
 
   // ---------- Логика isIndoor ----------

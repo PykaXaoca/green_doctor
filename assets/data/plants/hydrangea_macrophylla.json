@@ -1,0 +1,23 @@
+{
+  "id": "hydrangea_macrophylla",
+  "common_name": "Гортензия крупнолистная",
+  "scientific_name": "Hydrangea macrophylla",
+  "family": "Hydrangeaceae",
+  "category": "Декоративный кустарник",
+  "description": "Кустарник с крупными шаровидными соцветиями. Цвет зависит от кислотности почвы.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для гортензий, N-P-K 10-30-20 + алюминий для синего цвета",
+  "light_requirements": "Полутень, рассеянный свет",
+  "min_temperature": -25,
+  "max_temperature": 25,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, влагоёмкий, слабокислый",
+  "soil_moisture": "Постоянно влажная, не пересыхает",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Обрезать отцветшие соцветия, весной удалять слабые побеги",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "hydrangea_macrophylla",
+  "is_premium": false
+}

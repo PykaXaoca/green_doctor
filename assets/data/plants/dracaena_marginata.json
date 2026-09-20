@@ -1,0 +1,23 @@
+{
+  "id": "dracaena_marginata",
+  "common_name": "Драцена окаймлённая",
+  "scientific_name": "Dracaena marginata",
+  "family": "Asparagaceae",
+  "category": "Комнатное декоративнолиственное",
+  "description": "Растение с узкими листьями с красноватой каймой, напоминает пальму.",
+  "default_watering_days": 10,
+  "fertilizing_frequency_days": 45,
+  "fertilizer_type": "Для драцен и пальм",
+  "light_requirements": "Яркий рассеянный свет",
+  "min_temperature": 15,
+  "max_temperature": 25,
+  "humidity_min": 40,
+  "humidity_max": 60,
+  "soil_type": "Питательный, дренированный",
+  "soil_moisture": "Умеренная, верхние 5 см просыхают",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Удалять сухие нижние листья, весной можно обрезать ствол для ветвления",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "dracaena_marginata",
+  "is_premium": false
+}

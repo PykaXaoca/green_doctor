@@ -1,0 +1,23 @@
+{
+  "id": "lavandula_angustifolia",
+  "common_name": "Лаванда узколистная",
+  "scientific_name": "Lavandula angustifolia",
+  "family": "Lamiaceae",
+  "category": "Зелень и пряности",
+  "description": "Ароматный полукустарник с сине-фиолетовыми соцветиями. Любит солнце и бедную почву.",
+  "default_watering_days": 7,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для цветущих, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 5,
+  "max_temperature": 27,
+  "humidity_min": 30,
+  "humidity_max": 50,
+  "soil_type": "Песчаный, дренированный, бедный",
+  "soil_moisture": "Скудный, полное просыхание между поливами",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Обрезать на 1/3 после цветения, формировать куст весной",
+  "toxicity": "Умеренно токсично для животных",
+  "model_label_id": "lavandula_angustifolia",
+  "is_premium": false
+}

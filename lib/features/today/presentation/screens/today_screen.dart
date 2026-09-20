@@ -618,13 +618,13 @@ class _TomorrowSubHeader extends StatelessWidget {
 //  Погода
 // =========================================================================
 
-class WeatherHeader extends StatelessWidget {
+class WeatherHeader extends ConsumerWidget {
   const WeatherHeader({super.key, required this.weatherAsync});
 
   final AsyncValue<WeatherSnapshot?> weatherAsync;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return weatherAsync.when(
@@ -644,27 +644,10 @@ class WeatherHeader extends StatelessWidget {
           ),
         ),
       ),
-      error: (_, _) => const SizedBox.shrink(),
+      error: (_, _) => const _EnableLocationCard(),
       data: (weather) {
         if (weather == null) {
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(Icons.location_off, color: theme.colorScheme.outline),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Не удалось получить погоду. '
-                      'Включите геолокацию и проверьте интернет.',
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return const _EnableLocationCard();
         }
 
         return Card(
@@ -752,6 +735,107 @@ class WeatherHeader extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+/// Карточка «Включить геолокацию».
+///
+/// Показывается, когда разрешение на геолокацию не выдано или
+/// сервис геолокации выключен. По нажатию показывает объясняющий
+/// диалог, затем системный запрос разрешения.
+class _EnableLocationCard extends ConsumerStatefulWidget {
+  const _EnableLocationCard();
+
+  @override
+  ConsumerState<_EnableLocationCard> createState() =>
+      _EnableLocationCardState();
+}
+
+class _EnableLocationCardState extends ConsumerState<_EnableLocationCard> {
+  bool _busy = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(Icons.location_on_outlined, color: theme.colorScheme.primary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Включите геолокацию, чтобы видеть погоду для вашего '
+                'региона и получать точные советы по поливу.',
+                style: theme.textTheme.bodySmall,
+              ),
+            ),
+            const SizedBox(width: 8),
+            FilledButton.tonal(
+              onPressed: _busy ? null : _requestLocation,
+              child: _busy
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Text('Включить'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _requestLocation() async {
+    setState(() => _busy = true);
+    try {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: const Text('Разрешить геолокацию?'),
+          content: const Text(
+            'Приложение использует ваше местоположение только для того, '
+            'чтобы показать актуальную погоду и дать точные советы '
+            'по поливу. Данные не передаются третьим лицам.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text('Отмена'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: const Text('Разрешить'),
+            ),
+          ],
+        ),
+      );
+
+      if (confirmed != true) return;
+      if (!mounted) return;
+
+      final service = ref.read(weatherServiceProvider);
+      final position = await service.getCurrentPosition(requestIfDenied: true);
+
+      if (position == null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Геолокация недоступна. Проверьте разрешения в настройках '
+              'Android или включите службу геолокации.',
+            ),
+          ),
+        );
+        return;
+      }
+
+      ref.invalidate(currentWeatherProvider);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
   }
 }
 

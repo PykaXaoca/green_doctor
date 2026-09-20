@@ -1,0 +1,23 @@
+{
+  "id": "vaccinium_vitis_idaea",
+  "common_name": "Брусника обыкновенная",
+  "scientific_name": "Vaccinium vitis-idaea",
+  "family": "Ericaceae",
+  "category": "Ягодный кустарник",
+  "description": "Вечнозелёный кустарничек с красными ягодами. Растёт в хвойных лесах, хорошо приживается в саду.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для кислотолюбивых, N-P-K 10-10-10",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -40,
+  "max_temperature": 25,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Кислый торф (pH 4.0-5.0), дренированный",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Весной удалять слабые побеги, прореживать раз в 3-4 года",
+  "toxicity": "Безопасно",
+  "model_label_id": "vaccinium_vitis_idaea",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "cucurbita_maxima",
+  "common_name": "Тыква",
+  "scientific_name": "Cucurbita maxima",
+  "family": "Cucurbitaceae",
+  "category": "Овощ",
+  "description": "Крупная овощная культура. Требует много места, света и питательной почвы.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для тыквенных, N-P-K 6-12-12 с органикой",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 15,
+  "max_temperature": 30,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, с перегноем",
+  "soil_moisture": "Регулярный, обильный",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Прищипывать главный побег над 3-4 завязью, удалять лишние боковые",
+  "toxicity": "Безопасно",
+  "model_label_id": "cucurbita_maxima",
+  "is_premium": false
+}

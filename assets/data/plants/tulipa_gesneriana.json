@@ -1,0 +1,23 @@
+{
+  "id": "tulipa_gesneriana",
+  "common_name": "Тюльпан",
+  "scientific_name": "Tulipa gesneriana",
+  "family": "Liliaceae",
+  "category": "Луковичное",
+  "description": "Весенний луковичный цветок. Цветёт в апреле-мае, после цветения надземная часть отмирает.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для луковичных, N-P-K 10-10-10 с калием",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -35,
+  "max_temperature": 22,
+  "humidity_min": 40,
+  "humidity_max": 60,
+  "soil_type": "Питательный, рыхлый, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, не переносит застоя воды",
+  "repotting_frequency_months": 12,
+  "pruning_info": "После цветения удалять только цветонос, листья оставить до пожелтения",
+  "toxicity": "Токсично для кошек и собак",
+  "model_label_id": "tulipa_gesneriana",
+  "is_premium": false
+}

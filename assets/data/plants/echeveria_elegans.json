@@ -1,0 +1,23 @@
+{
+  "id": "echeveria_elegans",
+  "common_name": "Эхеверия изящная",
+  "scientific_name": "Echeveria elegans",
+  "family": "Crassulaceae",
+  "category": "Суккулент",
+  "description": "Суккулент в форме розетки с серо-зелёными листьями с розовым отливом.",
+  "default_watering_days": 12,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для кактусов и суккулентов, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 5,
+  "max_temperature": 27,
+  "humidity_min": 20,
+  "humidity_max": 40,
+  "soil_type": "Кактусовый с песком и дренажом",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Удалять сухие нижние листья, отделять деток весной",
+  "toxicity": "Безопасно",
+  "model_label_id": "echeveria_elegans",
+  "is_premium": false
+}

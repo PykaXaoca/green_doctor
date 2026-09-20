@@ -1,0 +1,23 @@
+{
+  "id": "hyacinthus_orientalis",
+  "common_name": "Гиацинт восточный",
+  "scientific_name": "Hyacinthus orientalis",
+  "family": "Asparagaceae",
+  "category": "Луковичное",
+  "description": "Ароматный весенний цветок. Часто выращивают на выгонку в горшках к праздникам.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для луковичных, N-P-K 10-10-10",
+  "light_requirements": "Яркий рассеянный свет",
+  "min_temperature": -20,
+  "max_temperature": 22,
+  "humidity_min": 45,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, не переувлажнять",
+  "repotting_frequency_months": 12,
+  "pruning_info": "После цветения удалять цветонос, листья оставить до пожелтения",
+  "toxicity": "Токсично для кошек и собак",
+  "model_label_id": "hyacinthus_orientalis",
+  "is_premium": false
+}

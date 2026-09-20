@@ -1,0 +1,23 @@
+{
+  "id": "rubus_idaeus",
+  "common_name": "Малина",
+  "scientific_name": "Rubus idaeus",
+  "family": "Rosaceae",
+  "category": "Ягодный кустарник",
+  "description": "Популярный ягодный кустарник с ароматными плодами. Плодоносит на побегах второго года.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12 с магнием",
+  "light_requirements": "Солнце, лёгкая полутень",
+  "min_temperature": -30,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, слабокислый (pH 5.5-6.5)",
+  "soil_moisture": "Регулярный, не пересушивать во время плодоношения",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Осенью срезать отплодоносившие двухлетние побеги. Весной удалять слабые",
+  "toxicity": "Безопасно",
+  "model_label_id": "rubus_idaeus",
+  "is_premium": false
+}

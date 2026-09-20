@@ -1,0 +1,23 @@
+{
+  "id": "begonia_rex",
+  "common_name": "Бегония",
+  "scientific_name": "Begonia rex",
+  "family": "Begoniaceae",
+  "category": "Комнатное декоративнолиственное",
+  "description": "Растение с яркими узорчатыми листьями разных оттенков.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для декоративнолиственных, слабый раствор",
+  "light_requirements": "Яркий рассеянный свет, полутень",
+  "min_temperature": 18,
+  "max_temperature": 24,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Рыхлый, питательный (торф + листовая земля + перлит)",
+  "soil_moisture": "Умеренная, не пересушивать, не переувлажнять",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять старые листья, прищипывать для формы",
+  "toxicity": "Умеренно токсично для животных",
+  "model_label_id": "begonia_rex",
+  "is_premium": false
+}

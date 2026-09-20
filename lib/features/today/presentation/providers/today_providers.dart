@@ -15,6 +15,9 @@ import '../../../plants/presentation/providers/plant_providers.dart';
 
 /// Растения, которым пора удобрять: `lastFertilizedAt + frequency <= конец
 /// сегодняшнего дня`. Если `lastFertilizedAt` пусто — берётся `createdAt`.
+///
+/// Просроченные события (срок был в прошлом) тоже попадают сюда —
+/// они отображаются в блоке «Сегодня» вместе с обычными.
 final fertilizingDueProvider = FutureProvider<List<Plant>>((ref) async {
   final plants = await ref.watch(userPlantsProvider.future);
   final now = DateTime.now();
@@ -43,7 +46,7 @@ final fertilizingDueProvider = FutureProvider<List<Plant>>((ref) async {
 /// Растения, которым пора опрыскивать.
 ///
 /// Растение попадает в список, только если у него задано поле
-/// `mistingFrequencyDays` > 0.
+/// `mistingFrequencyDays` > 0. Просроченные тоже попадают сюда.
 final mistingDueProvider = FutureProvider<List<Plant>>((ref) async {
   final plants = await ref.watch(userPlantsProvider.future);
   final now = DateTime.now();
@@ -70,6 +73,8 @@ final mistingDueProvider = FutureProvider<List<Plant>>((ref) async {
 // =========================================================================
 
 /// Незавершённые шаги лечения с `dueAt` не позже конца сегодняшнего дня.
+///
+/// Просроченные шаги тоже попадают сюда.
 final treatmentDueProvider = FutureProvider<List<TreatmentStepWithDiagnosis>>((
   ref,
 ) async {
@@ -85,10 +90,13 @@ final treatmentDueProvider = FutureProvider<List<TreatmentStepWithDiagnosis>>((
 
 /// Что запланировано на завтра: полив, удобрение, опрыскивание, лечение.
 ///
-/// Каждый список — растения (или шаги лечения), у которых событие
-/// попадает в завтрашний день (00:00–23:59). Полив берётся из
-/// [wateringScheduleProvider], остальное считается по частоте и
-/// дате последнего действия.
+/// Каждый список — растения (или шаги лечения), у которых **ближайшее**
+/// следующее событие попадает ровно в завтрашний день (00:00–23:59).
+///
+/// Просроченные события (срок был в прошлом) сюда **не попадают** —
+/// они отображаются в разделе «Планы на сегодня» с пометкой
+/// «просрочено». Здесь же только те, у кого **первая** дата следующего
+/// действия — завтра.
 class TomorrowPlans {
   const TomorrowPlans({
     required this.date,
@@ -118,6 +126,12 @@ class TomorrowPlans {
 }
 
 /// План на завтра.
+///
+/// Логика: берём **первую** дату следующего события (для полива —
+/// `nextWaterDue`, для удобрения/опрыскивания — `lastAction + frequency`).
+/// Если эта дата попадает в диапазон «завтра», растение показывается в
+/// соответствующем блоке. Если дата в прошлом (просрочено) или в будущем
+/// дальше завтра — не показываем.
 final tomorrowPlansProvider = FutureProvider<TomorrowPlans>((ref) async {
   final now = DateTime.now();
   final tomorrowStart = DateTime(
@@ -134,45 +148,33 @@ final tomorrowPlansProvider = FutureProvider<TomorrowPlans>((ref) async {
     59,
   );
 
+  /// Дата попадает в «завтрашний» диапазон.
+  bool inTomorrow(DateTime d) =>
+      !d.isBefore(tomorrowStart) && !d.isAfter(tomorrowEnd);
+
   final plants = await ref.watch(userPlantsProvider.future);
 
   // --- Полив на завтра ---
-  // Переиспользуем логику из plant_providers: у нас нет отдельного
-  // провайдера полива «на дату», поэтому считаем так же, как в
-  // watering_schedule_providers, но с фильтром на один день.
+  // Только если ближайшая дата полива — завтра. Просроченные
+  // (nextWaterDue в прошлом) сюда не попадают — они в «Сегодня».
   final watering = <Plant>[];
   for (final p in plants) {
     final due = p.nextWaterDue;
     final freq = p.wateringFrequencyDays;
     if (due == null || freq == null || freq <= 0) continue;
-
-    // Шагаем вперёд от nextWaterDue, пока не попадём в завтра
-    // или не перешагнём его.
-    var date = due;
-    while (date.isBefore(tomorrowStart)) {
-      date = date.add(Duration(days: freq));
-    }
-    if (!date.isAfter(tomorrowEnd)) {
-      watering.add(p);
-    }
+    if (inTomorrow(due)) watering.add(p);
   }
 
   // --- Удобрение на завтра ---
+  // Только если первая расчётная дата следующего удобрения — завтра.
   final fertilizing = <Plant>[];
   for (final p in plants) {
     final freq = p.fertilizingFrequencyDays;
     if (freq == null || freq <= 0) continue;
 
     final base = p.lastFertilizedAt ?? p.createdAt;
-    var date = base.add(Duration(days: freq));
-    // Сдвигаемся вперёд, если дата ещё до завтра (например,
-    // просрочено или уже прошло).
-    while (date.isBefore(tomorrowStart)) {
-      date = date.add(Duration(days: freq));
-    }
-    if (!date.isAfter(tomorrowEnd)) {
-      fertilizing.add(p);
-    }
+    final next = base.add(Duration(days: freq));
+    if (inTomorrow(next)) fertilizing.add(p);
   }
 
   // --- Опрыскивание на завтра ---
@@ -182,18 +184,13 @@ final tomorrowPlansProvider = FutureProvider<TomorrowPlans>((ref) async {
     if (freq == null || freq <= 0) continue;
 
     final base = p.lastMistedAt ?? p.createdAt;
-    var date = base.add(Duration(days: freq));
-    while (date.isBefore(tomorrowStart)) {
-      date = date.add(Duration(days: freq));
-    }
-    if (!date.isAfter(tomorrowEnd)) {
-      misting.add(p);
-    }
+    final next = base.add(Duration(days: freq));
+    if (inTomorrow(next)) misting.add(p);
   }
 
   // --- Лечение на завтра ---
   // Берём все незавершённые шаги до конца завтра и фильтруем те,
-  // чей dueAt попадает в завтрашний день.
+  // чей dueAt попадает именно в завтрашний день.
   final db = ref.watch(databaseProvider);
   final pendingUntilTomorrow = await db.diagnosisDao
       .getPendingStepsWithDiagnosisUntil(tomorrowEnd);

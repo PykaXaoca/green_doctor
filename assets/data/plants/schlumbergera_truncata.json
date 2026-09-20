@@ -1,0 +1,23 @@
+{
+  "id": "schlumbergera_truncata",
+  "common_name": "Шлюмбергера (декабрист)",
+  "scientific_name": "Schlumbergera truncata",
+  "family": "Cactaceae",
+  "category": "Кактус",
+  "description": "Лесной кактус, цветёт зимой. Любит рассеянный свет и влажность.",
+  "default_watering_days": 7,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для кактусов и суккулентов, слабый раствор",
+  "light_requirements": "Яркий рассеянный свет, полутень",
+  "min_temperature": 15,
+  "max_temperature": 25,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Рыхлый, дренированный (торф + кора + перлит)",
+  "soil_moisture": "Умеренный, верхний слой просыхает",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Прищипывать побеги в июне для лучшего цветения зимой",
+  "toxicity": "Безопасно",
+  "model_label_id": "schlumbergera_truncata",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "rubus_chamaemorus",
+  "common_name": "Морошка приземистая",
+  "scientific_name": "Rubus chamaemorus",
+  "family": "Rosaceae",
+  "category": "Ягодное",
+  "description": "Северная ягода с янтарными плодами. Растёт на болотах, требовательна к влаге.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 45,
+  "fertilizer_type": "Для кислотолюбивых, слабый раствор",
+  "light_requirements": "Солнце",
+  "min_temperature": -40,
+  "max_temperature": 22,
+  "humidity_min": 70,
+  "humidity_max": 90,
+  "soil_type": "Кислый торф (pH 3.5-5.0), влагоёмкий",
+  "soil_moisture": "Постоянно влажная",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Обрезать старые листья весной, не трогать корневище",
+  "toxicity": "Безопасно",
+  "model_label_id": "rubus_chamaemorus",
+  "is_premium": false
+}

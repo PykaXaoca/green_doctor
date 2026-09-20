@@ -1,0 +1,23 @@
+{
+  "id": "fragaria_ananassa",
+  "common_name": "Клубника садовая (земляника крупноплодная)",
+  "scientific_name": "Fragaria × ananassa",
+  "family": "Rosaceae",
+  "category": "Ягодное",
+  "description": "Популярная ягодная культура. Требует много солнца, регулярного полива и обновления каждые 3-4 года.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12 с калием",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -20,
+  "max_temperature": 28,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, слабокислый (pH 5.5-6.5)",
+  "soil_moisture": "Регулярный, особенно в период цветения и налива ягод",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять усы (если не нужны для размножения), старые листья весной, обновлять кусты каждые 3-4 года",
+  "toxicity": "Безопасно",
+  "model_label_id": "fragaria_ananassa",
+  "is_premium": false
+}

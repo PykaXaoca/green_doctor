@@ -1,0 +1,23 @@
+{
+  "id": "viburnum_opulus",
+  "common_name": "Калина обыкновенная",
+  "scientific_name": "Viburnum opulus",
+  "family": "Adoxaceae",
+  "category": "Ягодный кустарник",
+  "description": "Кустарник с красными ягодами и красивым цветением. Ягоды горчат, но полезны после морозов.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное, N-P-K 10-10-10",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -35,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Питательный, влагоёмкий, нейтральный",
+  "soil_moisture": "Регулярный, не пересушивать",
+  "repotting_frequency_months": 48,
+  "pruning_info": "Весной удалять старые ветви, формировать куст из 8-10 побегов",
+  "toxicity": "Ягоды съедобны после обработки, кора токсична",
+  "model_label_id": "viburnum_opulus",
+  "is_premium": false
+}

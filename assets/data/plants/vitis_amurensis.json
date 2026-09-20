@@ -1,0 +1,23 @@
+{
+  "id": "vitis_amurensis",
+  "common_name": "Виноград амурский",
+  "scientific_name": "Vitis amurensis",
+  "family": "Vitaceae",
+  "category": "Ягодная лиана",
+  "description": "Морозостойкий виноград родом с Дальнего Востока. Ягоды тёмные, сладкие.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для винограда, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -40,
+  "max_temperature": 30,
+  "humidity_min": 40,
+  "humidity_max": 70,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчив",
+  "repotting_frequency_months": 60,
+  "pruning_info": "Осенью обрезать лозу, формировать на шпалере",
+  "toxicity": "Безопасно",
+  "model_label_id": "vitis_amurensis",
+  "is_premium": false
+}

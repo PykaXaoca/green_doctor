@@ -1,0 +1,23 @@
+{
+  "id": "lonicera_caerulea",
+  "common_name": "Жимолость съедобная",
+  "scientific_name": "Lonicera caerulea",
+  "family": "Caprifoliaceae",
+  "category": "Ягодный кустарник",
+  "description": "Ранний ягодный кустарник, плодоносит в конце мая — начале июня. Очень зимостоек.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ягодных, N-P-K 10-10-10",
+  "light_requirements": "Солнце, лёгкая полутень",
+  "min_temperature": -45,
+  "max_temperature": 26,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Регулярный, особенно во время плодоношения",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Осенью прореживать, удалять старые ветви, омолаживать раз в 5-7 лет",
+  "toxicity": "Безопасно",
+  "model_label_id": "lonicera_caerulea",
+  "is_premium": false
+}

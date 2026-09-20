@@ -1,0 +1,23 @@
+{
+  "id": "ficus_carica",
+  "common_name": "Инжир комнатный",
+  "scientific_name": "Ficus carica",
+  "family": "Moraceae",
+  "category": "Комнатное плодовое",
+  "description": "Листопадное плодовое дерево. В комнате растёт компактно, при хорошем свете плодоносит.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для плодовых, N-P-K 6-12-12 с кальцием",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 5,
+  "max_temperature": 28,
+  "humidity_min": 40,
+  "humidity_max": 60,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, зимой сокращать",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Весной формировать куст или штамб, укорачивать побеги",
+  "toxicity": "Млечный сок раздражает кожу, плоды съедобны",
+  "model_label_id": "ficus_carica",
+  "is_premium": false
+}

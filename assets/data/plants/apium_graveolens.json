@@ -1,0 +1,23 @@
+{
+  "id": "apium_graveolens",
+  "common_name": "Сельдерей",
+  "scientific_name": "Apium graveolens",
+  "family": "Apiaceae",
+  "category": "Зелень и пряности",
+  "description": "Пряное растение: бывает листовой, черешковый и корневой. Требует много влаги.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Универсальное, N-P-K 10-10-10",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -5,
+  "max_temperature": 22,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, влагоёмкий, нейтральный",
+  "soil_moisture": "Постоянно влажная, не пересыхает",
+  "repotting_frequency_months": 6,
+  "pruning_info": "Листовой — срезать внешние черешки. Корневой — удалять боковые побеги",
+  "toxicity": "Безопасно",
+  "model_label_id": "apium_graveolens",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "passiflora_caerulea",
+  "common_name": "Пассифлора голубая (страстоцвет)",
+  "scientific_name": "Passiflora caerulea",
+  "family": "Passifloraceae",
+  "category": "Комнатная лиана",
+  "description": "Лиана с крупными оригинальными цветками. Требует опоры и света.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цветущих, N-P-K 10-30-20",
+  "light_requirements": "Яркий рассеянный свет, солнце",
+  "min_temperature": 10,
+  "max_temperature": 28,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 18,
+  "pruning_info": "Весной обрезать на 1/3, формировать на опоре",
+  "toxicity": "Незрелые плоды токсичны",
+  "model_label_id": "passiflora_caerulea",
+  "is_premium": false
+}

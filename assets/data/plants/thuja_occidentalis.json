@@ -1,0 +1,23 @@
+{
+  "id": "thuja_occidentalis",
+  "common_name": "Туя западная",
+  "scientific_name": "Thuja occidentalis",
+  "family": "Cupressaceae",
+  "category": "Хвойное",
+  "description": "Вечнозелёное хвойное дерево или кустарник. Используется для живых изгородей и в горшках.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для хвойных, N-P-K 3-1-2 с магнием",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -40,
+  "max_temperature": 28,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Питательный, влагоёмкий, слабокислый",
+  "soil_moisture": "Регулярный, не пересыхает",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Весной и летом формировать крону, удалять сухие ветви",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "thuja_occidentalis",
+  "is_premium": false
+}

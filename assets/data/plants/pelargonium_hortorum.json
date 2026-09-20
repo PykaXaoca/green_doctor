@@ -1,0 +1,23 @@
+{
+  "id": "pelargonium_hortorum",
+  "common_name": "Пеларгония (герань)",
+  "scientific_name": "Pelargonium hortorum",
+  "family": "Geraniaceae",
+  "category": "Комнатное цветущее",
+  "description": "Традиционное комнатное растение с яркими соцветиями-зонтиками.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цветущих, N-P-K 10-30-20",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 12,
+  "max_temperature": 25,
+  "humidity_min": 40,
+  "humidity_max": 60,
+  "soil_type": "Питательный, дренированный",
+  "soil_moisture": "Умеренная, лёгкое просыхание",
+  "repotting_frequency_months": 18,
+  "pruning_info": "Удалять отцветшие соцветия, весной обрезать побеги на 1/3",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "pelargonium_hortorum",
+  "is_premium": false
+}

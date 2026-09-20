@@ -1,0 +1,23 @@
+{
+  "id": "morus_alba",
+  "common_name": "Шелковица белая",
+  "scientific_name": "Morus alba",
+  "family": "Moraceae",
+  "category": "Ягодное дерево",
+  "description": "Листопадное дерево с сочными сладкими плодами. Листья — корм для тутового шелкопряда.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для плодовых деревьев, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -30,
+  "max_temperature": 33,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчиво",
+  "repotting_frequency_months": 60,
+  "pruning_info": "Весной формировать крону, удалять сухие и загущающие ветви",
+  "toxicity": "Безопасно, кроме млечного сока",
+  "model_label_id": "morus_alba",
+  "is_premium": false
+}

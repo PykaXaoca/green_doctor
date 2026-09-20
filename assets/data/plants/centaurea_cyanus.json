@@ -1,0 +1,23 @@
+{
+  "id": "centaurea_cyanus",
+  "common_name": "Василёк синий",
+  "scientific_name": "Centaurea cyanus",
+  "family": "Asteraceae",
+  "category": "Полевые цветы",
+  "description": "Однолетний полевой цветок с ярко-синими соцветиями. Символ русских полей.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное, слабый раствор",
+  "light_requirements": "Солнце",
+  "min_temperature": -10,
+  "max_temperature": 25,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчив",
+  "repotting_frequency_months": 6,
+  "pruning_info": "Удалять отцветшие соцветия для продления цветения",
+  "toxicity": "Безопасно",
+  "model_label_id": "centaurea_cyanus",
+  "is_premium": false
+}

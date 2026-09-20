@@ -1,0 +1,23 @@
+{
+  "id": "coriandrum_sativum",
+  "common_name": "Кинза (кориандр)",
+  "scientific_name": "Coriandrum sativum",
+  "family": "Apiaceae",
+  "category": "Зелень и пряности",
+  "description": "Пряная зелень со специфическим вкусом. Быстро стрелкуется в жару.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное для зелени",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": 5,
+  "max_temperature": 22,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый",
+  "soil_moisture": "Регулярный, не пересушивать",
+  "repotting_frequency_months": 4,
+  "pruning_info": "Регулярно срезать листья, не давать цвести. Сеять каждые 2-3 недели для непрерывного урожая",
+  "toxicity": "Безопасно",
+  "model_label_id": "coriandrum_sativum",
+  "is_premium": false
+}

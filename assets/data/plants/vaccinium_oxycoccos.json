@@ -1,0 +1,23 @@
+{
+  "id": "vaccinium_oxycoccos",
+  "common_name": "Клюква болотная",
+  "scientific_name": "Vaccinium oxycoccos",
+  "family": "Ericaceae",
+  "category": "Ягодный кустарник",
+  "description": "Стелющийся кустарничек с кислыми ягодами. Требует кислой влажной почвы.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 45,
+  "fertilizer_type": "Для кислотолюбивых, слабый раствор",
+  "light_requirements": "Солнце",
+  "min_temperature": -40,
+  "max_temperature": 24,
+  "humidity_min": 70,
+  "humidity_max": 90,
+  "soil_type": "Кислый торф (pH 3.5-4.5), влагоёмкий",
+  "soil_moisture": "Постоянно влажная",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Весной удалять старые побеги для стимуляции роста",
+  "toxicity": "Безопасно",
+  "model_label_id": "vaccinium_oxycoccos",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "haworthia_fasciata",
+  "common_name": "Хавортия полосатая",
+  "scientific_name": "Haworthia fasciata",
+  "family": "Asphodelaceae",
+  "category": "Суккулент",
+  "description": "Компактный суккулент с белыми полосками на листьях. Очень неприхотлив.",
+  "default_watering_days": 14,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для суккулентов, слабый раствор",
+  "light_requirements": "Яркий рассеянный свет, полутень",
+  "min_temperature": 10,
+  "max_temperature": 28,
+  "humidity_min": 30,
+  "humidity_max": 50,
+  "soil_type": "Кактусовый, дренированный",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Удалять сухие нижние листья, отделять детки весной",
+  "toxicity": "Безопасно",
+  "model_label_id": "haworthia_fasciata",
+  "is_premium": false
+}

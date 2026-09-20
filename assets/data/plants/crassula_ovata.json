@@ -1,0 +1,23 @@
+{
+  "id": "crassula_ovata",
+  "common_name": "Толстянка (денежное дерево)",
+  "scientific_name": "Crassula ovata",
+  "family": "Crassulaceae",
+  "category": "Суккулент",
+  "description": "Суккулент с мясистыми листьями, часто называют «денежным деревом».",
+  "default_watering_days": 14,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для кактусов и суккулентов, N-P-K 1-2-2",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 10,
+  "max_temperature": 27,
+  "humidity_min": 30,
+  "humidity_max": 50,
+  "soil_type": "Кактусовый, дренированный",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Прищипывать верхушки для формирования кроны весной",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "crassula_ovata",
+  "is_premium": false
+}

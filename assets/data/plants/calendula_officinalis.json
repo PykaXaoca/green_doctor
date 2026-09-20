@@ -1,0 +1,23 @@
+{
+  "id": "calendula_officinalis",
+  "common_name": "Календула лекарственная",
+  "scientific_name": "Calendula officinalis",
+  "family": "Asteraceae",
+  "category": "Полевые цветы",
+  "description": "Однолетнее лекарственное растение с яркими оранжевыми цветками. Цветёт всё лето.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное, слабый раствор",
+  "light_requirements": "Солнце",
+  "min_temperature": -5,
+  "max_temperature": 25,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, рыхлый, нейтральный",
+  "soil_moisture": "Умеренный, не пересушивать в цветение",
+  "repotting_frequency_months": 6,
+  "pruning_info": "Собирать цветки по мере распускания, стимулирует новое цветение",
+  "toxicity": "Безопасно",
+  "model_label_id": "calendula_officinalis",
+  "is_premium": false
+}

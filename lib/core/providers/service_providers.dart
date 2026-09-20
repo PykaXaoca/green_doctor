@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../services/achievement_checker.dart';
 import '../services/achievement_seeder.dart';
+import '../services/analytics_service.dart';
 import '../services/care_scheduler.dart';
 import '../services/disease_identifier_service.dart';
 import '../services/disease_seeder.dart';
@@ -102,3 +103,8 @@ final startTreatmentProvider = Provider<StartTreatment>(
     ref.read(imageStorageServiceProvider),
   ),
 );
+
+/// Провайдер сервиса аналитики.
+final analyticsServiceProvider = Provider<AnalyticsService>((ref) {
+  return AnalyticsService();
+});

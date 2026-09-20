@@ -1,0 +1,23 @@
+{
+  "id": "thymus_serpyllum",
+  "common_name": "Тимьян ползучий (чабрец)",
+  "scientific_name": "Thymus serpyllum",
+  "family": "Lamiaceae",
+  "category": "Почвопокровное",
+  "description": "Ароматный почвопокровник. Используется как пряность и в народной медицине.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для пряных трав, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -30,
+  "max_temperature": 28,
+  "humidity_min": 25,
+  "humidity_max": 50,
+  "soil_type": "Песчаный, дренированный, бедный",
+  "soil_moisture": "Скудный, засухоустойчив",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Обрезать после цветения на 1/3, регулярно срезать для аромата",
+  "toxicity": "Безопасно",
+  "model_label_id": "thymus_serpyllum",
+  "is_premium": false
+}

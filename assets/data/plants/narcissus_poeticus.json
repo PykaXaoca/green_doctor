@@ -1,0 +1,23 @@
+{
+  "id": "narcissus_poeticus",
+  "common_name": "Нарцисс",
+  "scientific_name": "Narcissus poeticus",
+  "family": "Amaryllidaceae",
+  "category": "Луковичное",
+  "description": "Весенний луковичный цветок с ароматными цветками. Неприхотлив, хорошо растёт в саду.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для луковичных, N-P-K 10-10-10",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -30,
+  "max_temperature": 22,
+  "humidity_min": 45,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, без застоя воды",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять отцветшие цветки, листья оставлять до пожелтения",
+  "toxicity": "Токсично для кошек и собак",
+  "model_label_id": "narcissus_poeticus",
+  "is_premium": false
+}

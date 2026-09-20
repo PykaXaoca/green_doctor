@@ -1,0 +1,23 @@
+{
+  "id": "citrus_reticulata",
+  "common_name": "Мандарин комнатный",
+  "scientific_name": "Citrus reticulata",
+  "family": "Rutaceae",
+  "category": "Комнатное плодовое",
+  "description": "Компактное цитрусовое дерево с ароматными плодами. Легче лимона в уходе.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цитрусовых, N-P-K 10-10-10 с микроэлементами",
+  "light_requirements": "Прямой яркий свет, 6+ часов",
+  "min_temperature": 14,
+  "max_temperature": 26,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, дренированный, слабокислый",
+  "soil_moisture": "Умеренный, без пересыхания",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Весной формировать крону, удалять слабые и внутренние побеги",
+  "toxicity": "Безопасно",
+  "model_label_id": "citrus_reticulata",
+  "is_premium": false
+}

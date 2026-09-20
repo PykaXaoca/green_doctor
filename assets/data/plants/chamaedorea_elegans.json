@@ -1,0 +1,23 @@
+{
+  "id": "chamaedorea_elegans",
+  "common_name": "Хамедорея изящная",
+  "scientific_name": "Chamaedorea elegans",
+  "family": "Arecaceae",
+  "category": "Комнатная пальма",
+  "description": "Компактная комнатная пальма. Неприхотлива, хорошо растёт в полутени.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для пальм, N-P-K 3-1-3",
+  "light_requirements": "Полутень, рассеянный свет",
+  "min_temperature": 15,
+  "max_temperature": 26,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, верхние 3 см просыхают",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Удалять сухие нижние листья, не обрезать верхушку роста",
+  "toxicity": "Безопасно",
+  "model_label_id": "chamaedorea_elegans",
+  "is_premium": false
+}

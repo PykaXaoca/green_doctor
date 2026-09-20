@@ -1,0 +1,23 @@
+{
+  "id": "phaseolus_vulgaris",
+  "common_name": "Фасоль",
+  "scientific_name": "Phaseolus vulgaris",
+  "family": "Fabaceae",
+  "category": "Овощ",
+  "description": "Бобовая культура. Есть кустовые и вьющиеся сорта. Обогащает почву азотом.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Универсальное, минимум азота",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 15,
+  "max_temperature": 28,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, нейтральный",
+  "soil_moisture": "Регулярный, не переувлажнять",
+  "repotting_frequency_months": 4,
+  "pruning_info": "Вьющиеся сорта требуют опоры. Прищипывать верхушки для стимуляции",
+  "toxicity": "Сырые бобы токсичны, после варки безопасны",
+  "model_label_id": "phaseolus_vulgaris",
+  "is_premium": false
+}

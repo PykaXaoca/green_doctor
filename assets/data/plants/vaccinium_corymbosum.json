@@ -1,0 +1,23 @@
+{
+  "id": "vaccinium_corymbosum",
+  "common_name": "Голубика садовая",
+  "scientific_name": "Vaccinium corymbosum",
+  "family": "Ericaceae",
+  "category": "Ягодный кустарник",
+  "description": "Кустарник с крупными ягодами. Требует кислую почву и регулярный полив.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для кислотолюбивых (рододендроны, голубика), N-P-K 10-10-10",
+  "light_requirements": "Солнце",
+  "min_temperature": -30,
+  "max_temperature": 26,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Кислый торф, pH 4.0-5.5, дренированный",
+  "soil_moisture": "Постоянно влажная, не пересыхает",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Весной удалять слабые и старые побеги, оставлять 5-7 сильных",
+  "toxicity": "Безопасно",
+  "model_label_id": "vaccinium_corymbosum",
+  "is_premium": false
+}

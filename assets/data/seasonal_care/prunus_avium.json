@@ -1,0 +1,823 @@
+{
+  "stages": [
+    {
+      "id": "spring",
+      "name": "Весеннее пробуждение",
+      "start_month": 3,
+      "start_day": 10,
+      "end_month": 4,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "10–20 марта",
+          "temperature": "+2…+5 °C",
+          "phase": "Почки спят",
+          "action": "Санитарная обрезка, формировка"
+        },
+        {
+          "period": "20–31 марта",
+          "temperature": "+4…+7 °C",
+          "phase": "Набухание почек",
+          "action": "Побелка, 3 % бордоская"
+        },
+        {
+          "period": "1–10 апреля",
+          "temperature": "+7…+10 °C",
+          "phase": "Зелёный конус",
+          "action": "Азотная подкормка"
+        },
+        {
+          "period": "10–20 апреля",
+          "temperature": "+10…+14 °C",
+          "phase": "Выдвижение бутонов",
+          "action": "Обработка от тли, коккомикоза"
+        }
+      ],
+      "actions": [
+        {
+          "code": "pruning",
+          "title": "Обрезка черешни",
+          "description": "Черешня — крупное дерево. Обрезать минимально, формировка разреженно-ярусная.",
+          "window": {
+            "start_month": 3,
+            "start_day": 10,
+            "end_month": 3,
+            "end_day": 20
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "subheading",
+              "text": "Что удалять"
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "Сухие, сломанные, больные",
+                "Ветви, растущие внутрь",
+                "Волчки",
+                "Корневую поросль"
+              ]
+            },
+            {
+              "type": "subheading",
+              "text": "Схема формировки"
+            },
+            {
+              "type": "paragraph",
+              "text": "Проводник и 3 скелетные ветви первого яруса. Второй ярус — через 60–70 см. Сроки — весной, до распускания почек. Крупные срезы замазывать варом."
+            }
+          ]
+        },
+        {
+          "code": "whitewash",
+          "title": "Побелка штамба",
+          "description": "Состав как для яблони. В 2 слоя.",
+          "window": {
+            "start_month": 3,
+            "start_day": 20,
+            "end_month": 3,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "2 кг извести + 200 г медного купороса + 100 г ПВА на 10 л."
+            }
+          ]
+        },
+        {
+          "code": "first_nitrogen",
+          "title": "Первая азотная подкормка",
+          "description": "По таломёрзлой почве.",
+          "window": {
+            "start_month": 4,
+            "start_day": 1,
+            "end_month": 4,
+            "end_day": 10
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Мочевина: 20–30 г на 10 л, 3–4 ведра под корень",
+                "Аммиачная селитра: 15–20 г на м²",
+                "Настой коровяка 1:10: 4–5 л под дерево"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "spring_treatments",
+          "title": "Обработки от вредителей и болезней",
+          "description": "Серия обработок по фенофазам.",
+          "window": {
+            "start_month": 3,
+            "start_day": 20,
+            "end_month": 4,
+            "end_day": 20
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "subheading",
+              "text": "До распускания почек"
+            },
+            {
+              "type": "paragraph",
+              "text": "3 % бордоская: 300 г медного купороса + 400 г извести на 10 л. Против коккомикоза, монилиоза."
+            },
+            {
+              "type": "subheading",
+              "text": "Зелёный конус"
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "«Хорус» 2 г на 10 л — коккомикоз, монилиоз",
+                "«Скор» 2 мл на 10 л — коккомикоз"
+              ]
+            },
+            {
+              "type": "subheading",
+              "text": "Выдвижение бутонов"
+            },
+            {
+              "type": "paragraph",
+              "text": "«Актара» 1 г на 10 л — тля, вишнёвая муха."
+            }
+          ]
+        },
+        {
+          "code": "trunk_circle",
+          "title": "Приствольный круг",
+          "description": "Взрыхлить на 5 см, мульча, удалить поросль.",
+          "window": {
+            "start_month": 4,
+            "start_day": 10,
+            "end_month": 4,
+            "end_day": 20
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Взрыхлить на 5 см",
+                "Удалить поросль",
+                "Замульчировать перегноем 5 см"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Черешня самобесплодна — нужны опылители",
+        "Цветёт рано — риск заморозков",
+        "Не обрезать осенью",
+        "Крупные срезы замазывать варом"
+      ]
+    },
+    {
+      "id": "growing",
+      "name": "Активный рост",
+      "start_month": 5,
+      "start_day": 1,
+      "end_month": 6,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "1–10 мая",
+          "temperature": "—",
+          "phase": "Развёртывание листьев",
+          "action": "Азотная подкормка"
+        },
+        {
+          "period": "10–20 мая",
+          "temperature": "—",
+          "phase": "Рост побегов",
+          "action": "Обработка от тли, коккомикоза"
+        },
+        {
+          "period": "20–31 мая",
+          "temperature": "—",
+          "phase": "Завязывание",
+          "action": "Нормировка завязей"
+        },
+        {
+          "period": "1–15 июня",
+          "temperature": "—",
+          "phase": "Рост плодов",
+          "action": "Вторая азотная"
+        },
+        {
+          "period": "15–30 июня",
+          "temperature": "—",
+          "phase": "Созревание",
+          "action": "Калийная подкормка"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering",
+          "title": "Полив",
+          "description": "Черешня влаголюбива — в период налива полив критичен.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Умеренная погода: 25–30 л раз в 7–10 дней",
+                "Жаркая: 30–40 л раз в 5 дней",
+                "Засушливая: 40–50 л раз в 3–4 дня"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "feeding",
+          "title": "Подкормки",
+          "description": "Азот, калий, фосфор.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Настой коровяка 1:10: 4–5 л под дерево",
+                "Мочевина: 20 г на 10 л, 2–3 ведра",
+                "Нитроаммофоска: 25 г на 10 л, 2–3 ведра",
+                "Зола: 1 стакан на 10 л, 2 ведра"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "После 10 июля азот не давать."
+            }
+          ]
+        },
+        {
+          "code": "pest_protection",
+          "title": "Защита от вредителей",
+          "description": "Осматривать каждые 10–14 дней.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Вишнёвая муха — червивые плоды. «Кинмикс» 2,5 мл на 10 л",
+                "Тля — скрученные листья. «Актара» 1 г на 10 л",
+                "Клещ — паутинка. «Фитоверм» 2 мл на 1 л",
+                "Пилильщик — объеденные листья. «Битоксибациллин» 20 г на 10 л"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "diseases",
+          "title": "Болезни",
+          "description": "Профилактика и лечение.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Коккомикоз — бурые пятна, листопад. «Скор» 2 мл на 10 л",
+                "Монилиоз — бурые гниющие плоды. Удалять, «Хорус»",
+                "Клястероспориоз — дырчатая пятнистость. «Скор» 2 мл на 10 л",
+                "Камедетечение — янтарные потёки. Зачистить, 1 % купорос, вар"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "fruit_thinning",
+          "title": "Нормировка завязей",
+          "description": "Оставить 1 плод в соцветии.",
+          "window": {
+            "start_month": 5,
+            "start_day": 20,
+            "end_month": 5,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Черешня склонна к перегрузке — при большом урожае плоды мельчают."
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "В дождливое лето коккомикоз прогрессирует",
+        "Не опрыскивать в жару выше +28 °C",
+        "Падалицу убирать ежедневно",
+        "Птицы — сетка на крону в период созревания"
+      ]
+    },
+    {
+      "id": "flowering",
+      "name": "Цветение",
+      "start_month": 5,
+      "start_day": 1,
+      "end_month": 5,
+      "end_day": 20,
+      "schedule": [
+        {
+          "period": "Начало",
+          "temperature": "+12…+16 °C",
+          "phase": "2–3 дня",
+          "action": "Опрыскать мёдом"
+        },
+        {
+          "period": "Массовое",
+          "temperature": "+16…+20 °C",
+          "phase": "4–6 дней",
+          "action": "Полив умеренный"
+        },
+        {
+          "period": "Конец",
+          "temperature": "+18…+22 °C",
+          "phase": "2–3 дня",
+          "action": "Фосфорно-калийная подкормка"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering_flowering",
+          "title": "Полив",
+          "description": "15–20 л раз в 5–7 дней. Не попадать на цветки.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Поливать под корень."
+            }
+          ]
+        },
+        {
+          "code": "feeding_flowering",
+          "title": "Подкормка калием и фосфором",
+          "description": "Азот не вносить.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сульфат калия: 15 г на 10 л, 2–3 ведра",
+                "Суперфосфат: 25 г на 10 л, 2–3 ведра"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pollinator_attraction",
+          "title": "Привлечение опылителей",
+          "description": "Черешня самобесплодна. Нужны сорта-опылители.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "subheading",
+              "text": "Сорта-опылители"
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "Ипуть: Ревна, Тютчевка",
+                "Ревна: Ипуть, Овстуженка",
+                "Тютчевка: Ипуть, Ревна",
+                "Брянская розовая: Ипуть, Ревна"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "Опрыскать мёдом (1 ст. л. на 1 л)."
+            }
+          ]
+        },
+        {
+          "code": "frost_protection",
+          "title": "Защита от заморозков",
+          "description": "Черешня цветёт рано. При −2 °C — дымление, дождевание, агроспан.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "При −2 °C применить дымление, дождевание или укрытие агроспаном."
+            }
+          ]
+        },
+        {
+          "code": "hand_pollination",
+          "title": "Ручное опыление",
+          "description": "При холодной погоде — кисточкой с цветка на цветок.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "При холодной погоде ниже +10 °C пчёлы не летают."
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Цветение 7–12 дней",
+        "Жара выше +30 °C стерилизует пыльцу",
+        "Холод ниже +10 °C — пчёлы не летают"
+      ]
+    },
+    {
+      "id": "fruiting",
+      "name": "Налив и созревание плодов",
+      "start_month": 6,
+      "start_day": 20,
+      "end_month": 7,
+      "end_day": 31,
+      "schedule": [
+        {
+          "period": "Ранние (Ипуть, Овстуженка)",
+          "temperature": "—",
+          "phase": "Конец июня",
+          "action": "Созревание 3–5 дней"
+        },
+        {
+          "period": "Средние (Ревна, Тютчевка)",
+          "temperature": "—",
+          "phase": "Начало — середина июля",
+          "action": "Созревание 5–7 дней"
+        },
+        {
+          "period": "Поздние (Брянская розовая)",
+          "temperature": "—",
+          "phase": "Конец июля",
+          "action": "Созревание 7–10 дней"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering_fruiting",
+          "title": "Полив",
+          "description": "В период налива полив критичен.",
+          "window": {
+            "start_month": 6,
+            "start_day": 20,
+            "end_month": 7,
+            "end_day": 31
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Налив: 30–40 л раз в 5–7 дней",
+                "Созревание: 25–30 л раз в 7 дней",
+                "За 2 недели до сбора: прекратить — иначе плоды растрескаются"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "feeding_fruiting",
+          "title": "Подкормки",
+          "description": "Калий и фосфор.",
+          "window": {
+            "start_month": 6,
+            "start_day": 20,
+            "end_month": 7,
+            "end_day": 15
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Монофосфат калия: 15 г на 10 л, 2–3 ведра",
+                "Сульфат калия: 20 г на 10 л, 2–3 ведра",
+                "Зола: 1 стакан на 10 л, 2 ведра"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "harvest",
+          "title": "Сбор урожая",
+          "description": "Плодоножку не отрывать — снимать с ветки.",
+          "window": {
+            "start_month": 6,
+            "start_day": 20,
+            "end_month": 8,
+            "end_day": 15
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Ранние: каждые 2–3 дня при полной зрелости",
+                "Средние: 1–2 приёма при полной зрелости",
+                "Поздние: 1 раз за 3–5 дней до зрелости"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "Для хранения — плоды с плодоножкой, в холодильнике при +2…+5 °C."
+            }
+          ]
+        },
+        {
+          "code": "pest_fruiting",
+          "title": "Болезни и вредители в период налива",
+          "description": "Осматривать каждые 3–4 дня.",
+          "window": {
+            "start_month": 6,
+            "start_day": 20,
+            "end_month": 8,
+            "end_day": 15
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Вишнёвая муха — червивые плоды. «Кинмикс» 2,5 мл на 10 л",
+                "Коккомикоз — бурые пятна. «Скор» 2 мл на 10 л",
+                "Монилиоз — бурые гниющие плоды. Удалять, «Хорус»",
+                "Птицы — склёванные плоды. Сетка, блестящие ленты, отпугиватели"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "bird_protection",
+          "title": "Защита от птиц",
+          "description": "Черешню птицы любят больше других ягод.",
+          "window": {
+            "start_month": 6,
+            "start_day": 20,
+            "end_month": 8,
+            "end_day": 15
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сетка на крону — 100 % защита",
+                "Блестящие ленты — 70–80 %",
+                "Отпугиватели (звук) — 50–70 %",
+                "Пугала — 30–50 %"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Падалицу убирать ежедневно",
+        "Не подкармливать азотом",
+        "Сбор — в сухую прохладную погоду",
+        "Хранение — в холодильнике при +2…+5 °C"
+      ]
+    },
+    {
+      "id": "dormant",
+      "name": "Покой и подготовка к зиме",
+      "start_month": 10,
+      "start_day": 1,
+      "end_month": 11,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "1–10 октября",
+          "temperature": "+5…+10 °C",
+          "phase": "После листопада",
+          "action": "Влагозарядный полив"
+        },
+        {
+          "period": "10–20 октября",
+          "temperature": "+3…+8 °C",
+          "phase": "—",
+          "action": "Санитарная обрезка (минимальная)"
+        },
+        {
+          "period": "20–31 октября",
+          "temperature": "0…+5 °C",
+          "phase": "—",
+          "action": "Осенняя подкормка, побелка"
+        },
+        {
+          "period": "Ноябрь",
+          "temperature": "−5…0 °C",
+          "phase": "—",
+          "action": "Мульчирование, укрытие"
+        }
+      ],
+      "actions": [
+        {
+          "code": "autumn_watering",
+          "title": "Влагозарядный полив",
+          "description": "50–60 л после листопада.",
+          "window": {
+            "start_month": 10,
+            "start_day": 1,
+            "end_month": 10,
+            "end_day": 10
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Насыщает почву влагой, защищает корни от зимнего иссушения."
+            }
+          ]
+        },
+        {
+          "code": "autumn_pruning",
+          "title": "Санитарная обрезка",
+          "description": "Осенью — только сломанные и больные ветви. Основную обрезку — на весну.",
+          "window": {
+            "start_month": 10,
+            "start_day": 10,
+            "end_month": 10,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Осенняя обрезка черешни не рекомендуется — раны плохо заживают, камедетечение."
+            }
+          ]
+        },
+        {
+          "code": "autumn_whitewash",
+          "title": "Побелка (повторно)",
+          "description": "Состав как весной.",
+          "window": {
+            "start_month": 10,
+            "start_day": 20,
+            "end_month": 10,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "2 кг извести + 200 г медного купороса + 100 г ПВА на 10 л. В 2 слоя."
+            }
+          ]
+        },
+        {
+          "code": "autumn_feeding",
+          "title": "Осенняя подкормка",
+          "description": "Фосфор и калий. Азот не вносить.",
+          "window": {
+            "start_month": 10,
+            "start_day": 20,
+            "end_month": 10,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Суперфосфат: 30 г на м²",
+                "Сульфат калия: 20 г на м²",
+                "Зола: 2 стакана на м²"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mulching",
+          "title": "Мульчирование",
+          "description": "Торф или компост 10 см. Молодые — лапник.",
+          "window": {
+            "start_month": 10,
+            "start_day": 20,
+            "end_month": 11,
+            "end_day": 15
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Мульчу не прижимать к стволу."
+            }
+          ]
+        },
+        {
+          "code": "rodent_protection",
+          "title": "Защита от грызунов",
+          "description": "Сетка, лапник, спираль. Приманки.",
+          "window": {
+            "start_month": 10,
+            "start_day": 25,
+            "end_month": 11,
+            "end_day": 30
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сетка металлическая на штамб 60–80 см",
+                "Лапник",
+                "Спираль пластиковая",
+                "Отравленные приманки по периметру"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Не обрезать осенью — камедетечение",
+        "В малоснежную зиму накидывать снег",
+        "Весной укрытие снимать постепенно",
+        "Черешня менее зимостойка, чем вишня — укрытие важно"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "cornus_mas",
+  "common_name": "Кизил обыкновенный",
+  "scientific_name": "Cornus mas",
+  "family": "Cornaceae",
+  "category": "Ягодный кустарник",
+  "description": "Кустарник или деревце с красными кисло-сладкими плодами. Цветёт ранней весной.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или лёгкая полутень",
+  "min_temperature": -30,
+  "max_temperature": 30,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчив",
+  "repotting_frequency_months": 48,
+  "pruning_info": "Весной формировать куст или штамб, удалять старые ветви",
+  "toxicity": "Безопасно",
+  "model_label_id": "cornus_mas",
+  "is_premium": false
+}

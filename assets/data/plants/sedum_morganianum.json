@@ -1,0 +1,23 @@
+{
+  "id": "sedum_morganianum",
+  "common_name": "Седум Моргана (очиток)",
+  "scientific_name": "Sedum morganianum",
+  "family": "Crassulaceae",
+  "category": "Суккулент",
+  "description": "Ампельный суккулент с длинными побегами и мясистыми листьями. Не любит перестановок.",
+  "default_watering_days": 14,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для суккулентов, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 10,
+  "max_temperature": 28,
+  "humidity_min": 25,
+  "humidity_max": 45,
+  "soil_type": "Кактусовый, дренированный",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Удалять оголённые побеги весной, укоренять обрезанные",
+  "toxicity": "Безопасно",
+  "model_label_id": "sedum_morganianum",
+  "is_premium": false
+}

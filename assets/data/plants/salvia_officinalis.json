@@ -1,0 +1,23 @@
+{
+  "id": "salvia_officinalis",
+  "common_name": "Шалфей лекарственный",
+  "scientific_name": "Salvia officinalis",
+  "family": "Lamiaceae",
+  "category": "Зелень и пряности",
+  "description": "Ароматный полукустарник. Используется в кулинарии и народной медицине.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное для пряных трав",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -15,
+  "max_temperature": 28,
+  "humidity_min": 30,
+  "humidity_max": 55,
+  "soil_type": "Песчаный, дренированный, нейтральный",
+  "soil_moisture": "Скудный, полное просыхание между поливами",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Весной обрезать на 1/3, регулярно срезать верхушки для аромата",
+  "toxicity": "Безопасно",
+  "model_label_id": "salvia_officinalis",
+  "is_premium": false
+}

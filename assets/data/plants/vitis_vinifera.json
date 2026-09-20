@@ -1,0 +1,23 @@
+{
+  "id": "vitis_vinifera",
+  "common_name": "Виноград культурный",
+  "scientific_name": "Vitis vinifera",
+  "family": "Vitaceae",
+  "category": "Ягодная лиана",
+  "description": "Классическая виноградная лиана. Есть столовые и винные сорта.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для винограда, N-P-K 6-12-12 с калием",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -25,
+  "max_temperature": 35,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчив",
+  "repotting_frequency_months": 60,
+  "pruning_info": "Осенью обрезать лозу на 6-8 почек, формировать на шпалере",
+  "toxicity": "Безопасно, кроме листьев и косточек",
+  "model_label_id": "vitis_vinifera",
+  "is_premium": false
+}

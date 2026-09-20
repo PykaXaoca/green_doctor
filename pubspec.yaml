@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  cupertino_icons: ^1.0.8 
   # --- Локализация ---
   # Нужна для MaterialLocalizations (DatePickerDialog, TimePickerDialog и т.п.).
   flutter_localizations:
@@ -57,9 +58,9 @@ dependencies:
   uuid: ^4.6.0
   table_calendar: ^3.2.0
 
-  # --- Логирование ---
-  sentry_flutter: ^9.25.0
-
+  # --- Аналитика и краш-репорты (РФ) ---
+  appmetrica_plugin: ^4.1.0
+ 
   package_info_plus: ^10.2.1
 
 dev_dependencies:
@@ -78,4 +79,7 @@ flutter:
 
   assets:
     - assets/data/
+    - assets/data/plants/
+    - assets/data/diseases/
+    - assets/data/seasonal_care/
     - assets/models/

@@ -1,0 +1,23 @@
+{
+  "id": "phalaenopsis_orchid",
+  "common_name": "Орхидея Фаленопсис",
+  "scientific_name": "Phalaenopsis amabilis",
+  "family": "Orchidaceae",
+  "category": "Комнатное цветущее",
+  "description": "Эпифитная орхидея с крупными цветами. Самая популярная орхидея для дома.",
+  "default_watering_days": 7,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Специальное для орхидей, слабый раствор",
+  "light_requirements": "Яркий рассеянный свет, без прямого солнца",
+  "min_temperature": 18,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 80,
+  "soil_type": "Специальный субстрат для орхидей (кора, мох сфагнум)",
+  "soil_moisture": "Просыхание между поливами, корни серебристые",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Срезать отцветший цветонос над спящей почкой. Удалять сухие корни",
+  "toxicity": "Безопасно",
+  "model_label_id": "phalaenopsis_orchid",
+  "is_premium": true
+}

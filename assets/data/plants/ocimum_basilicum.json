@@ -1,0 +1,23 @@
+{
+  "id": "ocimum_basilicum",
+  "common_name": "Базилик",
+  "scientific_name": "Ocimum basilicum",
+  "family": "Lamiaceae",
+  "category": "Зелень и пряности",
+  "description": "Ароматная пряная трава. Любит много солнца и регулярный полив.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Универсальное для зелени, N-P-K 10-10-10",
+  "light_requirements": "Прямой яркий свет, 6+ часов в день",
+  "min_temperature": 18,
+  "max_temperature": 28,
+  "humidity_min": 40,
+  "humidity_max": 60,
+  "soil_type": "Питательный, рыхлый",
+  "soil_moisture": "Умеренная, не пересушивать",
+  "repotting_frequency_months": 6,
+  "pruning_info": "Прищипывать верхушки для кустистости. Не давать цвести",
+  "toxicity": "Безопасно",
+  "model_label_id": "ocimum_basilicum",
+  "is_premium": false
+}

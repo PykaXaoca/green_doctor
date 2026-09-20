@@ -1,0 +1,23 @@
+{
+  "id": "lactuca_sativa",
+  "common_name": "Салат листовой",
+  "scientific_name": "Lactuca sativa",
+  "family": "Asteraceae",
+  "category": "Зелень и пряности",
+  "description": "Скороспелая зелень. Можно выращивать в горшке на подоконнике и в открытом грунте.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Универсальное для зелени, слабый раствор",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": 5,
+  "max_temperature": 22,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, рыхлый, влагоёмкий",
+  "soil_moisture": "Постоянно влажная",
+  "repotting_frequency_months": 3,
+  "pruning_info": "Срезать внешние листья, оставляя центр. При стрелковании удалить цветонос",
+  "toxicity": "Безопасно",
+  "model_label_id": "lactuca_sativa",
+  "is_premium": false
+}

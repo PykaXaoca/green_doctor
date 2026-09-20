@@ -1,0 +1,23 @@
+{
+  "id": "ribes_aureum",
+  "common_name": "Смородина золотистая",
+  "scientific_name": "Ribes aureum",
+  "family": "Grossulariaceae",
+  "category": "Ягодный кустарник",
+  "description": "Декоративный ягодный кустарник с ароматными жёлтыми цветками. Ягоды сладкие, тёмные.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -35,
+  "max_temperature": 28,
+  "humidity_min": 35,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчива",
+  "repotting_frequency_months": 48,
+  "pruning_info": "Весной прореживать, удалять ветви старше 6-7 лет",
+  "toxicity": "Безопасно",
+  "model_label_id": "ribes_aureum",
+  "is_premium": false
+}

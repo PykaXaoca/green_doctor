@@ -1,0 +1,23 @@
+{
+  "id": "lilium_lancifolium",
+  "common_name": "Лилия",
+  "scientific_name": "Lilium lancifolium",
+  "family": "Liliaceae",
+  "category": "Луковичное",
+  "description": "Крупное луковичное растение с ароматными цветками. Цветёт в середине лета.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для луковичных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или лёгкая полутень",
+  "min_temperature": -25,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, дренированный",
+  "soil_moisture": "Регулярный, особенно в цветение",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Удалять отцветшие цветки, стебель срезать осенью после пожелтения",
+  "toxicity": "Токсично для кошек, опасен при поедании",
+  "model_label_id": "lilium_lancifolium",
+  "is_premium": false
+}

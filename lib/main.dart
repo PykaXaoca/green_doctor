@@ -43,6 +43,11 @@ Future<void> main() async {
     );
   }
 
+  // 4.5. Аналитика и краш-репорты (AppMetrica).
+  // Если APPMETRICA_API_KEY не задан через --dart-define,
+  // сервис молча отключается (см. AnalyticsService.initialize).
+  await container.read(analyticsServiceProvider).initialize();
+
   // 5. Уведомления — инициализация и передача настроек.
   final notifications = container.read(notificationServiceProvider);
   await notifications.initialize();

@@ -1,0 +1,23 @@
+{
+  "id": "juniperus_communis",
+  "common_name": "Можжевельник обыкновенный",
+  "scientific_name": "Juniperus communis",
+  "family": "Cupressaceae",
+  "category": "Хвойное",
+  "description": "Вечнозелёный хвойный кустарник. Бывает разной формы: стелющейся, кустовой, древовидной.",
+  "default_watering_days": 6,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для хвойных, N-P-K 3-1-2",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -40,
+  "max_temperature": 30,
+  "humidity_min": 35,
+  "humidity_max": 60,
+  "soil_type": "Песчаный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчив",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Весной формировать по желанию, удалять сухие ветви",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "juniperus_communis",
+  "is_premium": false
+}

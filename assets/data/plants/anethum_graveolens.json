@@ -1,0 +1,23 @@
+{
+  "id": "anethum_graveolens",
+  "common_name": "Укроп",
+  "scientific_name": "Anethum graveolens",
+  "family": "Apiaceae",
+  "category": "Зелень и пряности",
+  "description": "Однолетняя пряная трава. Быстро растёт, легко сеется сам.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное для зелени",
+  "light_requirements": "Солнце",
+  "min_temperature": 5,
+  "max_temperature": 26,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый",
+  "soil_moisture": "Регулярный, не пересушивать",
+  "repotting_frequency_months": 6,
+  "pruning_info": "Срезать регулярно для стимуляции роста. Удалять цветоносы, если нужны только листья",
+  "toxicity": "Безопасно",
+  "model_label_id": "anethum_graveolens",
+  "is_premium": false
+}

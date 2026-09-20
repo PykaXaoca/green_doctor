@@ -31,8 +31,11 @@ android {
 
     defaultConfig {
         applicationId = "com.pykaxaoca.pocketbotanist"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        // minSdk 24 = Android 7.0. RuStore работает на Android 8.0+,
+        // но 24 покрывает это с запасом и отсекает устаревшие устройства.
+        minSdk = 24
+        // targetSdk 34 = Android 14. Актуальный target для RuStore.
+        targetSdk = 34
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 

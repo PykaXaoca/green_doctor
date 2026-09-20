@@ -1,0 +1,23 @@
+{
+  "id": "cyclamen_persicum",
+  "common_name": "Цикламен персидский",
+  "scientific_name": "Cyclamen persicum",
+  "family": "Primulaceae",
+  "category": "Комнатное цветущее",
+  "description": "Зимнецветущее растение с яркими цветками. Период покоя летом.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цветущих, N-P-K 10-30-20",
+  "light_requirements": "Яркий рассеянный свет",
+  "min_temperature": 12,
+  "max_temperature": 20,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Рыхлый, питательный, дренированный",
+  "soil_moisture": "Умеренный, полив в поддон, не мочить клубень",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять отцветшие цветки с черешком, сухие листья у основания",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "cyclamen_persicum",
+  "is_premium": false
+}

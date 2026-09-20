@@ -1,0 +1,23 @@
+{
+  "id": "citrus_limon",
+  "common_name": "Лимон комнатный",
+  "scientific_name": "Citrus limon",
+  "family": "Rutaceae",
+  "category": "Комнатное плодовое",
+  "description": "Вечнозелёное цитрусовое дерево. Цветёт и плодоносит круглый год при хорошем уходе.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цитрусовых, N-P-K 10-10-10 с микроэлементами",
+  "light_requirements": "Прямой яркий свет, 6+ часов",
+  "min_temperature": 12,
+  "max_temperature": 25,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, дренированный, слабокислый",
+  "soil_moisture": "Умеренный, без пересыхания и залива",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Весной формировать крону, прищипывать побеги для ветвления",
+  "toxicity": "Безопасно",
+  "model_label_id": "citrus_limon",
+  "is_premium": false
+}

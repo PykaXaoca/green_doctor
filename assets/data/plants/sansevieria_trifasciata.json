@@ -1,0 +1,23 @@
+{
+  "id": "sansevieria_trifasciata",
+  "common_name": "Сансевиерия трёхполосная",
+  "scientific_name": "Dracaena trifasciata",
+  "family": "Asparagaceae",
+  "category": "Суккулент",
+  "description": "Суккулент с жёсткими вертикальными листьями. Очень неприхотлив.",
+  "default_watering_days": 14,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для кактусов и суккулентов, N-P-K 1-2-2",
+  "light_requirements": "От тени до яркого света",
+  "min_temperature": 15,
+  "max_temperature": 29,
+  "humidity_min": 30,
+  "humidity_max": 50,
+  "soil_type": "Кактусовый грунт с песком и дренажом",
+  "soil_moisture": "Полное просыхание между поливами",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Удалять повреждённые листья у основания",
+  "toxicity": "Умеренно токсично для животных",
+  "model_label_id": "sansevieria_trifasciata",
+  "is_premium": false
+}

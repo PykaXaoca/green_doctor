@@ -2,98 +2,93 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 import '../database/database.dart';
+import 'asset_folder_loader.dart';
 
-/// Сервис импорта справочника болезней из ассета.
+/// Сервис импорта справочника болезней из папки ассетов.
+///
+/// Источник: `assets/data/diseases/<id>.json` — по одному файлу
+/// на болезнь.
 ///
 /// Логика:
-///  1. Читаем JSON, считаем число болезней.
-///  2. Смотрим, сколько сейчас в БД.
-///  3. Если в JSON больше, чем в БД (или импорт ещё не выполнялся) —
-///     переимпортируем через `insertAllOnConflictUpdate`. Старые
-///     записи обновляются, новые добавляются, ничего не удаляется.
+///  1. Читаем все JSON-файлы из папки.
+///  2. Смотрим, сколько сейчас в БД и какая версия импорта.
+///  3. Если в JSON больше, чем в БД (или версия устарела, или
+///     импорт ещё не выполнялся) — переимпортируем через
+///     `insertAllOnConflictUpdate`. Старые записи обновляются,
+///     новые добавляются, ничего не удаляется.
 ///
-/// Если ассет отсутствует или повреждён — сидер не бросает исключение,
-/// а помечает импорт как выполненный и продолжает работу.
+/// При каждом изменении содержимого `assets/data/diseases/**`
+/// увеличивай [_currentVersion] на 1.
 class DiseaseSeeder {
   DiseaseSeeder(this._db);
 
   final AppDatabase _db;
 
-  static const String _assetPath = 'assets/data/plant_diseases.json';
+  static const String _folder = 'assets/data/diseases';
   static const String _metaKey = 'diseases_imported';
+  static const String _versionKey = 'diseases_import_version';
+
+  /// История:
+  ///   1 — монолитный `plant_diseases.json`
+  ///   2 — переезд на папку `diseases/`
+  static const int _currentVersion = 2;
 
   Future<int> seedIfNeeded() async {
-    String rawJson;
+    List<Map<String, dynamic>> items;
     try {
-      rawJson = await rootBundle.loadString(_assetPath);
+      final byId = await loadJsonObjectsByIdFromFolder(_folder);
+      items = byId.values.toList(growable: false);
     } catch (e) {
       if (kDebugMode) {
-        debugPrint('[DiseaseSeeder] Ассет $_assetPath не найден: $e');
+        debugPrint('[DiseaseSeeder] Ошибка чтения папки $_folder: $e');
       }
       await _db.appMetaDao.setValue(_metaKey, 'true');
       return 0;
     }
 
-    try {
-      final list = jsonDecode(rawJson) as List<dynamic>;
-      final expectedCount = list.length;
+    final expectedCount = items.length;
 
-      final all = await _db.diseaseDao.getAll();
-      final actualCount = all.length;
+    final all = await _db.diseaseDao.getAll();
+    final actualCount = all.length;
 
-      final done = await _db.appMetaDao.getValue(_metaKey);
-      final alreadyImported = done == 'true';
+    final done = await _db.appMetaDao.getValue(_metaKey);
+    final version = await _db.appMetaDao.getValue(_versionKey);
 
-      // Всё актуально — ничего не делаем.
-      if (alreadyImported && actualCount >= expectedCount) {
-        return 0;
-      }
+    final alreadyImported = done == 'true';
+    final versionMatches = version == _currentVersion.toString();
+    final countMatches = actualCount >= expectedCount;
 
-      return await _parseAndInsert(rawJson);
-    } catch (e) {
+    if (alreadyImported && versionMatches && countMatches) {
       if (kDebugMode) {
-        debugPrint('[DiseaseSeeder] Ошибка разбора JSON: $e');
+        debugPrint(
+          '[DiseaseSeeder] Пропуск: уже импортировано '
+          '(v$version, $actualCount болезней)',
+        );
       }
-      await _db.appMetaDao.setValue(_metaKey, 'true');
       return 0;
     }
+
+    return _insertItems(items);
   }
 
   Future<int> seed() async {
-    String rawJson;
-    try {
-      rawJson = await rootBundle.loadString(_assetPath);
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('[DiseaseSeeder] Ассет $_assetPath не найден: $e');
-      }
-      await _db.appMetaDao.setValue(_metaKey, 'true');
-      return 0;
-    }
-
-    try {
-      return await _parseAndInsert(rawJson);
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('[DiseaseSeeder] Ошибка разбора JSON: $e');
-      }
-      await _db.appMetaDao.setValue(_metaKey, 'true');
-      return 0;
-    }
+    final byId = await loadJsonObjectsByIdFromFolder(_folder);
+    final items = byId.values.toList(growable: false);
+    return _insertItems(items);
   }
 
+  /// Совместимость: импорт из строки. Ожидается JSON-массив
+  /// объектов болезней (как раньше).
   Future<int> seedFromJsonString(String rawJson) async {
-    return _parseAndInsert(rawJson);
+    final list = jsonDecode(rawJson) as List<dynamic>;
+    final items = list.cast<Map<String, dynamic>>();
+    return _insertItems(items);
   }
 
-  Future<int> _parseAndInsert(String rawJson) async {
-    final list = jsonDecode(rawJson) as List<dynamic>;
-
-    final companions = list.map((item) {
-      final map = item as Map<String, dynamic>;
+  Future<int> _insertItems(List<Map<String, dynamic>> items) async {
+    final companions = items.map((map) {
       return PlantDiseasesCompanion(
         id: Value(map['id'] as String),
         name: Value(map['name'] as String),
@@ -107,10 +102,12 @@ class DiseaseSeeder {
 
     await _db.diseaseDao.insertAll(companions);
     await _db.appMetaDao.setValue(_metaKey, 'true');
+    await _db.appMetaDao.setValue(_versionKey, _currentVersion.toString());
 
     if (kDebugMode) {
       debugPrint(
-        '[DiseaseSeeder] Импортировано болезней: ${companions.length}',
+        '[DiseaseSeeder] Импорт v$_currentVersion: '
+        'болезней ${companions.length}',
       );
     }
 

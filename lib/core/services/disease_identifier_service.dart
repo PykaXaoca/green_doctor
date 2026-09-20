@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -6,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
+
+import 'asset_folder_loader.dart';
 
 /// Результат диагностики.
 class DiagnosisResult {
@@ -26,7 +27,7 @@ class DiseaseIdentifierService {
   static const String _modelAsset =
       'assets/models/disease_diagnosis_model.tflite';
   static const String _labelsAsset = 'assets/models/disease_labels.txt';
-  static const String _diseasesJsonAsset = 'assets/data/plant_diseases.json';
+  static const String _diseasesFolder = 'assets/data/diseases';
   static const int _inputSize = 224;
 
   Interpreter? _interpreter;
@@ -55,7 +56,7 @@ class DiseaseIdentifierService {
   }
 
   /// Загружает метки: сначала из `disease_labels.txt`, если нет —
-  /// из `plant_diseases.json` (в порядке `model_label_id`).
+  /// из папки `assets/data/diseases/` (в порядке `model_label_id`).
   Future<List<String>> _loadLabels() async {
     try {
       final labelsData = await rootBundle.loadString(_labelsAsset);
@@ -69,16 +70,14 @@ class DiseaseIdentifierService {
       if (kDebugMode) {
         debugPrint(
           '[DiseaseIdentifier] $_labelsAsset не найден, '
-          'fallback на $_diseasesJsonAsset: $e',
+          'fallback на $_diseasesFolder: $e',
         );
       }
     }
 
     try {
-      final rawJson = await rootBundle.loadString(_diseasesJsonAsset);
-      final list = jsonDecode(rawJson) as List<dynamic>;
-      final entries = list.map((item) {
-        final map = item as Map<String, dynamic>;
+      final byId = await loadJsonObjectsByIdFromFolder(_diseasesFolder);
+      final entries = byId.values.map((map) {
         return (
           id: map['id'] as String,
           order: (map['model_label_id'] as int?) ?? 1 << 30,

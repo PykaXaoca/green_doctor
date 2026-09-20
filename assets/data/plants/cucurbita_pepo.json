@@ -1,0 +1,23 @@
+{
+  "id": "cucurbita_pepo",
+  "common_name": "Кабачок",
+  "scientific_name": "Cucurbita pepo",
+  "family": "Cucurbitaceae",
+  "category": "Овощ",
+  "description": "Теплолюбивая овощная культура. Быстро растёт, даёт много плодов.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для тыквенных, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 15,
+  "max_temperature": 30,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, с перегноем",
+  "soil_moisture": "Регулярный, особенно в период плодоношения",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять нижние листья, прищипывать боковые побеги для увеличения урожая",
+  "toxicity": "Безопасно",
+  "model_label_id": "cucurbita_pepo",
+  "is_premium": false
+}

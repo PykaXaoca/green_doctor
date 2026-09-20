@@ -1,0 +1,23 @@
+{
+  "id": "vaccinium_angustifolium",
+  "common_name": "Голубика узколистная",
+  "scientific_name": "Vaccinium angustifolium",
+  "family": "Ericaceae",
+  "category": "Ягодный кустарник",
+  "description": "Низкорослая голубика с мелкими ароматными ягодами. Морозостойка.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для кислотолюбивых, N-P-K 10-10-10",
+  "light_requirements": "Солнце",
+  "min_temperature": -40,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Кислый торф (pH 4.0-5.5), дренированный",
+  "soil_moisture": "Постоянно влажная, не пересыхает",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Весной обрезать старые побеги, омолаживать раз в 2-3 года",
+  "toxicity": "Безопасно",
+  "model_label_id": "vaccinium_angustifolium",
+  "is_premium": false
+}

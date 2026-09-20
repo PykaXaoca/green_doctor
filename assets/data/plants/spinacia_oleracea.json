@@ -1,0 +1,23 @@
+{
+  "id": "spinacia_oleracea",
+  "common_name": "Шпинат",
+  "scientific_name": "Spinacia oleracea",
+  "family": "Amaranthaceae",
+  "category": "Зелень и пряности",
+  "description": "Листовая зелень, богатая железом. Скороспелая, любит прохладу.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Универсальное для зелени, N-P-K 10-10-10",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": 2,
+  "max_temperature": 20,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, влагоёмкий, нейтральный",
+  "soil_moisture": "Постоянно влажная",
+  "repotting_frequency_months": 3,
+  "pruning_info": "Срезать внешние листья, не давать цвести (иначе листья горчат)",
+  "toxicity": "Безопасно",
+  "model_label_id": "spinacia_oleracea",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "grossularia_uva_crispa",
+  "common_name": "Крыжовник",
+  "scientific_name": "Ribes uva-crispa",
+  "family": "Grossulariaceae",
+  "category": "Ягодный кустарник",
+  "description": "Колючий ягодный кустарник. Устойчив к засухе, любит солнечные места.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце",
+  "min_temperature": -35,
+  "max_temperature": 27,
+  "humidity_min": 40,
+  "humidity_max": 60,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, не переносит застоя воды",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Осенью прореживать, удалять ветви старше 5-6 лет, укорачивать однолетние",
+  "toxicity": "Безопасно",
+  "model_label_id": "grossularia_uva_crispa",
+  "is_premium": false
+}

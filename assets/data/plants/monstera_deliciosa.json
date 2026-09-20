@@ -1,0 +1,23 @@
+{
+  "id": "monstera_deliciosa",
+  "common_name": "Монстера деликатесная",
+  "scientific_name": "Monstera deliciosa",
+  "family": "Araceae",
+  "category": "Комнатное декоративнолиственное",
+  "description": "Крупная лиана с характерными резными листьями. Родом из тропических лесов Центральной Америки.",
+  "default_watering_days": 7,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное для декоративнолиственных, N-P-K 3-1-2",
+  "light_requirements": "Яркий рассеянный свет, полутень",
+  "min_temperature": 18,
+  "max_temperature": 27,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Рыхлая, питательная, с дренажом (торф + перлит + кора)",
+  "soil_moisture": "Умеренная, верхний слой просыхает на 3-4 см",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Весной удалять сухие и жёлтые листья. Воздушные корни направлять в грунт или к опоре",
+  "toxicity": "Токсично для кошек и собак",
+  "model_label_id": "monstera_deliciosa",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "pyrus_communis",
+  "common_name": "Груша",
+  "scientific_name": "Pyrus communis",
+  "family": "Rosaceae",
+  "category": "Садовое дерево",
+  "description": "Плодовое дерево с сочными плодами. Требует тёплых солнечных мест и дренированной почвы.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для плодовых деревьев, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -30,
+  "max_temperature": 30,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, не переносит застоя воды",
+  "repotting_frequency_months": 120,
+  "pruning_info": "Весной формировать разреженно-ярусную крону, укорачивать побеги",
+  "toxicity": "Безопасно",
+  "model_label_id": "pyrus_communis",
+  "is_premium": false
+}

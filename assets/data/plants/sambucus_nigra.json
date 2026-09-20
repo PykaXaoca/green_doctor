@@ -1,0 +1,23 @@
+{
+  "id": "sambucus_nigra",
+  "common_name": "Бузина чёрная",
+  "scientific_name": "Sambucus nigra",
+  "family": "Adoxaceae",
+  "category": "Ягодный кустарник",
+  "description": "Крупный кустарник с лечебными чёрными ягодами. Цветки и плоды используют в медицине.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12 с органикой",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -30,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Питательный, влагоёмкий, нейтральный",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 48,
+  "pruning_info": "Весной удалять старые побеги, оставлять 8-10 сильных",
+  "toxicity": "Сырые ягоды токсичны, после термической обработки безопасны",
+  "model_label_id": "sambucus_nigra",
+  "is_premium": false
+}

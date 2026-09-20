@@ -1,0 +1,23 @@
+{
+  "id": "rosmarinus_officinalis",
+  "common_name": "Розмарин",
+  "scientific_name": "Rosmarinus officinalis",
+  "family": "Lamiaceae",
+  "category": "Зелень и пряности",
+  "description": "Вечнозелёный ароматный полукустарник. Требует много солнца и дренированной почвы.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для пряных трав, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -10,
+  "max_temperature": 30,
+  "humidity_min": 30,
+  "humidity_max": 55,
+  "soil_type": "Песчаный, дренированный, нейтральный",
+  "soil_moisture": "Скудный, полное просыхание между поливами",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Весной формировать куст, регулярно срезать побеги для аромата",
+  "toxicity": "Безопасно",
+  "model_label_id": "rosmarinus_officinalis",
+  "is_premium": false
+}

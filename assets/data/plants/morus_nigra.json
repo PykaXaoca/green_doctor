@@ -1,0 +1,23 @@
+{
+  "id": "morus_nigra",
+  "common_name": "Шелковица чёрная",
+  "scientific_name": "Morus nigra",
+  "family": "Moraceae",
+  "category": "Ягодное дерево",
+  "description": "Дерево с тёмно-фиолетовыми сладкими плодами. Более теплолюбива, чем белая.",
+  "default_watering_days": 5,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для плодовых деревьев, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -25,
+  "max_temperature": 35,
+  "humidity_min": 40,
+  "humidity_max": 65,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Умеренный, засухоустойчиво",
+  "repotting_frequency_months": 60,
+  "pruning_info": "Весной формировать крону, удалять сухие ветви",
+  "toxicity": "Безопасно",
+  "model_label_id": "morus_nigra",
+  "is_premium": false
+}

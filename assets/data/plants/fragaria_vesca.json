@@ -1,0 +1,23 @@
+{
+  "id": "fragaria_vesca",
+  "common_name": "Земляника лесная",
+  "scientific_name": "Fragaria vesca",
+  "family": "Rosaceae",
+  "category": "Ягодное",
+  "description": "Мелкоплодная земляника, более ароматная, чем садовая клубника. Растёт компактным кустом.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -25,
+  "max_temperature": 26,
+  "humidity_min": 55,
+  "humidity_max": 75,
+  "soil_type": "Питательный, рыхлый, слабокислый",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять усы (если не нужны для размножения) и старые листья",
+  "toxicity": "Безопасно",
+  "model_label_id": "fragaria_vesca",
+  "is_premium": false
+}

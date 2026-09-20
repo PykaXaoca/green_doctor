@@ -1,0 +1,23 @@
+{
+  "id": "actinidia_kolomikta",
+  "common_name": "Актинидия коломикта",
+  "scientific_name": "Actinidia kolomikta",
+  "family": "Actinidiaceae",
+  "category": "Ягодная лиана",
+  "description": "Морозостойкая лиана с ароматными сладкими ягодами. Листья меняют окраску.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -40,
+  "max_temperature": 26,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, слабокислый",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Обрезать 2-летние побеги после плодоношения, формировать на опоре",
+  "toxicity": "Безопасно",
+  "model_label_id": "actinidia_kolomikta",
+  "is_premium": false
+}

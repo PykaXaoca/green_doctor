@@ -1,0 +1,802 @@
+{
+  "stages": [
+    {
+      "id": "spring",
+      "name": "Весеннее пробуждение",
+      "start_month": 3,
+      "start_day": 10,
+      "end_month": 4,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "10–20 марта",
+          "temperature": "+3…+6 °C",
+          "phase": "Почки спят",
+          "action": "Санитарная обрезка, формировка"
+        },
+        {
+          "period": "20–31 марта",
+          "temperature": "+5…+8 °C",
+          "phase": "Набухание почек",
+          "action": "Побелка, 3 % бордоская"
+        },
+        {
+          "period": "1–10 апреля",
+          "temperature": "+8…+12 °C",
+          "phase": "Зелёный конус",
+          "action": "Азотная подкормка"
+        },
+        {
+          "period": "10–20 апреля",
+          "temperature": "+12…+16 °C",
+          "phase": "Выдвижение бутонов",
+          "action": "Обработка от вредителей"
+        }
+      ],
+      "actions": [
+        {
+          "code": "pruning",
+          "title": "Обрезка шелковицы",
+          "description": "Шелковица быстро растёт и легко переносит обрезку. Формировка разреженно-ярусная или безъярусная.",
+          "window": {
+            "start_month": 3,
+            "start_day": 10,
+            "end_month": 3,
+            "end_day": 20
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "subheading",
+              "text": "Что удалять"
+            },
+            {
+              "type": "bullets",
+              "items": [
+                "Сухие, сломанные, больные",
+                "Ветви, растущие внутрь",
+                "Волчки — кроме нужных для формировки",
+                "Корневую поросль — обильную"
+              ]
+            },
+            {
+              "type": "subheading",
+              "text": "Схема формировки"
+            },
+            {
+              "type": "paragraph",
+              "text": "Проводник и скелетные ветви первого яруса. Второй ярус — через 50–60 см."
+            },
+            {
+              "type": "paragraph",
+              "text": "Сроки: весной, до распускания почек. Шелковица хорошо переносит обрезку, можно формировать в виде плакучей или штамбовой формы."
+            }
+          ]
+        },
+        {
+          "code": "whitewash",
+          "title": "Побелка штамба",
+          "description": "2 кг извести + 200 г медного купороса + 100 г ПВА на 10 л. В 2 слоя.",
+          "window": {
+            "start_month": 3,
+            "start_day": 20,
+            "end_month": 3,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Наносить на штамб и основания скелетных ветвей."
+            }
+          ]
+        },
+        {
+          "code": "first_nitrogen",
+          "title": "Первая азотная подкормка",
+          "description": "По таломёрзлой почве.",
+          "window": {
+            "start_month": 4,
+            "start_day": 1,
+            "end_month": 4,
+            "end_day": 10
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Мочевина: 20–30 г на 10 л, 2–3 ведра под корень",
+                "Аммиачная селитра: 15–20 г на м², разбросать",
+                "Настой коровяка 1:10: 3–4 л под дерево"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "spring_treatments",
+          "title": "Обработки от вредителей и болезней",
+          "description": "Серия обработок по фенофазам.",
+          "window": {
+            "start_month": 3,
+            "start_day": 20,
+            "end_month": 4,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "subheading",
+              "text": "До распускания почек"
+            },
+            {
+              "type": "paragraph",
+              "text": "3 % бордоская: 300 г медного купороса + 400 г извести на 10 л. Против пятнистостей, антракноза."
+            },
+            {
+              "type": "subheading",
+              "text": "Зелёный конус"
+            },
+            {
+              "type": "paragraph",
+              "text": "«Хорус» 2 г на 10 л — пятнистости, антракноз."
+            },
+            {
+              "type": "subheading",
+              "text": "Выдвижение бутонов"
+            },
+            {
+              "type": "paragraph",
+              "text": "«Актара» 1 г на 10 л — тля, клещ."
+            }
+          ]
+        },
+        {
+          "code": "trunk_circle",
+          "title": "Приствольный круг",
+          "description": "Взрыхлить на 5 см, мульча, удалить поросль.",
+          "window": {
+            "start_month": 4,
+            "start_day": 10,
+            "end_month": 4,
+            "end_day": 20
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Взрыхлить на 5 см",
+                "Мульча 5 см",
+                "Удалить корневую поросль — шелковица даёт её очень обильно"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Шелковица двудомная — для плодоношения нужны мужское и женское деревья",
+        "Мужские деревья дают обильную пыльцу — не сажать у окон",
+        "Быстро растёт — обрезка каждую весну",
+        "Корневая поросль удаляется у самого основания"
+      ]
+    },
+    {
+      "id": "growing",
+      "name": "Активный рост",
+      "start_month": 5,
+      "start_day": 1,
+      "end_month": 6,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "1–10 мая",
+          "temperature": "—",
+          "phase": "Развёртывание листьев",
+          "action": "Азотная подкормка"
+        },
+        {
+          "period": "10–20 мая",
+          "temperature": "—",
+          "phase": "Рост побегов",
+          "action": "Обработка от тли, клеща"
+        },
+        {
+          "period": "20–31 мая",
+          "temperature": "—",
+          "phase": "Завязывание",
+          "action": "Нормировка не нужна"
+        },
+        {
+          "period": "1–15 июня",
+          "temperature": "—",
+          "phase": "Рост плодов",
+          "action": "Вторая азотная"
+        },
+        {
+          "period": "15–30 июня",
+          "temperature": "—",
+          "phase": "Созревание",
+          "action": "Калийная подкормка"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering",
+          "title": "Полив",
+          "description": "Шелковица засухоустойчива, но в период налива полив улучшает качество.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Умеренная погода: 25–30 л раз в 7–10 дней",
+                "Жаркая: 30–40 л раз в 5 дней",
+                "Засушливая: 40–50 л раз в 3–4 дня"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "feeding",
+          "title": "Подкормки",
+          "description": "Азот до конца июня. После 10 июля азот не давать.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Настой коровяка 1:10: 4–5 л под дерево",
+                "Мочевина: 20 г на 10 л, 2 ведра",
+                "Нитроаммофоска: 25 г на 10 л, 2 ведра",
+                "Зола: 1 стакан на 10 л, 2 ведра"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pest_protection",
+          "title": "Защита от вредителей",
+          "description": "Осматривать каждые 10–14 дней.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Тля — скрученные листья. «Актара» 1 г на 10 л",
+                "Клещ — паутинка, жёлтые точки. «Фитоверм» 2 мл на 1 л",
+                "Щитовка — коричневые щитки. «Актара» 1 г на 10 л",
+                "Листовёртка — скрученные листья с гусеницей. «Битоксибациллин» 20 г на 10 л"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "diseases",
+          "title": "Болезни",
+          "description": "Профилактика и лечение.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Антракноз — тёмные вдавленные пятна. «Скор» 2 мл на 10 л",
+                "Пятнистости — бурые пятна. «Хорус» 2 г на 10 л",
+                "Мучнистая роса — белый налёт. «Топаз» 2 мл на 10 л"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "loosening_mulch",
+          "title": "Рыхление и мульча",
+          "description": "После полива — рыхление на 5 см, мульча 5 см.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 6,
+            "end_day": 30
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Удалять поросль и сорняки."
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Плоды шелковицы созревают неравномерно — сбор растянут",
+        "Осыпавшиеся плоды пачкают всё вокруг — стелите плёнку под дерево",
+        "Птицы любят шелковицу — сетка или отпугиватели",
+        "Не опрыскивать в жару выше +28 °C"
+      ]
+    },
+    {
+      "id": "flowering",
+      "name": "Цветение",
+      "start_month": 5,
+      "start_day": 1,
+      "end_month": 5,
+      "end_day": 20,
+      "schedule": [
+        {
+          "period": "Начало",
+          "temperature": "+14…+18 °C",
+          "phase": "2–3 дня",
+          "action": "Опрыскать мёдом"
+        },
+        {
+          "period": "Массовое",
+          "temperature": "+18…+22 °C",
+          "phase": "2–4 дня",
+          "action": "Полив умеренный"
+        },
+        {
+          "period": "Конец",
+          "temperature": "+20…+24 °C",
+          "phase": "2–3 дня",
+          "action": "Фосфорно-калийная подкормка"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering_flowering",
+          "title": "Полив",
+          "description": "15–20 л раз в 5–7 дней.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Поливать под корень."
+            }
+          ]
+        },
+        {
+          "code": "feeding_flowering",
+          "title": "Подкормка калием и фосфором",
+          "description": "Азот не вносить.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сульфат калия: 15 г на 10 л, 2 ведра",
+                "Суперфосфат: 25 г на 10 л, 2 ведра",
+                "Зола: 1 стакан на 10 л, 2 ведра"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pollinator_attraction",
+          "title": "Привлечение опылителей",
+          "description": "Шелковица опыляется ветром, но пчёлы тоже помогают.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Опрыскать мёдом (1 ст. л. на 1 л)."
+            }
+          ]
+        },
+        {
+          "code": "frost_protection",
+          "title": "Защита от заморозков",
+          "description": "При −2 °C: дымление, дождевание, агроспан.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "При −2 °C применить дымление, дождевание или укрытие агроспаном."
+            }
+          ]
+        },
+        {
+          "code": "hand_pollination",
+          "title": "Ручное опыление",
+          "description": "Не требуется — шелковица опыляется ветром.",
+          "window": {
+            "start_month": 5,
+            "start_day": 1,
+            "end_month": 5,
+            "end_day": 20
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Достаточно посадить мужское и женское деревья рядом в радиусе 10–15 м."
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Цветение шелковицы малозаметно — мелкие серёжки",
+        "Мужские деревья цветут обильно, дают много пыльцы",
+        "Если плодов нет — проверьте, есть ли мужское дерево рядом",
+        "Холод ниже +10 °C — цветение затягивается"
+      ]
+    },
+    {
+      "id": "fruiting",
+      "name": "Налив и созревание плодов",
+      "start_month": 6,
+      "start_day": 1,
+      "end_month": 8,
+      "end_day": 31,
+      "schedule": [
+        {
+          "period": "Белая медовая",
+          "temperature": "—",
+          "phase": "Июнь — июль",
+          "action": "Белые, кремовые"
+        },
+        {
+          "period": "Крупноплодная",
+          "temperature": "—",
+          "phase": "Июль — август",
+          "action": "Тёмно-фиолетовые"
+        },
+        {
+          "period": "Кормовая",
+          "temperature": "—",
+          "phase": "Июль",
+          "action": "Чёрные"
+        }
+      ],
+      "actions": [
+        {
+          "code": "watering_fruiting",
+          "title": "Полив",
+          "description": "В период налива полив улучшает качество.",
+          "window": {
+            "start_month": 6,
+            "start_day": 1,
+            "end_month": 8,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Налив: 30–40 л раз в 5–7 дней",
+                "Созревание: 25–30 л раз в 7 дней",
+                "За 2 недели до сбора: прекратить"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "feeding_fruiting",
+          "title": "Подкормки",
+          "description": "Калий и фосфор.",
+          "window": {
+            "start_month": 6,
+            "start_day": 1,
+            "end_month": 7,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Монофосфат калия: 15 г на 10 л, 2 ведра",
+                "Сульфат калия: 20 г на 10 л, 2 ведра",
+                "Зола: 1 стакан на 10 л, 2 ведра"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "harvest",
+          "title": "Сбор урожая",
+          "description": "Плоды снимать с плодоножкой. Стелить плёнку под дерево.",
+          "window": {
+            "start_month": 6,
+            "start_day": 1,
+            "end_month": 8,
+            "end_day": 31
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Белая: каждые 2–3 дня при полной зрелости",
+                "Тёмная: каждые 2–3 дня при полной зрелости"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "Плоды созревают неравномерно — сбор растянут на 2–3 недели. В холодильнике 1–2 дня, плоды быстро портятся."
+            }
+          ]
+        },
+        {
+          "code": "pest_fruiting",
+          "title": "Болезни и вредители в период налива",
+          "description": "Осматривать каждые 2–3 дня.",
+          "window": {
+            "start_month": 6,
+            "start_day": 1,
+            "end_month": 8,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Антракноз — тёмные пятна. «Скор» 2 мл на 10 л",
+                "Тля — скрученные листья. «Актара» 1 г на 10 л",
+                "Птицы — склёванные плоды. Сетка, отпугиватели",
+                "Осы — повреждённые плоды. Ловушки с сиропом"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "supports",
+          "title": "Подпорки под ветви",
+          "description": "Под ветви с урожаем.",
+          "window": {
+            "start_month": 6,
+            "start_day": 1,
+            "end_month": 8,
+            "end_day": 31
+          },
+          "priority": "low",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Подпорки ставить под углом, не травмировать кору."
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Плоды созревают неравномерно — сбор растянут на 2–3 недели",
+        "Осыпавшиеся плоды быстро портятся — убирать ежедневно",
+        "Птицы — сетка или блестящие ленты",
+        "Хранение — 1–2 дня в холодильнике"
+      ]
+    },
+    {
+      "id": "dormant",
+      "name": "Покой и подготовка к зиме",
+      "start_month": 10,
+      "start_day": 1,
+      "end_month": 11,
+      "end_day": 30,
+      "schedule": [
+        {
+          "period": "1–10 октября",
+          "temperature": "+5…+10 °C",
+          "phase": "После листопада",
+          "action": "Влагозарядный полив"
+        },
+        {
+          "period": "10–20 октября",
+          "temperature": "+3…+8 °C",
+          "phase": "—",
+          "action": "Санитарная обрезка"
+        },
+        {
+          "period": "20–31 октября",
+          "temperature": "0…+5 °C",
+          "phase": "—",
+          "action": "Осенняя подкормка, побелка"
+        },
+        {
+          "period": "Ноябрь",
+          "temperature": "−5…0 °C",
+          "phase": "—",
+          "action": "Мульчирование, укрытие"
+        }
+      ],
+      "actions": [
+        {
+          "code": "autumn_watering",
+          "title": "Влагозарядный полив",
+          "description": "50–60 л после листопада.",
+          "window": {
+            "start_month": 10,
+            "start_day": 1,
+            "end_month": 10,
+            "end_day": 10
+          },
+          "priority": "high",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Насыщает почву влагой, защищает корни от зимнего иссушения."
+            }
+          ]
+        },
+        {
+          "code": "autumn_pruning",
+          "title": "Санитарная обрезка",
+          "description": "Удалить сухие, больные, сломанные ветви. Срезы замазать варом.",
+          "window": {
+            "start_month": 10,
+            "start_day": 10,
+            "end_month": 10,
+            "end_day": 20
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Растительные остатки сжечь."
+            }
+          ]
+        },
+        {
+          "code": "autumn_whitewash",
+          "title": "Побелка (повторно)",
+          "description": "Состав как весной.",
+          "window": {
+            "start_month": 10,
+            "start_day": 20,
+            "end_month": 10,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "2 кг извести + 200 г медного купороса + 100 г ПВА на 10 л. В 2 слоя."
+            }
+          ]
+        },
+        {
+          "code": "autumn_feeding",
+          "title": "Осенняя подкормка",
+          "description": "Фосфор и калий. Азот не вносить.",
+          "window": {
+            "start_month": 10,
+            "start_day": 20,
+            "end_month": 10,
+            "end_day": 31
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Суперфосфат: 30 г на м²",
+                "Сульфат калия: 20 г на м²",
+                "Зола: 2 стакана на м²"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mulching",
+          "title": "Мульчирование",
+          "description": "Торф или компост 10 см. Молодые — лапник.",
+          "window": {
+            "start_month": 10,
+            "start_day": 20,
+            "end_month": 11,
+            "end_day": 15
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "paragraph",
+              "text": "Мульчу не прижимать к стволу."
+            }
+          ]
+        },
+        {
+          "code": "rodent_protection",
+          "title": "Защита от грызунов",
+          "description": "Сетка, лапник, спираль. Приманки.",
+          "window": {
+            "start_month": 10,
+            "start_day": 25,
+            "end_month": 11,
+            "end_day": 30
+          },
+          "priority": "medium",
+          "recurring": true,
+          "details": [
+            {
+              "type": "bullets",
+              "items": [
+                "Сетка металлическая на штамб 60–80 см",
+                "Лапник",
+                "Спираль пластиковая",
+                "Отравленные приманки по периметру"
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Шелковица морозостойка, но молодые деревья лучше укрыть",
+        "Не обрезать осенью — раны плохо заживают",
+        "В малоснежную зиму накидывать снег",
+        "Весной укрытие снимать постепенно"
+      ]
+    }
+  ]
+}

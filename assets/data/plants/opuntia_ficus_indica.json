@@ -1,0 +1,23 @@
+{
+  "id": "opuntia_ficus_indica",
+  "common_name": "Опунция",
+  "scientific_name": "Opuntia ficus-indica",
+  "family": "Cactaceae",
+  "category": "Кактус",
+  "description": "Крупный кактус с плоскими сегментами. Съедобные плоды и молодые побеги.",
+  "default_watering_days": 21,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для кактусов, N-P-K 1-2-2",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 5,
+  "max_temperature": 35,
+  "humidity_min": 20,
+  "humidity_max": 40,
+  "soil_type": "Кактусовый, песчаный, с дренажом",
+  "soil_moisture": "Полное просыхание между поливами, зимой почти без полива",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Удалять лишние сегменты весной, не трогать в период покоя",
+  "toxicity": "Плоды съедобны, колючки опасны",
+  "model_label_id": "opuntia_ficus_indica",
+  "is_premium": false
+}

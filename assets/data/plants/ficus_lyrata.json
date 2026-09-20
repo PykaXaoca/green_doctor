@@ -1,0 +1,23 @@
+{
+  "id": "ficus_lyrata",
+  "common_name": "Фикус лировидный",
+  "scientific_name": "Ficus lyrata",
+  "family": "Moraceae",
+  "category": "Комнатное декоративнолиственное",
+  "description": "Крупное растение с широкими кожистыми листьями в форме скрипки.",
+  "default_watering_days": 7,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для фикусов, N-P-K 3-1-2",
+  "light_requirements": "Яркий рассеянный свет, без прямого солнца",
+  "min_temperature": 18,
+  "max_temperature": 24,
+  "humidity_min": 40,
+  "humidity_max": 60,
+  "soil_type": "Питательный, дренированный (торф + перлит)",
+  "soil_moisture": "Умеренная, верхние 3 см просыхают",
+  "repotting_frequency_months": 24,
+  "pruning_info": "Удалять нижние сухие листья. Прищипывать верхушку для ветвления",
+  "toxicity": "Токсично при попадании в пищу",
+  "model_label_id": "ficus_lyrata",
+  "is_premium": false
+}

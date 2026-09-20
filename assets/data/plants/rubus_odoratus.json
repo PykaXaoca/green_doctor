@@ -1,0 +1,23 @@
+{
+  "id": "rubus_odoratus",
+  "common_name": "Малина душистая",
+  "scientific_name": "Rubus odoratus",
+  "family": "Rosaceae",
+  "category": "Ягодный кустарник",
+  "description": "Декоративная малина с крупными розовыми цветками. Ягоды съедобны, но невкусные.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -30,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 75,
+  "soil_type": "Питательный, дренированный, нейтральный",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Осенью срезать отплодоносившие побеги, весной прореживать",
+  "toxicity": "Безопасно",
+  "model_label_id": "rubus_odoratus",
+  "is_premium": false
+}

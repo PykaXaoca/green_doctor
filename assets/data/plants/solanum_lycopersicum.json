@@ -1,0 +1,23 @@
+{
+  "id": "solanum_lycopersicum",
+  "common_name": "Томат",
+  "scientific_name": "Solanum lycopersicum",
+  "family": "Solanaceae",
+  "category": "Овощ",
+  "description": "Популярная овощная культура. Требует много света и регулярного полива.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для томатов, N-P-K 6-12-12 с кальцием",
+  "light_requirements": "Прямой яркий свет, 6-8 часов в день",
+  "min_temperature": 18,
+  "max_temperature": 28,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый (торф + перегной + песок)",
+  "soil_moisture": "Регулярный, равномерный, без пересыхания",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять пасынки, нижние листья до первой кисти",
+  "toxicity": "Листья и стебли токсичны, плоды съедобны",
+  "model_label_id": "solanum_lycopersicum",
+  "is_premium": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "mammillaria_prolifera",
+  "common_name": "Маммиллярия",
+  "scientific_name": "Mammillaria prolifera",
+  "family": "Cactaceae",
+  "category": "Кактус",
+  "description": "Небольшой шаровидный кактус, обильно цветёт и даёт детки.",
+  "default_watering_days": 18,
+  "fertilizing_frequency_days": 90,
+  "fertilizer_type": "Для кактусов, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 8,
+  "max_temperature": 32,
+  "humidity_min": 20,
+  "humidity_max": 40,
+  "soil_type": "Кактусовый, песчаный, с дренажом",
+  "soil_moisture": "Полное просыхание между поливами, зимой сухо",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Отделять детки весной при пересадке",
+  "toxicity": "Безопасно",
+  "model_label_id": "mammillaria_prolifera",
+  "is_premium": false
+}

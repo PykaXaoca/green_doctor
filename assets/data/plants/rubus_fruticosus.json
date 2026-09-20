@@ -1,0 +1,23 @@
+{
+  "id": "rubus_fruticosus",
+  "common_name": "Ежевика",
+  "scientific_name": "Rubus fruticosus",
+  "family": "Rosaceae",
+  "category": "Ягодный кустарник",
+  "description": "Колючий полукустарник с крупными тёмными ягодами. Любит солнце и влажную почву.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для ягодных, N-P-K 6-12-12",
+  "light_requirements": "Солнце",
+  "min_temperature": -25,
+  "max_temperature": 28,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, дренированный, слабокислый",
+  "soil_moisture": "Регулярный, особенно в плодоношение",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Осенью срезать отплодоносившие побеги, весной укорачивать молодые до 1.5 м",
+  "toxicity": "Безопасно",
+  "model_label_id": "rubus_fruticosus",
+  "is_premium": false
+}

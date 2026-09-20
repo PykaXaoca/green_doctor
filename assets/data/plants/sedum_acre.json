@@ -1,0 +1,23 @@
+{
+  "id": "sedum_acre",
+  "common_name": "Очиток едкий",
+  "scientific_name": "Sedum acre",
+  "family": "Crassulaceae",
+  "category": "Почвопокровное",
+  "description": "Суккулентный почвопокровник с ярко-жёлтыми цветками. Засухоустойчив.",
+  "default_watering_days": 7,
+  "fertilizing_frequency_days": 60,
+  "fertilizer_type": "Для суккулентов, слабый раствор",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": -30,
+  "max_temperature": 30,
+  "humidity_min": 25,
+  "humidity_max": 50,
+  "soil_type": "Песчаный, дренированный, бедный",
+  "soil_moisture": "Скудный, полное просыхание",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Обрезать после цветения для поддержания формы",
+  "toxicity": "Умеренно токсично при поедании",
+  "model_label_id": "sedum_acre",
+  "is_premium": false
+}

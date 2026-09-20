@@ -1,0 +1,23 @@
+{
+  "id": "saintpaulia_ionantha",
+  "common_name": "Фиалка комнатная (сенполия)",
+  "scientific_name": "Saintpaulia ionantha",
+  "family": "Gesneriaceae",
+  "category": "Комнатное цветущее",
+  "description": "Компактное растение с бархатными листьями и множеством цветков. Цветёт почти круглый год.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цветущих, N-P-K 10-30-20, слабый раствор",
+  "light_requirements": "Яркий рассеянный свет, без прямого солнца",
+  "min_temperature": 18,
+  "max_temperature": 24,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Специальный для фиалок, рыхлый",
+  "soil_moisture": "Постоянно слегка влажная, полив снизу",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять отцветшие цветки и нижние старые листья",
+  "toxicity": "Безопасно",
+  "model_label_id": "saintpaulia_ionantha",
+  "is_premium": false
+}

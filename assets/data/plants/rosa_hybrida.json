@@ -1,0 +1,23 @@
+{
+  "id": "rosa_hybrida",
+  "common_name": "Роза комнатная",
+  "scientific_name": "Rosa hybrida",
+  "family": "Rosaceae",
+  "category": "Комнатное цветущее",
+  "description": "Миниатюрная роза для дома. Требует много света и прохлады.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для роз, N-P-K 10-10-10 с микроэлементами",
+  "light_requirements": "Прямой яркий свет, 6+ часов в день",
+  "min_temperature": 12,
+  "max_temperature": 22,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, дренированный (торф + дерновая земля)",
+  "soil_moisture": "Умеренная, регулярный без пересыхания",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Весной обрезать на 1/3, удалять отцветшие цветки и сухие побеги",
+  "toxicity": "Безопасно",
+  "model_label_id": "rosa_hybrida",
+  "is_premium": false
+}

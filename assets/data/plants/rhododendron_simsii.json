@@ -1,0 +1,23 @@
+{
+  "id": "rhododendron_simsii",
+  "common_name": "Азалия комнатная",
+  "scientific_name": "Rhododendron simsii",
+  "family": "Ericaceae",
+  "category": "Комнатное цветущее",
+  "description": "Компактный кустарник с ярким зимним цветением. Требует прохлады и кислой почвы.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для кислотолюбивых, N-P-K 10-10-10",
+  "light_requirements": "Яркий рассеянный свет",
+  "min_temperature": 12,
+  "max_temperature": 20,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Кислый торф, pH 4.5-5.5",
+  "soil_moisture": "Постоянно влажная, не пересыхает",
+  "repotting_frequency_months": 12,
+  "pruning_info": "После цветения обрезать отцветшие побеги, формировать куст",
+  "toxicity": "Токсично для животных",
+  "model_label_id": "rhododendron_simsii",
+  "is_premium": false
+}

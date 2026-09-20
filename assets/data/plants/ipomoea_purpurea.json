@@ -1,0 +1,23 @@
+{
+  "id": "ipomoea_purpurea",
+  "common_name": "Ипомея пурпурная",
+  "scientific_name": "Ipomoea purpurea",
+  "family": "Convolvulaceae",
+  "category": "Вьющиеся",
+  "description": "Однолетняя лиана с крупными цветками-граммофончиками. Быстро растёт из семян.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цветущих, слабый раствор",
+  "light_requirements": "Солнце",
+  "min_temperature": 10,
+  "max_temperature": 28,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, дренированный",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 6,
+  "pruning_info": "Прищипывать верхушки для ветвления, направлять на опору",
+  "toxicity": "Семена токсичны, цветки безопасны",
+  "model_label_id": "ipomoea_purpurea",
+  "is_premium": false
+}

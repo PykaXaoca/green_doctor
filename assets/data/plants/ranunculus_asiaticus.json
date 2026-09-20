@@ -1,0 +1,23 @@
+{
+  "id": "ranunculus_asiaticus",
+  "common_name": "Лютик азиатский (ранункулус)",
+  "scientific_name": "Ranunculus asiaticus",
+  "family": "Ranunculaceae",
+  "category": "Луковичное",
+  "description": "Клубневое растение с плотными махровыми цветками. Цветёт весной.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цветущих, N-P-K 10-30-20",
+  "light_requirements": "Солнце или лёгкая полутень",
+  "min_temperature": 0,
+  "max_temperature": 22,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, дренированный",
+  "soil_moisture": "Регулярный, не переувлажнять",
+  "repotting_frequency_months": 12,
+  "pruning_info": "После цветения удалять цветоносы, листья оставить до пожелтения",
+  "toxicity": "Токсично при поедании",
+  "model_label_id": "ranunculus_asiaticus",
+  "is_premium": false
+}

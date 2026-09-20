@@ -1,0 +1,23 @@
+{
+  "id": "clematis_jackmanii",
+  "common_name": "Клематис Жакмана",
+  "scientific_name": "Clematis jackmanii",
+  "family": "Ranunculaceae",
+  "category": "Вьющиеся",
+  "description": "Крупноцветковая лиана. Цветёт всё лето, требует опоры и обрезки.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для цветущих, N-P-K 10-30-20",
+  "light_requirements": "Солнце, корни в тени",
+  "min_temperature": -30,
+  "max_temperature": 27,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, дренированный, слабощелочной",
+  "soil_moisture": "Регулярный, не пересыхать",
+  "repotting_frequency_months": 36,
+  "pruning_info": "Обрезка 3-й группы: поздней осенью срезать все побеги до 20-30 см",
+  "toxicity": "Умеренно токсично при поедании",
+  "model_label_id": "clematis_jackmanii",
+  "is_premium": false
+}

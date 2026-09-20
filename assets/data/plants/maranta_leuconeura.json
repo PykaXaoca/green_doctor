@@ -1,0 +1,23 @@
+{
+  "id": "maranta_leuconeura",
+  "common_name": "Маранта беложильчатая",
+  "scientific_name": "Maranta leuconeura",
+  "family": "Marantaceae",
+  "category": "Комнатное декоративнолиственное",
+  "description": "Растение с узорчатыми листьями, складывает их на ночь. Требует влажности.",
+  "default_watering_days": 3,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для декоративнолиственных, слабый раствор",
+  "light_requirements": "Полутень, рассеянный свет",
+  "min_temperature": 16,
+  "max_temperature": 26,
+  "humidity_min": 60,
+  "humidity_max": 90,
+  "soil_type": "Рыхлый, влагоёмкий, слабокислый",
+  "soil_moisture": "Постоянно влажная, не пересыхает",
+  "repotting_frequency_months": 18,
+  "pruning_info": "Удалять сухие листья у основания, не мочить листья",
+  "toxicity": "Безопасно",
+  "model_label_id": "maranta_leuconeura",
+  "is_premium": false
+}

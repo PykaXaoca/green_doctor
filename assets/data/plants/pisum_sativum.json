@@ -1,0 +1,23 @@
+{
+  "id": "pisum_sativum",
+  "common_name": "Горох",
+  "scientific_name": "Pisum sativum",
+  "family": "Fabaceae",
+  "category": "Овощ",
+  "description": "Бобовая культура. Обогащает почву азотом, хорошо растёт с опорой.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Универсальное, минимум азота",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": 5,
+  "max_temperature": 22,
+  "humidity_min": 50,
+  "humidity_max": 70,
+  "soil_type": "Питательный, рыхлый, нейтральный",
+  "soil_moisture": "Регулярный, особенно в период цветения",
+  "repotting_frequency_months": 4,
+  "pruning_info": "Прищипывать верхушки для стимуляции боковых побегов, обеспечивать опору",
+  "toxicity": "Безопасно",
+  "model_label_id": "pisum_sativum",
+  "is_premium": false
+}

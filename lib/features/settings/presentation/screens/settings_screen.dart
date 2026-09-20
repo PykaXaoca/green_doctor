@@ -121,7 +121,7 @@ class _NotificationsSection extends ConsumerWidget {
               title: const Text('Включить уведомления'),
               subtitle: const Text('Напоминания о поливе и лечении'),
               value: settings.enabled,
-              onChanged: (v) => _change(ref, (n) => n.setEnabled(v)),
+              onChanged: (v) => _toggleEnabled(context, ref, v),
             ),
             const Divider(height: 1),
             ListTile(
@@ -160,6 +160,36 @@ class _NotificationsSection extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Переключение основного переключателя уведомлений.
+  ///
+  /// При включении сначала запрашиваем системное разрешение.
+  /// Если пользователь откажет — не переключаем и показываем
+  /// подсказку.
+  Future<void> _toggleEnabled(
+    BuildContext context,
+    WidgetRef ref,
+    bool value,
+  ) async {
+    if (value) {
+      final service = ref.read(notificationServiceProvider);
+      final granted = await service.requestPermissions();
+      if (!granted) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Разрешение на уведомления не выдано. '
+              'Откройте настройки Android и разрешите уведомления '
+              'для этого приложения.',
+            ),
+          ),
+        );
+        return;
+      }
+    }
+    await _change(ref, (n) => n.setEnabled(value));
   }
 
   /// Применяет изменение и пересобирает расписание уведомлений.

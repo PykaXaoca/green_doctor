@@ -1,0 +1,23 @@
+{
+  "id": "eruca_vesicaria",
+  "common_name": "Руккола",
+  "scientific_name": "Eruca vesicaria",
+  "family": "Brassicaceae",
+  "category": "Зелень и пряности",
+  "description": "Пряная зелень с орехово-горчичным вкусом. Скороспелая культура.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Универсальное для зелени",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": 5,
+  "max_temperature": 22,
+  "humidity_min": 60,
+  "humidity_max": 75,
+  "soil_type": "Питательный, рыхлый",
+  "soil_moisture": "Постоянно влажная",
+  "repotting_frequency_months": 3,
+  "pruning_info": "Срезать листья по мере роста, удалять цветоносы",
+  "toxicity": "Безопасно",
+  "model_label_id": "eruca_vesicaria",
+  "is_premium": false
+}

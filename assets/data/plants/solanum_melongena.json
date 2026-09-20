@@ -1,0 +1,23 @@
+{
+  "id": "solanum_melongena",
+  "common_name": "Баклажан",
+  "scientific_name": "Solanum melongena",
+  "family": "Solanaceae",
+  "category": "Овощ",
+  "description": "Теплолюбивая овощная культура. Требует много света, тепла и регулярного полива.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 14,
+  "fertilizer_type": "Для паслёновых, N-P-K 6-12-12",
+  "light_requirements": "Прямой яркий свет",
+  "min_temperature": 20,
+  "max_temperature": 28,
+  "humidity_min": 60,
+  "humidity_max": 75,
+  "soil_type": "Питательный, рыхлый, нейтральный",
+  "soil_moisture": "Регулярный, без пересыхания",
+  "repotting_frequency_months": 12,
+  "pruning_info": "Удалять нижние пасынки до первой развилки",
+  "toxicity": "Плоды съедобны, листья и стебли токсичны",
+  "model_label_id": "solanum_melongena",
+  "is_premium": false
+}

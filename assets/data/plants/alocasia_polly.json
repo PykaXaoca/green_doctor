@@ -1,0 +1,23 @@
+{
+  "id": "alocasia_polly",
+  "common_name": "Алоказия",
+  "scientific_name": "Alocasia × amazonica",
+  "family": "Araceae",
+  "category": "Комнатное декоративнолиственное",
+  "description": "Растение с крупными стреловидными листьями с яркими прожилками.",
+  "default_watering_days": 4,
+  "fertilizing_frequency_days": 30,
+  "fertilizer_type": "Для ароидных, N-P-K 3-1-2",
+  "light_requirements": "Яркий рассеянный свет, полутень",
+  "min_temperature": 18,
+  "max_temperature": 27,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Рыхлый, дренированный (торф + кора + перлит)",
+  "soil_moisture": "Умеренный, верхний слой просыхает на 2-3 см",
+  "repotting_frequency_months": 18,
+  "pruning_info": "Удалять старые листья, не обрезать точку роста",
+  "toxicity": "Токсично для кошек и собак",
+  "model_label_id": "alocasia_polly",
+  "is_premium": false
+}

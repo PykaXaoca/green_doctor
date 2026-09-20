@@ -1,0 +1,23 @@
+{
+  "id": "brassica_oleracea_italica",
+  "common_name": "Брокколи",
+  "scientific_name": "Brassica oleracea var. italica",
+  "family": "Brassicaceae",
+  "category": "Овощ",
+  "description": "Овощная культура с плотными зелёными головками. Скороспелая, холодостойкая.",
+  "default_watering_days": 2,
+  "fertilizing_frequency_days": 21,
+  "fertilizer_type": "Для капустных, N-P-K 10-10-10 с бором",
+  "light_requirements": "Солнце или полутень",
+  "min_temperature": -5,
+  "max_temperature": 22,
+  "humidity_min": 60,
+  "humidity_max": 80,
+  "soil_type": "Питательный, влагоёмкий, нейтральный",
+  "soil_moisture": "Регулярный, без пересыхания",
+  "repotting_frequency_months": 4,
+  "pruning_info": "Срезать центральную головку до распускания, стимулирует боковые",
+  "toxicity": "Безопасно",
+  "model_label_id": "brassica_oleracea_italica",
+  "is_premium": false
+}
