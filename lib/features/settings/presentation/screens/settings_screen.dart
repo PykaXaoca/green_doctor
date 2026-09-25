@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/providers/repository_providers.dart';
-import '../../../../core/providers/service_providers.dart';
 import '../../../../core/providers/settings_providers.dart';
 
 /// Экран настроек приложения.
@@ -95,150 +93,44 @@ class _NotificationsSection extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Card(
-      child: settingsAsync.when(
-        loading: () => const Padding(
-          padding: EdgeInsets.all(16),
-          child: Center(child: CircularProgressIndicator()),
-        ),
-        error: (err, _) => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text('Ошибка: $err'),
-        ),
-        data: (settings) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Row(
-                children: [
-                  const Icon(Icons.notifications_outlined),
-                  const SizedBox(width: 8),
-                  Text('Уведомления', style: theme.textTheme.titleMedium),
-                ],
-              ),
-            ),
-            SwitchListTile(
-              title: const Text('Включить уведомления'),
-              subtitle: const Text('Напоминания о поливе и лечении'),
-              value: settings.enabled,
-              onChanged: (v) => _toggleEnabled(context, ref, v),
-            ),
-            const Divider(height: 1),
-            ListTile(
-              enabled: settings.enabled,
-              leading: const Icon(Icons.schedule),
-              title: const Text('Время напоминания'),
-              subtitle: Text(
-                '${settings.summaryHour.toString().padLeft(2, '0')}:00',
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: settings.enabled
-                  ? () => _pickHour(context, ref, settings.summaryHour)
-                  : null,
-            ),
-            const Divider(height: 1),
-            SwitchListTile(
-              title: const Text('Группировать по дням'),
-              subtitle: const Text(
-                'Одно уведомление «Полить N растений» вместо отдельных',
-              ),
-              value: settings.groupByDay,
-              onChanged: settings.enabled
-                  ? (v) => _change(ref, (n) => n.setGroupByDay(v))
-                  : null,
-            ),
-            const Divider(height: 1),
-            SwitchListTile(
-              title: const Text('Уведомления о лечении'),
-              subtitle: const Text('Напоминания о шагах лечения'),
-              value: settings.treatmentEnabled,
-              onChanged: settings.enabled
-                  ? (v) => _change(ref, (n) => n.setTreatmentEnabled(v))
-                  : null,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Переключение основного переключателя уведомлений.
-  ///
-  /// При включении сначала запрашиваем системное разрешение.
-  /// Если пользователь откажет — не переключаем и показываем
-  /// подсказку.
-  Future<void> _toggleEnabled(
-    BuildContext context,
-    WidgetRef ref,
-    bool value,
-  ) async {
-    if (value) {
-      final service = ref.read(notificationServiceProvider);
-      final granted = await service.requestPermissions();
-      if (!granted) {
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Разрешение на уведомления не выдано. '
-              'Откройте настройки Android и разрешите уведомления '
-              'для этого приложения.',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Row(
+              children: [
+                const Icon(Icons.notifications_outlined),
+                const SizedBox(width: 8),
+                Text('Уведомления', style: theme.textTheme.titleMedium),
+              ],
             ),
           ),
-        );
-        return;
-      }
-    }
-    await _change(ref, (n) => n.setEnabled(value));
-  }
-
-  /// Применяет изменение и пересобирает расписание уведомлений.
-  Future<void> _change(
-    WidgetRef ref,
-    Future<void> Function(NotificationSettingsNotifier) action,
-  ) async {
-    await action(ref.read(notificationSettingsProvider.notifier));
-
-    final settings = ref.read(notificationSettingsSyncProvider);
-    final service = ref.read(notificationServiceProvider);
-    service.updateSettings(settings);
-
-    final plantRepo = ref.read(plantRepositoryProvider);
-    final plants = await plantRepo.getAllActive();
-    await service.syncAll(plants);
-  }
-
-  Future<void> _pickHour(
-    BuildContext context,
-    WidgetRef ref,
-    int currentHour,
-  ) async {
-    final hours = List.generate(24, (i) => i);
-    final chosen = await showModalBottomSheet<int>(
-      context: context,
-      showDragHandle: true,
-      builder: (_) => ListView.builder(
-        itemCount: hours.length,
-        itemBuilder: (context, i) {
-          final h = hours[i];
-          final selected = h == currentHour;
-          return ListTile(
-            leading: Icon(
-              selected ? Icons.radio_button_checked : Icons.radio_button_off,
-              color: selected
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.outline,
+          settingsAsync.when(
+            loading: () => const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
             ),
-            title: Text('${h.toString().padLeft(2, '0')}:00'),
-            onTap: () => Navigator.of(context).pop(h),
-          );
-        },
+            error: (err, _) => Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text('Ошибка: $err'),
+            ),
+            data: (settings) => ListTile(
+              leading: const Icon(Icons.settings_suggest_outlined),
+              title: const Text('Центр уведомлений'),
+              subtitle: Text(
+                settings.enabled
+                    ? 'Напоминания включены · ${settings.summaryTimeLabel}'
+                    : 'Напоминания выключены',
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () =>
+                  context.push('/profile/settings/notifications-center'),
+            ),
+          ),
+        ],
       ),
     );
-
-    if (chosen != null) {
-      await _change(ref, (n) => n.setSummaryHour(chosen));
-    }
   }
 }
 

@@ -9,6 +9,7 @@ import '../services/disease_identifier_service.dart';
 import '../services/disease_seeder.dart';
 import '../services/gamification_service.dart';
 import '../services/notification_service.dart';
+import '../services/permissions_status_service.dart';
 import '../services/static_treatment_plan_source.dart';
 import '../services/treatment_plan_source.dart';
 import '../services/treatment_scheduler.dart';
@@ -27,6 +28,17 @@ final careSchedulerProvider = Provider<CareScheduler>(
 final notificationServiceProvider = Provider<NotificationService>(
   (ref) => NotificationService(),
 );
+
+/// Сервис проверки разрешений, от которых зависят уведомления.
+///
+/// Работает с тем же плагином, что и [notificationServiceProvider],
+/// но предоставляет отдельные методы для UI.
+final permissionsStatusServiceProvider = Provider<PermissionsStatusService>((
+  ref,
+) {
+  final notifService = ref.read(notificationServiceProvider);
+  return PermissionsStatusService(notifService.plugin);
+});
 
 final treatmentSchedulerProvider = Provider<TreatmentScheduler>(
   (ref) => TreatmentScheduler(
@@ -80,12 +92,13 @@ final wateringAdvisorProvider = Provider<WateringAdvisor>(
   (ref) => const WateringAdvisor(),
 );
 
-/// Провайдер координат. Кэшируется Riverpod'ом: пока не вызван
-/// `ref.invalidate(currentPositionProvider)`, GPS не дёргается
-/// повторно.
-///
-/// Это важно для Honor: система «замораживает» GPS-модуль после
-/// первого запроса, и повторные вызовы падают по таймауту.
+/// Тихая проверка: выдано ли разрешение на геолокацию и включён ли GPS.
+final hasLocationProvider = FutureProvider<bool>((ref) async {
+  final service = ref.read(weatherServiceProvider);
+  return service.hasLocationAccess();
+});
+
+/// Провайдер координат. Кэшируется Riverpod'ом.
 final currentPositionProvider = FutureProvider<Position?>((ref) async {
   final service = ref.read(weatherServiceProvider);
   final result = await service.getCurrentPositionDetailed();
@@ -93,10 +106,6 @@ final currentPositionProvider = FutureProvider<Position?>((ref) async {
 });
 
 /// Провайдер текущей погоды.
-///
-/// Зависит от [currentPositionProvider] — координаты берутся один
-/// раз и кэшируются. При инвалидации `currentWeatherProvider`
-/// координаты **не перезапрашиваются**, если они уже есть.
 final currentWeatherProvider = FutureProvider<WeatherSnapshot?>((ref) async {
   final position = await ref.watch(currentPositionProvider.future);
   if (position == null) return null;

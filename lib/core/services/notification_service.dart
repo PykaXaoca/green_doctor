@@ -16,14 +16,14 @@ import '../providers/settings_providers.dart';
 /// приходит одно — «Сегодня полить N растений». Группировку можно
 /// выключить в настройках.
 ///
-/// Планирование идёт через [_scheduleSafely]: сначала пытаемся
-/// использовать точные alarm'ы (`exactAllowWhileIdle`) — они не
-/// задерживаются системой в Doze. Если разрешение на exact alarms
-/// не выдано (Android 12+), фолбэчимся на `inexactAllowWhileIdle`.
+/// **Этап 0**: планирование идёт через [AndroidScheduleMode.alarmClock] —
+/// это системный будильник, он не задерживается Doze. Если разрешение
+/// `SCHEDULE_EXACT_ALARM` не выдано — ловим исключение и уходим в
+/// [AndroidScheduleMode.inexactAllowWhileIdle] как фолбэк.
 ///
 /// Разрешения **не запрашиваются** при инициализации. Их запрашивает
-/// UI в момент, когда пользователь включает уведомления в настройках
-/// (см. [requestPermissions]).
+/// UI в момент, когда пользователь включает уведомления (см.
+/// [requestPermissions]).
 class NotificationService {
   NotificationService();
 
@@ -32,14 +32,10 @@ class NotificationService {
 
   bool _initialized = false;
 
-  /// Актуальные настройки. Обновляются через [updateSettings] при
-  /// старте приложения и при каждом изменении в настройках.
   NotificationSettings _settings = const NotificationSettings();
 
-  /// Горизонт планирования — 14 дней.
   static const int _summaryHorizonDays = 14;
 
-  /// Callback для обработки тапа по уведомлению.
   void Function(String? payload)? onNotificationTap;
 
   static const String _channelId = 'pocket_botanist_care';
@@ -47,8 +43,6 @@ class NotificationService {
   static const String _channelDescription =
       'Напоминания о поливе, удобрении и других действиях';
 
-  /// Имя drawable-ресурса иконки уведомлений. Должно совпадать с
-  /// `flutter_launcher_icons.android` в pubspec.
   static const String _iconName = '@mipmap/launcher_icon';
 
   static const int _maxNotificationId = 0x7FFFFFFF;
@@ -65,20 +59,27 @@ class NotificationService {
     'watering_summary': 9,
   };
 
-  /// Обновляет настройки сервиса.
+  /// Плагин уведомлений. Используется [PermissionsStatusService] для
+  /// проверки разрешений — тот же инстанс, чтобы не дублировать логику.
+  FlutterLocalNotificationsPlugin get plugin => _plugin;
+
   void updateSettings(NotificationSettings settings) {
     _settings = settings;
+    log(
+      'updateSettings: enabled=${settings.enabled}, '
+      'time=${settings.summaryTimeLabel}, '
+      'groupByDay=${settings.groupByDay}, '
+      'treatment=${settings.treatmentEnabled}',
+    );
   }
 
-  /// Инициализация плагина.
-  ///
-  /// **Разрешения не запрашиваются.** Они запрашиваются отдельно
-  /// через [requestPermissions], когда пользователь явно включает
-  /// уведомления в настройках.
+  // =========================================================================
+  //  Инициализация
+  // =========================================================================
+
   Future<void> initialize() async {
     if (_initialized) return;
 
-    // --- Таймзоны ---
     tz.initializeTimeZones();
     _setupLocalTimezone();
 
@@ -107,7 +108,6 @@ class NotificationService {
       onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse,
     );
 
-    // --- Явно создаём канал на Android ---
     if (Platform.isAndroid) {
       final android = _plugin
           .resolvePlatformSpecificImplementation<
@@ -126,12 +126,41 @@ class NotificationService {
     }
 
     _initialized = true;
+    log('initialize: завершено');
   }
 
-  /// Тихая проверка: выдано ли разрешение на уведомления (без диалога).
-  ///
-  /// На iOS/macOS всегда возвращает `true` — там разрешения
-  /// запрашиваются только через [requestPermissions].
+  void _setupLocalTimezone() {
+    try {
+      final offsetHours = DateTime.now().timeZoneOffset.inHours;
+      final sign = offsetHours >= 0 ? '-' : '+';
+      final abs = offsetHours.abs();
+      final zoneName = 'Etc/GMT$sign$abs';
+      tz.setLocalLocation(tz.getLocation(zoneName));
+      log(
+        'Таймзона: $zoneName (UTC${offsetHours >= 0 ? '+' : ''}$offsetHours)',
+      );
+    } catch (e) {
+      tz.setLocalLocation(tz.getLocation('UTC'));
+      log('Не удалось установить локальную таймзону, использую UTC: $e');
+    }
+  }
+
+  void _onDidReceiveNotificationResponse(NotificationResponse response) {
+    log('Тап по уведомлению: payload=${response.payload}');
+    onNotificationTap?.call(response.payload);
+  }
+
+  Future<String?> getLaunchPayload() async {
+    if (!_initialized) await initialize();
+    final details = await _plugin.getNotificationAppLaunchDetails();
+    if (details == null || !details.didNotificationLaunchApp) return null;
+    return details.notificationResponse?.payload;
+  }
+
+  // =========================================================================
+  //  Разрешения
+  // =========================================================================
+
   Future<bool> hasPermissions() async {
     if (!Platform.isAndroid) return true;
 
@@ -150,12 +179,24 @@ class NotificationService {
     }
   }
 
-  /// Запросить разрешения на уведомления и (мягко) на exact alarms.
-  ///
-  /// Возвращает `true`, если разрешение на обычные уведомления
-  /// выдано. Разрешение на exact alarms запрашивается «мягко»:
-  /// если пользователь откажет, планирование всё равно сработает
-  /// в inexact-режиме (см. [_scheduleSafely]).
+  Future<bool> canScheduleExactAlarms() async {
+    if (!Platform.isAndroid) return true;
+
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (android == null) return false;
+
+    try {
+      final can = await android.canScheduleExactNotifications();
+      return can ?? false;
+    } catch (e) {
+      log('canScheduleExactNotifications упал: $e');
+      return false;
+    }
+  }
+
   Future<bool> requestPermissions() async {
     if (!_initialized) await initialize();
 
@@ -176,10 +217,9 @@ class NotificationService {
         return false;
       }
 
-      // Разрешение на exact alarms — «мягко».
       try {
         final exact = await android.requestExactAlarmsPermission();
-        log('SCHEDULE_EXACT_ALARM granted: $exact');
+        log('requestExactAlarmsPermission: $exact');
       } catch (e) {
         log('requestExactAlarmsPermission недоступен: $e');
       }
@@ -203,58 +243,55 @@ class NotificationService {
     return true;
   }
 
-  /// Устанавливает локальную таймзону по текущему смещению системы.
-  ///
-  /// Без пакета `flutter_timezone` нельзя получить IANA-имя зоны,
-  /// зато можно подобрать фиксированное смещение `Etc/GMT±N`.
-  /// (В базе IANA знак инвертирован: `Etc/GMT-5` = UTC+5.)
-  void _setupLocalTimezone() {
-    try {
-      final offsetHours = DateTime.now().timeZoneOffset.inHours;
-      final sign = offsetHours >= 0 ? '-' : '+';
-      final abs = offsetHours.abs();
-      final zoneName = 'Etc/GMT$sign$abs';
-      tz.setLocalLocation(tz.getLocation(zoneName));
-      log(
-        'Таймзона: $zoneName (UTC${offsetHours >= 0 ? '+' : ''}$offsetHours)',
-      );
-    } catch (e) {
-      tz.setLocalLocation(tz.getLocation('UTC'));
-      log('Не удалось установить локальную таймзону, использую UTC: $e');
-    }
-  }
+  // =========================================================================
+  //  Диагностика
+  // =========================================================================
 
-  void _onDidReceiveNotificationResponse(NotificationResponse response) {
-    onNotificationTap?.call(response.payload);
-  }
+  Future<void> logDiagnostics() async {
+    log('────── ДИАГНОСТИКА ──────');
+    log('Платформа: ${Platform.operatingSystem}');
+    log('Таймзона: ${tz.local.name}');
+    log('Текущее время: ${DateTime.now()}');
+    log('UTC время: ${DateTime.now().toUtc()}');
+    log(
+      'Settings: enabled=${_settings.enabled}, '
+      'time=${_settings.summaryTimeLabel}, '
+      'groupByDay=${_settings.groupByDay}',
+    );
 
-  Future<String?> getLaunchPayload() async {
-    if (!_initialized) await initialize();
-    final details = await _plugin.getNotificationAppLaunchDetails();
-    if (details == null || !details.didNotificationLaunchApp) return null;
-    return details.notificationResponse?.payload;
-  }
+    final has = await hasPermissions();
+    log('POST_NOTIFICATIONS: $has');
 
-  /// Отладочный вывод списка запланированных уведомлений.
-  Future<void> _logPending() async {
-    if (!kDebugMode) return;
+    final can = await canScheduleExactAlarms();
+    log('SCHEDULE_EXACT_ALARM: $can');
+
     try {
       final pending = await _plugin.pendingNotificationRequests();
-      log('Запланировано уведомлений: ${pending.length}');
-      for (final p in pending.take(10)) {
-        log('  • id=${p.id} title="${p.title}"');
+      log('Запланировано: ${pending.length}');
+      for (final p in pending) {
+        log('  • id=${p.id} title="${p.title}" body="${p.body}"');
       }
     } catch (e) {
       log('pendingNotificationRequests недоступен: $e');
     }
+
+    try {
+      final active = await _plugin.getActiveNotifications();
+      log('Активных (видимых): ${active.length}');
+      for (final a in active) {
+        log('  • id=${a.id} title="${a.title}"');
+      }
+    } catch (e) {
+      log('getActiveNotifications недоступен: $e');
+    }
+
+    log('─────────────────────────');
   }
 
-  /// Планирует уведомление с попыткой использовать exact-режим.
-  ///
-  /// Если система не разрешает exact alarms (Android 12+ без явного
-  /// разрешения), ловим исключение и повторяем с inexact-режимом.
-  /// Это гарантирует, что уведомление будет запланировано в любом
-  /// случае, но с разной точностью.
+  // =========================================================================
+  //  Планирование
+  // =========================================================================
+
   Future<void> _scheduleSafely({
     required int id,
     required String title,
@@ -264,6 +301,18 @@ class NotificationService {
     String? payload,
   }) async {
     final tzWhen = tz.TZDateTime.from(when, tz.local);
+    final now = DateTime.now();
+    final delta = when.difference(now);
+
+    if (!when.isAfter(now)) {
+      log('⚠️ ПРОПУСК id=$id: время $when уже прошло (сейчас $now)');
+      return;
+    }
+
+    log(
+      '→ Планирую id=$id через ${delta.inMinutes} мин: '
+      'when=$when, tz=$tzWhen, title="$title"',
+    );
 
     if (Platform.isAndroid) {
       try {
@@ -273,40 +322,49 @@ class NotificationService {
           body: body,
           scheduledDate: tzWhen,
           notificationDetails: details,
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           payload: payload,
         );
+        log('  ✅ alarmClock OK');
         return;
       } on PlatformException catch (e) {
-        log('exactAllowWhileIdle недоступен (${e.code}), фолбэк на inexact');
+        log(
+          '  ❌ alarmClock PlatformException: '
+          'code=${e.code}, msg=${e.message}',
+        );
       } catch (e) {
-        log('exactAllowWhileIdle упал: $e, фолбэк на inexact');
+        log('  ❌ alarmClock ошибка: $e');
       }
     }
 
-    await _plugin.zonedSchedule(
-      id: id,
-      title: title,
-      body: body,
-      scheduledDate: tzWhen,
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      payload: payload,
-    );
+    try {
+      await _plugin.zonedSchedule(
+        id: id,
+        title: title,
+        body: body,
+        scheduledDate: tzWhen,
+        notificationDetails: details,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        payload: payload,
+      );
+      log('  ⚠️ inexactAllowWhileIdle OK (фолбэк)');
+    } catch (e) {
+      log('  ❌ inexactAllowWhileIdle упал: $e');
+    }
   }
 
-  // =========================================================================
-  //  Полив — синхронизация
-  // =========================================================================
-
-  /// Полная синхронизация уведомлений о поливе.
   Future<void> syncAll(List<Plant> plants) async {
     if (!_initialized) await initialize();
 
     final now = DateTime.now();
     final today = _dateOnly(now);
 
-    // Всегда сначала отменяем всё запланированное.
+    log(
+      'syncAll: старт, растений=${plants.length}, '
+      'enabled=${_settings.enabled}, '
+      'время=${_settings.summaryTimeLabel}',
+    );
+
     for (var i = 0; i < _summaryHorizonDays + 1; i++) {
       final day = today.add(Duration(days: i));
       await _plugin.cancel(id: _idFor('watering_summary', _dayKey(day)));
@@ -316,7 +374,7 @@ class NotificationService {
     }
 
     if (!_settings.enabled) {
-      log('Уведомления выключены в настройках');
+      log('syncAll: уведомления выключены в настройках, выходим');
       return;
     }
 
@@ -326,7 +384,7 @@ class NotificationService {
       await _syncIndividual(plants, now);
     }
 
-    await _logPending();
+    await logDiagnostics();
   }
 
   Future<void> _syncGrouped(List<Plant> plants, DateTime today) async {
@@ -361,6 +419,11 @@ class NotificationService {
           a.customName.toLowerCase().compareTo(b.customName.toLowerCase()),
     );
 
+    log(
+      '_syncGrouped: по дням=${byDay.length}, '
+      'просрочено=${overdue.length}',
+    );
+
     final todayList = [...overdue, ...(byDay[today] ?? const <Plant>[])]
       ..sort(
         (a, b) =>
@@ -368,22 +431,27 @@ class NotificationService {
       );
 
     if (todayList.isNotEmpty) {
-      var scheduled = DateTime(
+      final scheduled = DateTime(
         today.year,
         today.month,
         today.day,
         _settings.summaryHour,
+        _settings.summaryMinute,
       );
       final now = DateTime.now();
-      if (!scheduled.isAfter(now)) {
-        scheduled = now.add(const Duration(minutes: 1));
+      if (scheduled.isAfter(now)) {
+        await _scheduleSummary(
+          day: today,
+          plants: todayList,
+          scheduled: scheduled,
+          hasOverdue: overdue.isNotEmpty,
+        );
+      } else {
+        log(
+          'Сегодня время $scheduled уже прошло '
+          '(сейчас $now). Уведомление на сегодня не планируем.',
+        );
       }
-      await _scheduleSummary(
-        day: today,
-        plants: todayList,
-        scheduled: scheduled,
-        hasOverdue: overdue.isNotEmpty,
-      );
     }
 
     final now = DateTime.now();
@@ -397,6 +465,7 @@ class NotificationService {
         entry.key.month,
         entry.key.day,
         _settings.summaryHour,
+        _settings.summaryMinute,
       );
       if (!scheduled.isAfter(now)) continue;
 

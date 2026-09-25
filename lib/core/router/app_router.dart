@@ -15,6 +15,7 @@ import '../../features/profile/presentation/screens/care_schedule_settings_scree
 import '../../features/profile/presentation/screens/profile_edit_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/settings/presentation/screens/about_screen.dart';
+import '../../features/settings/presentation/screens/notification_center_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/today/presentation/screens/today_screen.dart';
 import '../../features/today/presentation/screens/weather_detail_screen.dart';
@@ -143,6 +144,11 @@ class AppRouter {
                       GoRoute(
                         path: 'about',
                         builder: (context, state) => const AboutScreen(),
+                      ),
+                      GoRoute(
+                        path: 'notifications-center',
+                        builder: (context, state) =>
+                            const NotificationCenterScreen(),
                       ),
                     ],
                   ),
