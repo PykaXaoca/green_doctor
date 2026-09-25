@@ -138,6 +138,44 @@ class _CurrentCard extends StatelessWidget {
     final theme = Theme.of(context);
     final time = DateFormat('HH:mm').format(weather.fetchedAt);
 
+    // Собираем чипы только для полей, которые есть в ответе.
+    // Meteosource Free не отдаёт влажность, давление, UV —
+    // соответствующие чипы просто не появятся.
+    final chips = <Widget>[
+      if (weather.currentHumidity != null)
+        _ChipMetric(
+          icon: Icons.water_drop_outlined,
+          label: 'Влажность',
+          value: '${weather.currentHumidity}%',
+        ),
+      if (weather.windSpeed > 0)
+        _ChipMetric(
+          icon: Icons.air,
+          label: 'Ветер',
+          value:
+              '${weather.windSpeed.toStringAsFixed(1)} м/с '
+              '${_windDir(weather.windDirection)}',
+        ),
+      if (weather.pressure != null && weather.pressure! > 0)
+        _ChipMetric(
+          icon: Icons.speed,
+          label: 'Давление',
+          value: '${weather.pressure!.round()} гПа',
+        ),
+      if (weather.uvIndex != null)
+        _ChipMetric(
+          icon: Icons.wb_sunny_outlined,
+          label: 'UV',
+          value: weather.uvIndex!.toStringAsFixed(0),
+        ),
+      if (weather.cloudCover > 0)
+        _ChipMetric(
+          icon: Icons.cloud_outlined,
+          label: 'Облачность',
+          value: '${weather.cloudCover}%',
+        ),
+    ];
+
     return Card(
       color: theme.colorScheme.secondaryContainer,
       child: Padding(
@@ -185,44 +223,10 @@ class _CurrentCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 8,
-              children: [
-                _ChipMetric(
-                  icon: Icons.water_drop_outlined,
-                  label: 'Влажность',
-                  value: '${weather.currentHumidity}%',
-                ),
-                if (weather.windSpeed > 0)
-                  _ChipMetric(
-                    icon: Icons.air,
-                    label: 'Ветер',
-                    value:
-                        '${weather.windSpeed.toStringAsFixed(1)} м/с '
-                        '${_windDir(weather.windDirection)}',
-                  ),
-                if (weather.pressure > 0)
-                  _ChipMetric(
-                    icon: Icons.speed,
-                    label: 'Давление',
-                    value: '${weather.pressure.round()} гПа',
-                  ),
-                if (weather.uvIndex != null)
-                  _ChipMetric(
-                    icon: Icons.wb_sunny_outlined,
-                    label: 'UV',
-                    value: weather.uvIndex!.toStringAsFixed(0),
-                  ),
-                if (weather.cloudCover > 0)
-                  _ChipMetric(
-                    icon: Icons.cloud_outlined,
-                    label: 'Облачность',
-                    value: '${weather.cloudCover}%',
-                  ),
-              ],
-            ),
+            if (chips.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              Wrap(spacing: 12, runSpacing: 8, children: chips),
+            ],
             const SizedBox(height: 12),
             Text(
               'Обновлено в $time',

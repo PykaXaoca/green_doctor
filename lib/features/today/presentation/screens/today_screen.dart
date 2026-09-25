@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart' show Geolocator;
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -158,6 +159,9 @@ class TodayScreen extends ConsumerWidget {
 
   void _invalidateAll(WidgetRef ref) {
     ref.invalidate(plantsDueForWateringProvider);
+    // Сбрасываем кэш координат — иначе currentWeatherProvider
+    // увидит старый null и не пойдёт в сеть за погодой.
+    ref.invalidate(currentPositionProvider);
     ref.invalidate(currentWeatherProvider);
     ref.invalidate(plantsNeedingRepottingProvider);
     ref.invalidate(fertilizingDueProvider);
@@ -680,7 +684,11 @@ class WeatherHeader extends ConsumerWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            if (weather.apparentTemp != null)
+                            // Meteosource Free не отдаёт ни влажность,
+                            // ни ощущаемую температуру. Показываем только
+                            // то, что есть, и не занимаем пустое место.
+                            if (weather.currentHumidity != null &&
+                                weather.apparentTemp != null)
                               Text(
                                 'Ощущается как '
                                 '${weather.apparentTemp!.round()}°C · '
@@ -689,7 +697,15 @@ class WeatherHeader extends ConsumerWidget {
                                   color: theme.colorScheme.onSecondaryContainer,
                                 ),
                               )
-                            else
+                            else if (weather.apparentTemp != null)
+                              Text(
+                                'Ощущается как '
+                                '${weather.apparentTemp!.round()}°C',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSecondaryContainer,
+                                ),
+                              )
+                            else if (weather.currentHumidity != null)
                               Text(
                                 'Влажность ${weather.currentHumidity}%',
                                 style: theme.textTheme.bodySmall?.copyWith(
@@ -739,10 +755,6 @@ class WeatherHeader extends ConsumerWidget {
 }
 
 /// Карточка «Включить геолокацию».
-///
-/// Показывается, когда разрешение на геолокацию не выдано или
-/// сервис геолокации выключен. По нажатию показывает объясняющий
-/// диалог, затем системный запрос разрешения.
 class _EnableLocationCard extends ConsumerStatefulWidget {
   const _EnableLocationCard();
 
@@ -817,22 +829,55 @@ class _EnableLocationCardState extends ConsumerState<_EnableLocationCard> {
       if (!mounted) return;
 
       final service = ref.read(weatherServiceProvider);
-      final position = await service.getCurrentPosition(requestIfDenied: true);
+      final result = await service.getCurrentPositionDetailed(
+        requestIfDenied: true,
+      );
 
-      if (position == null) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Геолокация недоступна. Проверьте разрешения в настройках '
-              'Android или включите службу геолокации.',
-            ),
-          ),
-        );
+      if (!mounted) return;
+
+      if (result.isSuccess) {
+        // Сбрасываем кэш координат — иначе currentWeatherProvider
+        // увидит старый null и не пойдёт в сеть за погодой.
+        ref.invalidate(currentPositionProvider);
         return;
       }
 
-      ref.invalidate(currentWeatherProvider);
+      final error = result.error!;
+      final message = switch (error) {
+        LocationError.serviceDisabled =>
+          'Геолокация выключена в системе. Включите её и попробуйте снова.',
+        LocationError.permissionDenied =>
+          'Разрешение не выдано. Нажмите «Включить» ещё раз и разрешите '
+              'доступ в системном диалоге.',
+        LocationError.permissionDeniedForever =>
+          'Доступ к геолокации запрещён. Откройте настройки и разрешите '
+              'его вручную.',
+        LocationError.timeout =>
+          'Не удалось определить координаты за 15 секунд. Попробуйте '
+              'выйти на открытое место или повторить позже.',
+        LocationError.unknown =>
+          'Не удалось получить геолокацию. Попробуйте позже.',
+      };
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: const Duration(seconds: 5),
+          action:
+              error == LocationError.permissionDeniedForever ||
+                  error == LocationError.serviceDisabled
+              ? SnackBarAction(
+                  label: 'Настройки',
+                  onPressed: () => Geolocator.openAppSettings(),
+                )
+              : null,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Ошибка: $e')));
     } finally {
       if (mounted) setState(() => _busy = false);
     }

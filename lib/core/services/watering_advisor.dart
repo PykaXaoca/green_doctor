@@ -29,7 +29,7 @@ enum WateringAction {
   /// Пропустить — несколько дней дождя.
   skip,
 
-  /// Срочно полить — жара и сухость.
+  /// Срочно полить — жара.
   urgent,
 }
 
@@ -74,13 +74,16 @@ class WateringAdvisor {
       );
     }
 
-    // 3. Жарко и сухо → срочно полить.
-    if (weather.currentTemp > 30 && weather.currentHumidity < 30) {
+    // 3. Жарко → срочно полить.
+    //
+    // Meteosource Free не отдаёт влажность, поэтому правило упрощено:
+    // раньше было «temp > 30 && humidity < 30», теперь — «temp > 30».
+    if (weather.currentTemp > 30) {
       final nextDays = (frequency - 1).clamp(1, 30);
       return WateringRecommendation(
         action: WateringAction.urgent,
         message:
-            'Жарко (${weather.currentTemp.round()}°C) и сухо. '
+            'Жарко (${weather.currentTemp.round()}°C). '
             'Полейте сегодня, следующий полив через $nextDays дн.',
       );
     }

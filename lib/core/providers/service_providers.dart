@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart' show Position;
 
 import '../services/achievement_checker.dart';
 import '../services/achievement_seeder.dart';
@@ -79,10 +80,28 @@ final wateringAdvisorProvider = Provider<WateringAdvisor>(
   (ref) => const WateringAdvisor(),
 );
 
-final currentWeatherProvider = FutureProvider<WeatherSnapshot?>((ref) async {
+/// Провайдер координат. Кэшируется Riverpod'ом: пока не вызван
+/// `ref.invalidate(currentPositionProvider)`, GPS не дёргается
+/// повторно.
+///
+/// Это важно для Honor: система «замораживает» GPS-модуль после
+/// первого запроса, и повторные вызовы падают по таймауту.
+final currentPositionProvider = FutureProvider<Position?>((ref) async {
   final service = ref.read(weatherServiceProvider);
-  final position = await service.getCurrentPosition();
+  final result = await service.getCurrentPositionDetailed();
+  return result.position;
+});
+
+/// Провайдер текущей погоды.
+///
+/// Зависит от [currentPositionProvider] — координаты берутся один
+/// раз и кэшируются. При инвалидации `currentWeatherProvider`
+/// координаты **не перезапрашиваются**, если они уже есть.
+final currentWeatherProvider = FutureProvider<WeatherSnapshot?>((ref) async {
+  final position = await ref.watch(currentPositionProvider.future);
   if (position == null) return null;
+
+  final service = ref.read(weatherServiceProvider);
   return service.getWeather(lat: position.latitude, lon: position.longitude);
 });
 
